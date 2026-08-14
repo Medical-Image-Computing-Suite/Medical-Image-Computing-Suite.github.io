@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Get started — MedICS</title>
+  <meta name="description" content="Install MedICS and run through the basic medical-image workflow." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <nav class="nav">
+    <div class="container nav__inner">
+      <a class="nav__logo" href="index.html">Med<em>ICS</em></a>
+      <button class="nav__hamburger" id="hamburger" aria-label="Open menu"><span></span><span></span><span></span></button>
+      <ul class="nav__links">
+        <li><a href="index.html">Introduction</a></li>
+        <li><a class="is-active" href="get-started.html">Get started</a></li>
+        <li><a href="extensions.html">Extensions</a></li>
+        <li><a href="documents.html">Documents</a></li>
+        <li><a class="btn btn--ghost btn--sm" href="https://github.com/Yukun-Guo/MedICS" target="_blank" rel="noopener">GitHub</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <header class="page-hero">
+    <div class="container">
+      <div class="tag">Get started</div>
+      <h1>Install and run <span class="gradient">in minutes</span></h1>
+      <p>Requirements, PyPI install, CLI commands, and the basic folder → preview → import → analyze → save workflow.</p>
+    </div>
+  </header>
+
+  <section class="section" id="requirements">
+    <div class="container">
+      <h2>Requirements</h2>
+      <ul class="plain">
+        <li>Python <strong>3.10</strong> or later (3.11+ recommended)</li>
+        <li>Windows, macOS, or Linux</li>
+        <li>Scientific stack (NumPy, SciPy, scikit-image, pydicom, h5py, PySide6, and others) — installed automatically with the package</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section section--alt" id="install">
+    <div class="container">
+      <h2>Install</h2>
+      <h3>From PyPI</h3>
+      <div class="code-block">
+        <div class="code-block__header"><span>bash</span><button class="copy-btn" type="button">Copy</button></div>
+        <pre><code>pip install medics</code></pre>
+      </div>
+
+      <h3>Verify</h3>
+      <div class="code-block">
+        <div class="code-block__header"><span>bash</span><button class="copy-btn" type="button">Copy</button></div>
+        <pre><code>python -c "import medics; print(medics.__version__)"
+medics --help</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="launch">
+    <div class="container">
+      <h2>Launch</h2>
+      <div class="code-block">
+        <div class="code-block__header"><span>bash</span><button class="copy-btn" type="button">Copy</button></div>
+        <pre><code>medics
+# or
+python -m medics</code></pre>
+      </div>
+      <p>Useful CLI commands:</p>
+      <div class="code-block">
+        <div class="code-block__header"><span>text</span><button class="copy-btn" type="button">Copy</button></div>
+        <pre><code>medics                              Start the application
+medics --create-ext [NAME] [DIR]    Scaffold a new extension
+medics --build-ext [OPTIONS]        Build an extension wheel
+medics --version, -V                Print the installed version
+medics --help                       Show CLI help</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--alt" id="workflow">
+    <div class="container">
+      <h2>Basic workflow</h2>
+      <div class="steps">
+        <div class="step">
+          <div>
+            <h4>Open a folder</h4>
+            <p><code>File → Open Folder</code>, or use the folder button in the Explorer dock.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div>
+            <h4>Preview files</h4>
+            <p>Double-click a file in Explorer, or use <strong>FilePreview</strong>. Images, DICOM/NIfTI volumes, tables, markdown, and code open in tabs.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div>
+            <h4>Import data</h4>
+            <p>Open the <strong>ImportData</strong> toolbox (<code>Toolboxes</code> menu). Drag files or folders, or browse a DICOM series. Imported arrays appear in the Variables dock and in Jupyter.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div>
+            <h4>Analyze</h4>
+            <p>Write scripts in <strong>PyEditor</strong>, or run code in the <strong>Jupyter</strong> tab. Both share the workspace namespace.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div>
+            <h4>Save</h4>
+            <p><code>File → Save Workspace</code> writes variables to a <code>.med</code> (HDF5) file. Auto-save can be enabled in settings.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="toolboxes">
+    <div class="container">
+      <h2>Toolboxes</h2>
+      <p>Built-in toolboxes open as <strong>tabs in the central widget</strong>, not as dock panels. The Toolboxes menu controls which icons appear on the activity bar.</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Toolbox</th><th>Role</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>PyEditor</td>
+              <td>Python IDE: syntax highlighting, completions, AST outline, integrated terminal, run against the Jupyter kernel</td>
+            </tr>
+            <tr>
+              <td>ImportData</td>
+              <td>Unified importer for DICOM, NIfTI, TIFF/PNG/JPEG, HDF5, MAT, NumPy, CSV, and related formats; background workers with progress</td>
+            </tr>
+            <tr>
+              <td>FilePreview</td>
+              <td>Read-only preview of text, code, markdown, spreadsheets, 2-D images, and volumetric data (DICOM series, stacked TIFF, NIfTI)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Custom tools should be packaged as <a href="extensions.html">extensions</a> rather than patched into <code>medics/toolboxes/</code>.</p>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <span>© 2024–2026 MedICS Team. All rights reserved.</span>
+      <a href="index.html">Back to introduction</a>
+    </div>
+  </footer>
+  <script src="js/site.js"></script>
+</body>
+</html>

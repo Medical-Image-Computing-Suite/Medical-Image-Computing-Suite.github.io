@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Documents — MedICS</title>
+  <meta name="description" content="Technical documentation and license for MedICS." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <nav class="nav">
+    <div class="container nav__inner">
+      <a class="nav__logo" href="index.html">Med<em>ICS</em></a>
+      <button class="nav__hamburger" id="hamburger" aria-label="Open menu"><span></span><span></span><span></span></button>
+      <ul class="nav__links">
+        <li><a href="index.html">Introduction</a></li>
+        <li><a href="get-started.html">Get started</a></li>
+        <li><a href="extensions.html">Extensions</a></li>
+        <li><a class="is-active" href="documents.html">Documents</a></li>
+        <li><a class="btn btn--ghost btn--sm" href="https://github.com/Yukun-Guo/MedICS" target="_blank" rel="noopener">GitHub</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <header class="page-hero">
+    <div class="container">
+      <div class="tag">Documents</div>
+      <h1>Technical <span class="gradient">references</span></h1>
+      <p>Links into the documentation in the repository, plus license terms.</p>
+    </div>
+  </header>
+
+  <section class="section" id="documentation">
+    <div class="container">
+      <h2>Documentation</h2>
+      <p>Technical docs live in the repository <code>docs/</code> folder. Start here:</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Document</th><th>Contents</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><a href="https://github.com/Yukun-Guo/MedICS/blob/main/docs/index.md" target="_blank" rel="noopener">docs/index.md</a></td><td>Documentation index</td></tr>
+            <tr><td><a href="https://github.com/Yukun-Guo/MedICS/blob/main/docs/architecture.md" target="_blank" rel="noopener">docs/architecture.md</a></td><td>Layout, startup lifecycle, directory map</td></tr>
+            <tr><td><a href="https://github.com/Yukun-Guo/MedICS/blob/main/docs/core.md" target="_blank" rel="noopener">docs/core.md</a></td><td>Component managers (<code>config</code>, <code>theme</code>, <code>workspace</code>, <code>toolbox</code>, <code>extension</code>)</td></tr>
+            <tr><td><a href="https://github.com/Yukun-Guo/MedICS/blob/main/docs/ui.md" target="_blank" rel="noopener">docs/ui.md</a></td><td>Main window, docks, menus, toolbar, settings</td></tr>
+            <tr><td><a href="https://github.com/Yukun-Guo/MedICS/blob/main/docs/utils.md" target="_blank" rel="noopener">docs/utils.md</a></td><td>EventBus, DataDict, FileIO, Jupyter, plotting helpers</td></tr>
+            <tr><td><a href="https://github.com/Yukun-Guo/MedICS/blob/main/docs/toolboxes.md" target="_blank" rel="noopener">docs/toolboxes.md</a></td><td>PyEditor and ImportData APIs</td></tr>
+            <tr><td><a href="https://github.com/Yukun-Guo/MedICS/blob/main/docs/extension-system.md" target="_blank" rel="noopener">docs/extension-system.md</a></td><td>Discovery, lifecycle, scaffold, wheel build</td></tr>
+            <tr><td><a href="https://github.com/Yukun-Guo/MedICS/blob/main/docs/configuration.md" target="_blank" rel="noopener">docs/configuration.md</a></td><td><code>config.ini</code> reference</td></tr>
+            <tr><td><a href="https://github.com/Yukun-Guo/MedICS/blob/main/docs/events.md" target="_blank" rel="noopener">docs/events.md</a></td><td>EventBus catalog and data-flow diagrams</td></tr>
+            <tr><td><a href="https://github.com/Yukun-Guo/MedICS/blob/main/docs/api/index.md" target="_blank" rel="noopener">docs/api/index.md</a></td><td>Generated-style API reference by module</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Toolbox-specific notes:</p>
+      <ul class="plain">
+        <li><a href="https://github.com/Yukun-Guo/MedICS/blob/main/medics/toolboxes/importData/README.md" target="_blank" rel="noopener">medics/toolboxes/importData/README.md</a></li>
+        <li><a href="https://github.com/Yukun-Guo/MedICS/blob/main/medics/toolboxes/filePreview/README.md" target="_blank" rel="noopener">medics/toolboxes/filePreview/README.md</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section section--alt" id="license">
+    <div class="container">
+      <h2>License</h2>
+      <p>Copyright © 2024–2026 MedICS Team. All rights reserved.</p>
+      <p>MedICS is proprietary software. See <a href="https://github.com/Yukun-Guo/MedICS/blob/main/LICENSE" target="_blank" rel="noopener">LICENSE</a> for the full terms.</p>
+      <p>
+        MedICS is built on
+        <a href="https://doc.qt.io/qtforpython/" target="_blank" rel="noopener">PySide6/Qt</a>,
+        <a href="https://numpy.org/" target="_blank" rel="noopener">NumPy</a>,
+        <a href="https://scipy.org/" target="_blank" rel="noopener">SciPy</a>,
+        <a href="https://pydicom.github.io/" target="_blank" rel="noopener">pydicom</a>,
+        <a href="https://www.h5py.org/" target="_blank" rel="noopener">h5py</a>,
+        <a href="https://scikit-image.org/" target="_blank" rel="noopener">scikit-image</a>,
+        <a href="https://matplotlib.org/" target="_blank" rel="noopener">Matplotlib</a>,
+        <a href="https://napari.org/" target="_blank" rel="noopener">napari</a>,
+        <a href="https://www.pyqtgraph.org/" target="_blank" rel="noopener">pyqtgraph</a>,
+        <a href="https://qtconsole.readthedocs.io/" target="_blank" rel="noopener">qtconsole</a>,
+        and
+        <a href="https://numba.pydata.org/" target="_blank" rel="noopener">numba</a>.
+      </p>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <span>© 2024–2026 MedICS Team. All rights reserved.</span>
+      <a href="index.html">Back to introduction</a>
+    </div>
+  </footer>
+  <script src="js/site.js"></script>
+</body>
+</html>

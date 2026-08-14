@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Extensions — MedICS</title>
+  <meta name="description" content="Install, create, and publish MedICS extensions." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <nav class="nav">
+    <div class="container nav__inner">
+      <a class="nav__logo" href="index.html">Med<em>ICS</em></a>
+      <button class="nav__hamburger" id="hamburger" aria-label="Open menu"><span></span><span></span><span></span></button>
+      <ul class="nav__links">
+        <li><a href="index.html">Introduction</a></li>
+        <li><a href="get-started.html">Get started</a></li>
+        <li><a class="is-active" href="extensions.html">Extensions</a></li>
+        <li><a href="documents.html">Documents</a></li>
+        <li><a class="btn btn--ghost btn--sm" href="https://github.com/Yukun-Guo/MedICS" target="_blank" rel="noopener">GitHub</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <header class="page-hero">
+    <div class="container">
+      <div class="tag">Extensions</div>
+      <h1>Add tools without changing <span class="gradient">the core</span></h1>
+      <p>Extensions add UI, menus, and workspace tools. They are discovered from pip packages or drop-in folders.</p>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="container">
+      <h2>How discovery works</h2>
+      <p>Extensions are found automatically from:</p>
+      <ol class="plain">
+        <li><strong>pip packages</strong> that declare a <code>medics.extensions</code> entry point (preferred)</li>
+        <li><strong>Filesystem drop-ins</strong> under <code>medics/extensions/</code></li>
+      </ol>
+      <p>Discovery prefers entry points when the same ID exists in both places.</p>
+    </div>
+  </section>
+
+  <section class="section section--alt" id="install">
+    <div class="container">
+      <h2>Install an extension</h2>
+      <div class="code-block">
+        <div class="code-block__header"><span>bash</span><button class="copy-btn" type="button">Copy</button></div>
+        <pre><code>pip install medics-ext-example
+medics</code></pre>
+      </div>
+      <p>
+        Loaded extensions appear under the <strong>Extensions</strong> menu and, when <code>windowed</code> is true,
+        can open a tab or window. Enable, disable, and inspect them from the extension manager dialog.
+      </p>
+    </div>
+  </section>
+
+  <section class="section" id="create">
+    <div class="container">
+      <h2>Create an extension</h2>
+      <div class="code-block">
+        <div class="code-block__header"><span>bash</span><button class="copy-btn" type="button">Copy</button></div>
+        <pre><code>medics --create-ext
+# or with a name:
+medics --create-ext medics-ext-my-tool</code></pre>
+      </div>
+      <p>This copies the bundled scaffold from <code>medics/extension_template/</code> and substitutes names. A typical layout:</p>
+      <div class="code-block">
+        <div class="code-block__header"><span>text</span><button class="copy-btn" type="button">Copy</button></div>
+        <pre><code>medics-ext-my-tool/
+├── medics_ext_my_tool/
+│   ├── __init__.py          # ExtensionInterface implementation
+│   ├── extension.json       # Display metadata
+│   └── ui/
+│       └── main_widget.py   # Optional PySide6 widget
+├── tests/
+├── pyproject.toml
+└── README.md</code></pre>
+      </div>
+
+      <h3>ExtensionInterface</h3>
+      <p>Every extension implements:</p>
+      <div class="code-block">
+        <div class="code-block__header"><span>python</span><button class="copy-btn" type="button">Copy</button></div>
+        <pre><code>def get_name(self) -&gt; str: ...
+def get_version(self) -&gt; str: ...
+def get_description(self) -&gt; str: ...
+def get_author(self) -&gt; str: ...
+def get_category(self) -&gt; str: ...
+def initialize(self, app_context) -&gt; bool: ...
+def cleanup(self) -&gt; None: ...
+def show_extension(self) -&gt; None: ...</code></pre>
+      </div>
+      <p>
+        <code>initialize(app_context)</code> receives the running <code>MedICSMain</code> instance, so the extension
+        can use the workspace, config, event bus, menus, and docks.
+      </p>
+
+      <h3><code>extension.json</code></h3>
+      <div class="code-block">
+        <div class="code-block__header"><span>json</span><button class="copy-btn" type="button">Copy</button></div>
+        <pre><code>{
+  "name": "My Tool",
+  "version": "1.0.0",
+  "description": "Does XYZ",
+  "author": "Your Name",
+  "category": "Image Analysis",
+  "enabled": true,
+  "windowed": true,
+  "icon": null
+}</code></pre>
+      </div>
+
+      <h3>Entry point (<code>pyproject.toml</code>)</h3>
+      <div class="code-block">
+        <div class="code-block__header"><span>toml</span><button class="copy-btn" type="button">Copy</button></div>
+        <pre><code>[project.entry-points."medics.extensions"]
+my_tool = "medics_ext_my_tool:MyToolExtension"</code></pre>
+      </div>
+      <p>Lifecycle in short: discover → <code>initialize(app_context)</code> → menu/toolbar action → <code>show_extension()</code> → <code>cleanup()</code> on unload.</p>
+    </div>
+  </section>
+
+  <section class="section section--alt" id="build">
+    <div class="container">
+      <h2>Build and publish</h2>
+      <p>Run from the extension project directory:</p>
+      <div class="code-block">
+        <div class="code-block__header"><span>bash</span><button class="copy-btn" type="button">Copy</button></div>
+        <pre><code>medics --build-ext                 # plain Python wheel (default)
+medics --build-ext --protect       # Cython-compiled, source-stripped
+medics --build-ext -p              # same as --protect
+medics --build-ext --upload        # build, then upload to PyPI
+medics --build-ext --upload --test-pypi</code></pre>
+      </div>
+      <p>
+        Full notes:
+        <a href="https://github.com/Yukun-Guo/MedICS/blob/main/docs/extension-system.md" target="_blank" rel="noopener">docs/extension-system.md</a>
+        and
+        <a href="https://github.com/Yukun-Guo/MedICS/blob/main/medics/extension_template/docs/DEVELOPER_GUIDE.md" target="_blank" rel="noopener">developer guide</a>.
+      </p>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <span>© 2024–2026 MedICS Team. All rights reserved.</span>
+      <a href="documents.html">See documents</a>
+    </div>
+  </footer>
+  <script src="js/site.js"></script>
+</body>
+</html>
