@@ -16,14 +16,14 @@
 <body>
   <nav class="nav" id="nav">
     <div class="container nav__inner">
-      <a class="nav__logo" href="index.html"><img src="icon/icon.png" alt="" width="32" height="32" />Med<em>ICS</em></a>
+      <a class="nav__logo" href="index.html"><img src="icon/icon.png" alt="" width="32" height="32" /><em>MedICS</em>Medical Image Computing Suite</a>
       <button class="nav__hamburger" id="hamburger" aria-label="Open menu"><span></span><span></span><span></span></button>
       <ul class="nav__links">
         <li><a class="is-active" href="index.html">Introduction</a></li>
         <li><a href="get-started.html">Get started</a></li>
         <li><a href="extensions.html">Extensions</a></li>
         <li><a href="license.html">License</a></li>
-        <li><a class="btn btn--ghost btn--sm" href="https://github.com/medical-image-computing-suite/MedICS" target="_blank" rel="noopener">GitHub</a></li>
+        <li><a class="btn btn--ghost btn--sm" href="https://github.com/medical-image-computing-suite" target="_blank" rel="noopener">GitHub</a></li>
       </ul>
     </div>
   </nav>
@@ -38,13 +38,12 @@
       </div>
       <h1>Medical Image<br /><span class="gradient">Computing Suite</span></h1>
       <p class="lead">
-        A cross-platform, modular platform for medical image visualization and analysis,
-        built on <strong>PySide6 (Qt 6)</strong>. MedICS combines a scientific Python workspace,
+        A free software platform for medical image analysis and visualization. MedICS combines a scientific Python workspace,
         built-in toolboxes, and a pip-installable extension system into one desktop application.
       </p>
       <div class="hero__cta">
         <a class="btn btn--primary" href="get-started.html#installer">Get started</a>
-        <a class="btn btn--ghost" href="https://github.com/medical-image-computing-suite/MedICS" target="_blank" rel="noopener">View on GitHub</a>
+        <a class="btn btn--ghost" href="https://github.com/medical-image-computing-suite" target="_blank" rel="noopener">View on GitHub</a>
       </div>
       <div class="hero__meta">
         <div><strong>Python 3.10+</strong>Required runtime</div>
@@ -55,28 +54,6 @@
       <img class="hero__logo" src="icon/logo.png" alt="MedICS — Medical Image Computing Suite" />
     </div>
   </header>
-
-  <section class="section" id="introduction">
-    <div class="container">
-      <h2>Introduction</h2>
-      <p>
-        MedICS (Medical Image Computing Suite) is a research-oriented desktop environment for loading,
-        inspecting, and analyzing medical images. Image I/O, interactive preview, Python scripting,
-        and third-party tools share one workspace instead of living in separate applications.
-      </p>
-      <p>Typical work happens in a single window:</p>
-      <ul class="plain">
-        <li><strong>File Explorer</strong> for the current folder</li>
-        <li><strong>Central tabs</strong> for toolboxes (editor, importer, preview, extensions)</li>
-        <li><strong>Variables</strong> dock for the in-memory workspace</li>
-        <li><strong>Bottom panel</strong> for Jupyter, terminal, and logs</li>
-      </ul>
-      <p>
-        Data lives in a <code>DataDict</code> workspace and can be saved as a <code>.med</code> file (HDF5).
-        Scripts in <strong>PyEditor</strong> and the embedded <strong>Jupyter</strong> console see the same variables.
-      </p>
-    </div>
-  </section>
 
   <section class="section section--alt" id="features">
     <div class="container">
@@ -89,7 +66,7 @@
           <tbody>
             <tr>
               <td>Image I/O</td>
-              <td>DICOM (including JPEG 2000 / OCT series), TIFF stacks, NIfTI, HDF5 / <code>.med</code>, MATLAB <code>.mat</code>, PNG/JPEG, and other scientific formats via <code>FileIO</code></td>
+              <td>DICOM, TIFF stacks, HDF5 / <code>.med</code>, MATLAB <code>.mat</code>, PNG/JPEG, and other scientific formats via <code>FileIO</code></td>
             </tr>
             <tr>
               <td>Preview</td>
@@ -105,11 +82,7 @@
             </tr>
             <tr>
               <td>Workspace</td>
-              <td>Named variables, inspector, auto-save, load/save <code>.med</code> workspaces</td>
-            </tr>
-            <tr>
-              <td>UI</td>
-              <td>Dark and light QSS themes, draggable toolbar, dock layout, central tab workspace</td>
+              <td>Named variables, inspector, load/save <code>.med</code> workspaces</td>
             </tr>
             <tr>
               <td>Extensions</td>
@@ -125,11 +98,7 @@
         </div>
         <div class="card">
           <h3>Extensions</h3>
-          <p>Add UI and tools with pip packages or local folders — no core patch required.</p>
-        </div>
-        <div class="card">
-          <h3>Event-driven core</h3>
-          <p>Managers start in a four-phase lifecycle and communicate through EventBus and Qt signals.</p>
+          <p>Add UI and tools with pip packages — no core patch required.</p>
         </div>
       </div>
     </div>
@@ -137,7 +106,7 @@
 
   <footer class="footer">
     <div class="container footer__inner">
-      <span class="footer__brand"><img src="icon/icon.png" alt="" width="22" height="22" />© 2024–2026 MedICS Team. All rights reserved.</span>
+      <span class="footer__brand"><img src="icon/icon.png" alt="" width="22" height="22" />© 2024–2026 MedICS. All rights reserved.</span>
       <span><a href="license.html">License</a></span>
     </div>
   </footer>

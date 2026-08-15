@@ -1,2 +1,0 @@
-[console_scripts]
-medics-installer = medics_installer.app:main

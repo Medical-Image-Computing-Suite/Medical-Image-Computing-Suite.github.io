@@ -16,7 +16,7 @@
 <body>
   <nav class="nav">
     <div class="container nav__inner">
-      <a class="nav__logo" href="index.html"><img src="icon/icon.png" alt="" width="32" height="32" />Med<em>ICS</em></a>
+      <a class="nav__logo" href="index.html"><img src="icon/icon.png" alt="" width="32" height="32" /><em>MedICS</em>Medical Image Computing Suite</a>
       <button class="nav__hamburger" id="hamburger" aria-label="Open menu"><span></span><span></span><span></span></button>
       <ul class="nav__links">
         <li><a href="index.html">Introduction</a></li>
@@ -32,7 +32,7 @@
     <div class="container">
       <div class="tag">Get started</div>
       <h1>Install and run <span class="gradient">in minutes</span></h1>
-      <p>Use the CLI installer (no Python required), or install from PyPI if you already have Python 3.10+.</p>
+      <p>Use the CLI installer (Python integrated), or install from PyPI if you already have Python 3.10+.</p>
     </div>
   </header>
 
@@ -53,7 +53,7 @@
       <h2>CLI installer</h2>
       <p>
         A single <code>install.bat</code> (Windows) or <code>install.sh</code> (macOS/Linux) script
-        downloads a portable Python 3.12 runtime with <code>uv</code>, lets you choose an install
+        downloads a portable Python runtime with <code>uv</code>, lets you choose an install
         folder and extensions in the terminal, then creates launchers and shortcuts.
         A network connection is required. No system Python is needed.
       </p>
@@ -70,13 +70,6 @@
         <pre><code>curl -fsSL https://medical-image-computing-suite.github.io/installer/install.sh | bash</code></pre>
       </div>
 
-      <p>
-        If you already have this repository locally, run
-        <code>installer\install.bat</code> (Windows) or
-        <code>installer/install.sh</code> (macOS/Linux).
-        Pass <code>--ext 1</code> or <code>--ext all</code> to select extensions,
-        or choose them from the prompt.
-      </p>
     </div>
   </section>
 
@@ -120,48 +113,9 @@ medics --help                       Show CLI help</code></pre>
     </div>
   </section>
 
-  <section class="section section--alt" id="workflow">
-    <div class="container">
-      <h2>Basic workflow</h2>
-      <div class="steps">
-        <div class="step">
-          <div>
-            <h4>Open a folder</h4>
-            <p><code>File → Open Folder</code>, or use the folder button in the Explorer dock.</p>
-          </div>
-        </div>
-        <div class="step">
-          <div>
-            <h4>Preview files</h4>
-            <p>Double-click a file in Explorer, or use <strong>FilePreview</strong>. Images, DICOM/NIfTI volumes, tables, markdown, and code open in tabs.</p>
-          </div>
-        </div>
-        <div class="step">
-          <div>
-            <h4>Import data</h4>
-            <p>Open the <strong>ImportData</strong> toolbox (<code>Toolboxes</code> menu). Drag files or folders, or browse a DICOM series. Imported arrays appear in the Variables dock and in Jupyter.</p>
-          </div>
-        </div>
-        <div class="step">
-          <div>
-            <h4>Analyze</h4>
-            <p>Write scripts in <strong>PyEditor</strong>, or run code in the <strong>Jupyter</strong> tab. Both share the workspace namespace.</p>
-          </div>
-        </div>
-        <div class="step">
-          <div>
-            <h4>Save</h4>
-            <p><code>File → Save Workspace</code> writes variables to a <code>.med</code> (HDF5) file. Auto-save can be enabled in settings.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <section class="section" id="toolboxes">
     <div class="container">
       <h2>Toolboxes</h2>
-      <p>Built-in toolboxes open as <strong>tabs in the central widget</strong>, not as dock panels. The Toolboxes menu controls which icons appear on the activity bar.</p>
       <div class="table-wrap">
         <table>
           <thead>
@@ -174,22 +128,21 @@ medics --help                       Show CLI help</code></pre>
             </tr>
             <tr>
               <td>ImportData</td>
-              <td>Unified importer for DICOM, NIfTI, TIFF/PNG/JPEG, HDF5, MAT, NumPy, CSV, and related formats; background workers with progress</td>
+              <td>Unified importer for DICOM, TIFF/PNG/JPEG, HDF5, MAT, NumPy, CSV, and related formats; background workers with progress</td>
             </tr>
             <tr>
               <td>FilePreview</td>
-              <td>Read-only preview of text, code, markdown, spreadsheets, 2-D images, and volumetric data (DICOM series, stacked TIFF, NIfTI)</td>
+              <td>Read-only preview of text, code, markdown, spreadsheets, 2-D images, and volumetric data (DICOM series, stacked TIFF)</td>
             </tr>
           </tbody>
         </table>
       </div>
-      <p>Custom tools should be packaged as <a href="extensions.html">extensions</a> rather than patched into <code>medics/toolboxes/</code>.</p>
     </div>
   </section>
 
   <footer class="footer">
     <div class="container footer__inner">
-      <span class="footer__brand"><img src="icon/icon.png" alt="" width="22" height="22" />© 2024–2026 MedICS Team. All rights reserved.</span>
+      <span class="footer__brand"><img src="icon/icon.png" alt="" width="22" height="22" />© 2024–2026 MedICS. All rights reserved.</span>
       <a href="index.html">Back to introduction</a>
     </div>
   </footer>
