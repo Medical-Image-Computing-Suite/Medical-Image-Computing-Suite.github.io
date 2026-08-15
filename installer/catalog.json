@@ -1,0 +1,16 @@
+{
+  "core": {
+    "name": "MedICS",
+    "package": "medics",
+    "description": "Medical Image Computing Suite core application (always installed).",
+    "required": true
+  },
+  "extensions": [
+    {
+      "name": "Retinal Layer Segmentation",
+      "package": "medics-ext-retinal-layer-segmentation",
+      "description": "AI-based retinal layer segmentation for OCT / OCTA volumes.",
+      "default": false
+    }
+  ]
+}

@@ -19,7 +19,7 @@
         <li><a class="is-active" href="get-started.html">Get started</a></li>
         <li><a href="extensions.html">Extensions</a></li>
         <li><a href="license.html">License</a></li>
-        <li><a class="btn btn--ghost btn--sm" href="https://github.com/Yukun-Guo/MedICS" target="_blank" rel="noopener">GitHub</a></li>
+        <li><a class="btn btn--ghost btn--sm" href="https://github.com/medical-image-computing-suite/MedICS" target="_blank" rel="noopener">GitHub</a></li>
       </ul>
     </div>
   </nav>
@@ -28,7 +28,7 @@
     <div class="container">
       <div class="tag">Get started</div>
       <h1>Install and run <span class="gradient">in minutes</span></h1>
-      <p>Requirements, PyPI install, CLI commands, and the basic folder → preview → import → analyze → save workflow.</p>
+      <p>Use the CLI installer (no Python required), or install from PyPI if you already have Python 3.10+.</p>
     </div>
   </header>
 
@@ -36,16 +36,50 @@
     <div class="container">
       <h2>Requirements</h2>
       <ul class="plain">
-        <li>Python <strong>3.10</strong> or later (3.11+ recommended)</li>
         <li>Windows, macOS, or Linux</li>
+        <li><strong>CLI installer:</strong> a network connection — Python is downloaded for you</li>
+        <li><strong>pip install:</strong> Python <strong>3.10</strong> or later (3.11+ recommended)</li>
         <li>Scientific stack (NumPy, SciPy, scikit-image, pydicom, h5py, PySide6, and others) — installed automatically with the package</li>
       </ul>
     </div>
   </section>
 
-  <section class="section section--alt" id="install">
+  <section class="section section--alt" id="installer">
     <div class="container">
-      <h2>Install</h2>
+      <h2>CLI installer</h2>
+      <p>
+        A single <code>install.bat</code> (Windows) or <code>install.sh</code> (macOS/Linux) script
+        downloads a portable Python 3.12 runtime with <code>uv</code>, lets you choose an install
+        folder and extensions in the terminal, then creates launchers and shortcuts.
+        A network connection is required. No system Python is needed.
+      </p>
+
+      <h3>Windows</h3>
+      <div class="code-block">
+        <div class="code-block__header"><span>cmd</span><button class="copy-btn" type="button">Copy</button></div>
+        <pre><code>curl -L -o "%TEMP%\medics-install.bat" https://medical-image-computing-suite.github.io/installer/install.bat &amp;&amp; "%TEMP%\medics-install.bat"</code></pre>
+      </div>
+
+      <h3>macOS and Linux</h3>
+      <div class="code-block">
+        <div class="code-block__header"><span>bash</span><button class="copy-btn" type="button">Copy</button></div>
+        <pre><code>curl -fsSL https://medical-image-computing-suite.github.io/installer/install.sh | bash</code></pre>
+      </div>
+
+      <p>
+        If you already have this repository locally, run
+        <code>installer\install.bat</code> (Windows) or
+        <code>installer/install.sh</code> (macOS/Linux).
+        Pass <code>--ext 1</code> or <code>--ext all</code> to select extensions,
+        or choose them from the prompt.
+      </p>
+    </div>
+  </section>
+
+  <section class="section" id="install">
+    <div class="container">
+      <h2>Install with pip</h2>
+      <p>If Python 3.10+ is already on your PATH, you can install MedICS without the CLI installer.</p>
       <h3>From PyPI</h3>
       <div class="code-block">
         <div class="code-block__header"><span>bash</span><button class="copy-btn" type="button">Copy</button></div>
