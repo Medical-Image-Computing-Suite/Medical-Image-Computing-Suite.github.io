@@ -6,8 +6,7 @@ set -euo pipefail
 PYTHON_VERSION="3.12"
 LICENSE_URL="https://medical-image-computing-suite.github.io/license.html"
 CATALOG_URL="https://medical-image-computing-suite.github.io/installer/catalog.json"
-ICON_URL="https://medical-image-computing-suite.github.io/icon/icon.png"
-LOGO_URL="https://medical-image-computing-suite.github.io/icon/logo.png"
+ICON_URL="https://medical-image-computing-suite.github.io/icon/icon.ico"
 
 prompt() {
   local msg="$1"
@@ -38,11 +37,20 @@ prompt_yes() {
   local hint value
   if [[ "$default" == "Y" ]]; then hint="Y/n"; else hint="y/N"; fi
   value="$(prompt "$msg [$hint]: ")"
+  value="${value#"${value%%[![:space:]]*}"}"
+  value="${value%"${value##*[![:space:]]}"}"
   if [[ -z "$value" ]]; then
     [[ "$default" == "Y" ]]
     return
   fi
-  [[ "$value" =~ ^[Yy]([Ee][Ss])?$ ]]
+  if [[ "$value" =~ ^[Yy]([Ee][Ss])?$ ]]; then
+    return 0
+  fi
+  if [[ "$value" =~ ^[Nn]([Oo])?$ ]]; then
+    return 1
+  fi
+  echo "Unrecognized answer '$value'; using default: $default." >&2
+  [[ "$default" == "Y" ]]
 }
 
 show_help() {
@@ -316,7 +324,7 @@ if [[ ! -x "$python" ]]; then
   exit 1
 fi
 
-echo "Installing icon and splash resources..."
+echo "Installing icon..."
 res_dir="$install_dir/resources"
 mkdir -p "$res_dir"
 
@@ -335,86 +343,18 @@ copy_or_fetch() {
   curl -fsSL "$url" -o "$dest"
 }
 
-copy_or_fetch "icon.png" "$ICON_URL"
-copy_or_fetch "logo.png" "$LOGO_URL"
+copy_or_fetch "icon.ico" "$ICON_URL"
 
-if [[ -n "$script_dir" && -f "$script_dir/resources/splash.py" ]]; then
-  cp "$script_dir/resources/splash.py" "$res_dir/splash.py"
-else
-  cat > "$res_dir/splash.py" <<'SPLASH'
-#!/usr/bin/env python3
-from __future__ import annotations
-import sys, tkinter as tk
-from pathlib import Path
-DURATION_MS = 4000
-MAX_WIDTH = 560
-def main() -> int:
-    resources = Path(__file__).resolve().parent
-    logo = resources / "logo.png"
-    if not logo.is_file():
-        return 0
-    try:
-        root = tk.Tk()
-    except tk.TclError:
-        return 0
-    root.overrideredirect(True)
-    try:
-        root.attributes("-topmost", True)
-    except tk.TclError:
-        pass
-    root.configure(bg="#000000")
-    img = tk.PhotoImage(file=str(logo))
-    width, height = img.width(), img.height()
-    if width > MAX_WIDTH:
-        factor = max(1, round(width / MAX_WIDTH))
-        img = img.subsample(factor, factor)
-        width, height = img.width(), img.height()
-    root.update_idletasks()
-    x = max(0, (root.winfo_screenwidth() - width) // 2)
-    y = max(0, (root.winfo_screenheight() - height) // 2)
-    root.geometry(f"{width}x{height}+{x}+{y}")
-    label = tk.Label(root, image=img, borderwidth=0, highlightthickness=0, bg="#000000")
-    label.image = img
-    label.pack()
-    root.after(DURATION_MS, root.destroy)
-    root.mainloop()
-    return 0
-if __name__ == "__main__":
-    raise SystemExit(main())
-SPLASH
+icon_ico="$res_dir/icon.ico"
+if [[ ! -f "$icon_ico" ]]; then
+  echo "icon.ico was not installed." >&2
+  exit 1
 fi
-
-icon_png="$res_dir/icon.png"
-logo_png="$res_dir/logo.png"
-splash_py="$res_dir/splash.py"
-
-make_icns() {
-  local png="$1"
-  local icns="$2"
-  command -v sips >/dev/null 2>&1 || return 1
-  command -v iconutil >/dev/null 2>&1 || return 1
-  local iconset="${icns%.icns}.iconset"
-  rm -rf "$iconset"
-  mkdir -p "$iconset"
-  sips -z 16 16 "$png" --out "$iconset/icon_16x16.png" >/dev/null
-  sips -z 32 32 "$png" --out "$iconset/icon_16x16@2x.png" >/dev/null
-  sips -z 32 32 "$png" --out "$iconset/icon_32x32.png" >/dev/null
-  sips -z 64 64 "$png" --out "$iconset/icon_32x32@2x.png" >/dev/null
-  sips -z 128 128 "$png" --out "$iconset/icon_128x128.png" >/dev/null
-  sips -z 256 256 "$png" --out "$iconset/icon_128x128@2x.png" >/dev/null
-  sips -z 256 256 "$png" --out "$iconset/icon_256x256.png" >/dev/null
-  sips -z 512 512 "$png" --out "$iconset/icon_256x256@2x.png" >/dev/null
-  sips -z 512 512 "$png" --out "$iconset/icon_512x512.png" >/dev/null
-  sips -z 1024 1024 "$png" --out "$iconset/icon_512x512@2x.png" >/dev/null
-  iconutil -c icns "$iconset" -o "$icns" >/dev/null
-  rm -rf "$iconset"
-}
 
 launcher="$install_dir/MedICS.sh"
 cat > "$launcher" <<EOF
 #!/usr/bin/env bash
 cd "$install_dir" || exit 1
-"$python" "$splash_py" >/dev/null 2>&1 &
 exec "$python" -m medics "\$@"
 EOF
 chmod +x "$launcher"
@@ -433,12 +373,10 @@ write_macos_app() {
   cat > "$app_path/Contents/MacOS/MedICS" <<EOF
 #!/bin/bash
 cd "$install_dir" || exit 1
-"$python" "$splash_py" >/dev/null 2>&1 &
 exec "$python" -m medics "\$@"
 EOF
   chmod +x "$app_path/Contents/MacOS/MedICS"
-  local icns="$app_path/Contents/Resources/icon.icns"
-  make_icns "$icon_png" "$icns" || cp "$icon_png" "$app_path/Contents/Resources/icon.png"
+  cp "$icon_ico" "$app_path/Contents/Resources/icon.ico"
   cat > "$app_path/Contents/Info.plist" <<PLIST
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -448,7 +386,7 @@ EOF
   <key>CFBundleDisplayName</key><string>MedICS</string>
   <key>CFBundleIdentifier</key><string>io.github.medical-image-computing-suite.medics</string>
   <key>CFBundleExecutable</key><string>MedICS</string>
-  <key>CFBundleIconFile</key><string>icon</string>
+  <key>CFBundleIconFile</key><string>icon.ico</string>
   <key>CFBundlePackageType</key><string>APPL</string>
   <key>LSMinimumSystemVersion</key><string>11.0</string>
   <key>NSHighResolutionCapable</key><true/>
@@ -470,7 +408,7 @@ Name=$name
 Comment=Medical Image Computing Suite
 Exec=$exec_cmd
 Path=$install_dir
-Icon=$icon_png
+Icon=$icon_ico
 Terminal=$terminal
 StartupNotify=true
 Categories=Science;Education;Graphics;
@@ -499,19 +437,13 @@ EOF
       cp -R "$app_in_install" "$dest"
       shortcuts+=("$dest")
     fi
-    cp "$console_cmd" "$HOME/Applications/MedICS_console.command"
-    chmod +x "$HOME/Applications/MedICS_console.command"
-    shortcuts+=("$HOME/Applications/MedICS_console.command")
   fi
   if [[ "$desktop" -eq 1 ]]; then
     mkdir -p "$HOME/Desktop"
     osascript -e "tell application \"Finder\" to make alias file to POSIX file \"$app_in_install\" at POSIX file \"$HOME/Desktop\"" >/dev/null 2>&1 || \
       echo "Could not create Desktop alias for MedICS."
     shortcuts+=("$HOME/Desktop/MedICS")
-    cp "$console_cmd" "$HOME/Desktop/MedICS_console.command"
-    chmod +x "$HOME/Desktop/MedICS_console.command"
-    shortcuts+=("$HOME/Desktop/MedICS_console.command")
-    echo "Created Desktop shortcuts: MedICS (default) and MedICS_console."
+    echo "Created Desktop shortcut: MedICS."
   fi
 else
   write_desktop "$install_dir/MedICS.desktop" "MedICS" "\"$launcher\"" "false"
@@ -521,27 +453,19 @@ else
     mkdir -p "$HOME/.local/bin"
     cat > "$HOME/.local/bin/medics" <<EOF
 #!/usr/bin/env bash
-"$python" "$splash_py" >/dev/null 2>&1 &
 exec "$python" -m medics "\$@"
 EOF
     chmod +x "$HOME/.local/bin/medics"
-    cat > "$HOME/.local/bin/medics-console" <<EOF
-#!/usr/bin/env bash
-exec "$python" -m medics "\$@"
-EOF
-    chmod +x "$HOME/.local/bin/medics-console"
-    shortcuts+=("$HOME/.local/bin/medics" "$HOME/.local/bin/medics-console")
+    shortcuts+=("$HOME/.local/bin/medics")
     mkdir -p "$HOME/.local/share/applications"
     write_desktop "$HOME/.local/share/applications/medics.desktop" "MedICS" "\"$launcher\"" "false"
-    write_desktop "$HOME/.local/share/applications/medics-console.desktop" "MedICS_console" "\"$python\" -m medics" "true"
-    shortcuts+=("$HOME/.local/share/applications/medics.desktop" "$HOME/.local/share/applications/medics-console.desktop")
+    shortcuts+=("$HOME/.local/share/applications/medics.desktop")
   fi
   if [[ "$desktop" -eq 1 ]]; then
     mkdir -p "$HOME/Desktop"
     write_desktop "$HOME/Desktop/MedICS.desktop" "MedICS" "\"$launcher\"" "false" || echo "Could not create MedICS Desktop shortcut."
-    write_desktop "$HOME/Desktop/MedICS_console.desktop" "MedICS_console" "\"$python\" -m medics" "true" || echo "Could not create MedICS_console Desktop shortcut."
-    shortcuts+=("$HOME/Desktop/MedICS.desktop" "$HOME/Desktop/MedICS_console.desktop")
-    echo "Created Desktop shortcuts: MedICS (default) and MedICS_console."
+    shortcuts+=("$HOME/Desktop/MedICS.desktop")
+    echo "Created Desktop shortcut: MedICS."
   fi
 fi
 
@@ -583,8 +507,8 @@ json_escape() {
 
 echo
 echo "Installation complete."
-echo "Default launcher: MedICS (splash, no terminal)"
-echo "Console launcher: MedICS_console (no splash, with terminal)"
+echo "Launcher: MedICS"
+echo "Console launcher (install folder): MedICS_console"
 echo "Uninstall: $uninstall"
 
 if [[ "$launch" -eq 1 ]]; then

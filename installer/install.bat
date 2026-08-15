@@ -13,8 +13,7 @@ $ErrorActionPreference = "Stop"
 $PythonVersion = "3.12"
 $LicenseUrl = "https://medical-image-computing-suite.github.io/license.html"
 $CatalogUrl = "https://medical-image-computing-suite.github.io/installer/catalog.json"
-$IconUrl = "https://medical-image-computing-suite.github.io/icon/icon.png"
-$LogoUrl = "https://medical-image-computing-suite.github.io/icon/logo.png"
+$IconUrl = "https://medical-image-computing-suite.github.io/icon/icon.ico"
 $DefaultExts = @(
     [pscustomobject]@{
         name        = "Retinal Layer Segmentation"
@@ -67,8 +66,14 @@ function Read-Input([string]$Prompt, [string]$Default = "") {
 function Read-YesNo([string]$Prompt, [bool]$Default = $true) {
     $hint = if ($Default) { "Y/n" } else { "y/N" }
     $value = Read-Host "$Prompt [$hint]"
-    if ([string]::IsNullOrWhiteSpace($value)) { return $Default }
-    return $value -match '^(y|yes)$'
+    if ([string]::IsNullOrWhiteSpace($value)) {
+        return [bool]$Default
+    }
+    $value = $value.Trim()
+    if ($value -match '^(?i)y(es)?$') { return $true }
+    if ($value -match '^(?i)n(o)?$') { return $false }
+    Write-Host "Unrecognized answer '$value'; using default: $(if ($Default) { 'Yes' } else { 'No' })."
+    return [bool]$Default
 }
 
 function Get-Extensions {
@@ -107,6 +112,56 @@ function Ensure-Uv([string]$InstallDir) {
     return $uv
 }
 
+function Repair-Pythonw([string]$Runtime) {
+    $cfg = Join-Path $Runtime "pyvenv.cfg"
+    $pyHome = $null
+    if (Test-Path $cfg) {
+        foreach ($line in Get-Content -LiteralPath $cfg) {
+            if ($line -match '^\s*home\s*=\s*(.+)$') {
+                $pyHome = $Matches[1].Trim()
+                break
+            }
+        }
+    }
+    $candidates = @()
+    if ($pyHome) {
+        $candidates += Join-Path $pyHome "Lib\venv\scripts\nt\pythonw.exe"
+        $candidates += Join-Path $pyHome "pythonw.exe"
+    }
+    $dest = Join-Path $Runtime "Scripts\pythonw.exe"
+    foreach ($src in $candidates) {
+        if (Test-Path $src) {
+            Copy-Item -Force $src $dest
+            Write-Host "Using windowed Python launcher: $src"
+            return
+        }
+    }
+    Write-Host "Warning: pythonw.exe is a console trampoline; the MedICS shortcut may show a terminal."
+}
+
+function Get-DesktopDir {
+    try {
+        $ws = New-Object -ComObject WScript.Shell
+        $path = [string]$ws.SpecialFolders.Item("Desktop")
+        if ($path -and (Test-Path -LiteralPath $path)) { return $path }
+    } catch {}
+    $path = [Environment]::GetFolderPath("Desktop")
+    if ($path -and (Test-Path -LiteralPath $path)) { return $path }
+    $fallback = Join-Path $env:USERPROFILE "Desktop"
+    New-Item -ItemType Directory -Force -Path $fallback | Out-Null
+    return $fallback
+}
+
+function Test-InstallFlag([string]$Name) {
+    $value = [Environment]::GetEnvironmentVariable($Name, "Process")
+    if ($null -eq $value) { return $true }
+    return $value -ne "0"
+}
+
+function Set-InstallFlag([string]$Name, [bool]$Enabled) {
+    [Environment]::SetEnvironmentVariable($Name, $(if ($Enabled) { "1" } else { "0" }), "Process")
+}
+
 function New-Shortcut([string]$LnkPath, [string]$Target, [string]$WorkDir, [string]$Arguments = "", [string]$IconPath = "") {
     $folder = Split-Path $LnkPath -Parent
     New-Item -ItemType Directory -Force -Path $folder | Out-Null
@@ -120,6 +175,10 @@ function New-Shortcut([string]$LnkPath, [string]$Target, [string]$WorkDir, [stri
         $s.IconLocation = "$IconPath,0"
     }
     $s.Save()
+    Start-Sleep -Milliseconds 100
+    if (-not (Test-Path -LiteralPath $LnkPath)) {
+        Write-Warning "Shortcut was not found after save: $LnkPath"
+    }
 }
 
 function Save-Url([string]$Url, [string]$Dest) {
@@ -135,98 +194,27 @@ function Save-Url([string]$Url, [string]$Dest) {
     $response.Close()
 }
 
-function ConvertTo-Ico([string]$PngPath, [string]$IcoPath) {
-    Add-Type -AssemblyName System.Drawing
-    $img = [System.Drawing.Image]::FromFile($PngPath)
-    $bmp = New-Object System.Drawing.Bitmap $img, 256, 256
-    $hicon = $bmp.GetHicon()
-    $icon = [System.Drawing.Icon]::FromHandle($hicon)
-    $fs = [IO.File]::Create($IcoPath)
-    $icon.Save($fs)
-    $fs.Close()
-    $icon.Dispose()
-    $bmp.Dispose()
-    $img.Dispose()
-}
-
 function Install-Branding([string]$InstallDir, [string]$SelfDir) {
     $res = Join-Path $InstallDir "resources"
     New-Item -ItemType Directory -Force -Path $res | Out-Null
-    $pairs = @(
-        @{ Name = "icon.png"; Url = $IconUrl },
-        @{ Name = "logo.png"; Url = $LogoUrl }
-    )
-    foreach ($item in $pairs) {
-        $dest = Join-Path $res $item.Name
-        $copied = $false
-        foreach ($candidate in @(
-            (Join-Path $SelfDir "resources\$($item.Name)"),
-            (Join-Path $SelfDir "..\icon\$($item.Name)")
-        )) {
-            if (Test-Path $candidate) {
-                Copy-Item -Force $candidate $dest
-                $copied = $true
-                break
-            }
-        }
-        if (-not $copied) {
-            Write-Host "Downloading $($item.Name)..."
-            Save-Url $item.Url $dest
+    $dest = Join-Path $res "icon.ico"
+    $copied = $false
+    foreach ($candidate in @(
+        (Join-Path $SelfDir "resources\icon.ico"),
+        (Join-Path $SelfDir "..\icon\icon.ico")
+    )) {
+        if (Test-Path $candidate) {
+            Copy-Item -Force $candidate $dest
+            $copied = $true
+            break
         }
     }
-    $ico = Join-Path $res "icon.ico"
-    try {
-        ConvertTo-Ico (Join-Path $res "icon.png") $ico
-    } catch {
-        Write-Host "Could not build icon.ico; shortcuts will use the default Python icon. $_"
-        $ico = Join-Path $res "icon.png"
+    if (-not $copied) {
+        Write-Host "Downloading icon.ico..."
+        Save-Url $IconUrl $dest
     }
-    $splashPy = Join-Path $res "splash.py"
-    $localSplash = Join-Path $SelfDir "resources\splash.py"
-    if (Test-Path $localSplash) {
-        Copy-Item -Force $localSplash $splashPy
-    } else {
-        Set-Content -LiteralPath $splashPy -Encoding ASCII -Value @'
-#!/usr/bin/env python3
-from __future__ import annotations
-import sys, tkinter as tk
-from pathlib import Path
-DURATION_MS = 4000
-MAX_WIDTH = 560
-def main() -> int:
-    resources = Path(__file__).resolve().parent
-    logo = resources / "logo.png"
-    if not logo.is_file():
-        return 0
-    try:
-        root = tk.Tk()
-    except tk.TclError:
-        return 0
-    root.overrideredirect(True)
-    try:
-        root.attributes("-topmost", True)
-    except tk.TclError:
-        pass
-    root.configure(bg="#000000")
-    img = tk.PhotoImage(file=str(logo))
-    width, height = img.width(), img.height()
-    if width > MAX_WIDTH:
-        factor = max(1, round(width / MAX_WIDTH))
-        img = img.subsample(factor, factor)
-        width, height = img.width(), img.height()
-    root.update_idletasks()
-    x = max(0, (root.winfo_screenwidth() - width) // 2)
-    y = max(0, (root.winfo_screenheight() - height) // 2)
-    root.geometry(f"{width}x{height}+{x}+{y}")
-    label = tk.Label(root, image=img, borderwidth=0, highlightthickness=0, bg="#000000")
-    label.image = img
-    label.pack()
-    root.after(DURATION_MS, root.destroy)
-    root.mainloop()
-    return 0
-if __name__ == "__main__":
-    raise SystemExit(main())
-'@
+    if (-not (Test-Path $dest)) {
+        throw "icon.ico was not installed."
     }
     return $res
 }
@@ -235,17 +223,17 @@ $tokens = @(Get-Tokens)
 $accept = $false
 $installDir = $null
 $extSpec = $null
-$desktop = $true
-$menu = $true
-$launch = $true
+Set-InstallFlag "MEDICS_INSTALL_DESKTOP" $true
+Set-InstallFlag "MEDICS_INSTALL_MENU" $true
+Set-InstallFlag "MEDICS_INSTALL_LAUNCH" $true
 
 for ($i = 0; $i -lt $tokens.Count; $i++) {
     switch -Regex ($tokens[$i]) {
         '^(--help|/\?|-h)$' { Show-Help; exit 0 }
         '^(--yes|/Y)$' { $accept = $true }
-        '^(--no-desktop)$' { $desktop = $false }
-        '^(--no-menu)$' { $menu = $false }
-        '^(--no-launch)$' { $launch = $false }
+        '^(--no-desktop)$' { Set-InstallFlag "MEDICS_INSTALL_DESKTOP" $false }
+        '^(--no-menu)$' { Set-InstallFlag "MEDICS_INSTALL_MENU" $false }
+        '^(--no-launch)$' { Set-InstallFlag "MEDICS_INSTALL_LAUNCH" $false }
         '^(--dir|/D)$' {
             $i++
             if ($i -ge $tokens.Count) { throw "--dir requires a path" }
@@ -342,9 +330,9 @@ if ($spec -and $spec -notmatch '^(none|no)$') {
 $unique = [string[]]($packages | Select-Object -Unique)
 
 if (-not $accept) {
-    $desktop = Read-YesNo "Create a Desktop shortcut?" $true
-    $menu = Read-YesNo "Create a Start Menu shortcut?" $true
-    $launch = Read-YesNo "Launch MedICS when installation finishes?" $true
+    Set-InstallFlag "MEDICS_INSTALL_DESKTOP" (Read-YesNo "Create a Desktop shortcut?" $true)
+    Set-InstallFlag "MEDICS_INSTALL_MENU" (Read-YesNo "Create a Start Menu shortcut?" $true)
+    Set-InstallFlag "MEDICS_INSTALL_LAUNCH" (Read-YesNo "Launch MedICS when installation finishes?" $true)
 }
 
 Write-Host ""
@@ -380,71 +368,45 @@ $exe = Join-Path $runtime "Scripts\medics.exe"
 $pythonw = Join-Path $runtime "Scripts\pythonw.exe"
 if (-not (Test-Path $exe)) { throw "MedICS executable was not created at $exe" }
 if (-not (Test-Path $pythonw)) { throw "pythonw.exe was not created at $pythonw" }
+Repair-Pythonw $runtime
+if (-not (Test-Path $pythonw)) { throw "pythonw.exe was not created at $pythonw" }
 
-Write-Host "Installing icon and splash resources..."
+Write-Host "Installing icon..."
 $resDir = Install-Branding $installDir $selfDir
 $iconIco = Join-Path $resDir "icon.ico"
-if (-not (Test-Path $iconIco)) { $iconIco = Join-Path $resDir "icon.png" }
-$splashPy = Join-Path $resDir "splash.py"
-$launchPy = Join-Path $installDir "launch.py"
-Set-Content -LiteralPath $launchPy -Encoding ASCII -Value @"
-import os
-import subprocess
-import sys
-from pathlib import Path
 
-root = Path(__file__).resolve().parent
-splash = root / "resources" / "splash.py"
-python = sys.executable
-kwargs = {"cwd": str(root), "close_fds": True}
-if os.name == "nt":
-    kwargs["creationflags"] = getattr(subprocess, "CREATE_NO_WINDOW", 0) | getattr(subprocess, "DETACHED_PROCESS", 0)
-else:
-    kwargs["start_new_session"] = True
-if splash.is_file():
-    subprocess.Popen([python, str(splash)], **kwargs)
-os.execv(python, [python, "-m", "medics", *sys.argv[1:]])
-"@
-
-$launcher = Join-Path $installDir "MedICS.vbs"
-Set-Content -LiteralPath $launcher -Encoding ASCII -Value @"
-Set sh = CreateObject("Wscript.Shell")
-sh.CurrentDirectory = "$installDir"
-sh.Run """$pythonw"" ""$launchPy""", 0, False
-"@
-
-$launchArgs = "`"$launchPy`""
-$consoleArgs = "-m medics"
+$medicsArgs = "-m medics"
 $pythonConsole = Join-Path $runtime "Scripts\python.exe"
+$launcher = $pythonw
 
 $folderLnk = Join-Path $installDir "MedICS.lnk"
 $folderConsoleLnk = Join-Path $installDir "MedICS_console.lnk"
-New-Shortcut $folderLnk $pythonw $installDir $launchArgs $iconIco
-New-Shortcut $folderConsoleLnk $pythonConsole $installDir $consoleArgs $iconIco
+New-Shortcut $folderLnk $pythonw $installDir $medicsArgs $iconIco
+New-Shortcut $folderConsoleLnk $pythonConsole $installDir $medicsArgs $iconIco
 
 $shortcuts = New-Object System.Collections.Generic.List[string]
 $shortcuts.Add($folderLnk) | Out-Null
 $shortcuts.Add($folderConsoleLnk) | Out-Null
-if ($desktop) {
-    $desktopDir = [Environment]::GetFolderPath("Desktop")
+$createDesktop = Test-InstallFlag "MEDICS_INSTALL_DESKTOP"
+$createMenu = Test-InstallFlag "MEDICS_INSTALL_MENU"
+if ($createDesktop) {
+    $desktopDir = Get-DesktopDir
     $desktopLnk = Join-Path $desktopDir "MedICS.lnk"
-    $desktopConsoleLnk = Join-Path $desktopDir "MedICS_console.lnk"
-    New-Shortcut $desktopLnk $pythonw $installDir $launchArgs $iconIco
-    New-Shortcut $desktopConsoleLnk $pythonConsole $installDir $consoleArgs $iconIco
-    $shortcuts.Add($desktopLnk) | Out-Null
-    $shortcuts.Add($desktopConsoleLnk) | Out-Null
-    Write-Host "Created Desktop shortcuts: MedICS (default) and MedICS_console."
+    New-Shortcut $desktopLnk $pythonw $installDir $medicsArgs $iconIco
+    if (Test-Path -LiteralPath $desktopLnk) {
+        $shortcuts.Add($desktopLnk) | Out-Null
+        Write-Host "Created Desktop shortcut: $desktopLnk"
+    } else {
+        throw "Failed to create Desktop shortcut: $desktopLnk"
+    }
 }
-if ($menu) {
+if ($createMenu) {
     $menuDir = Join-Path $env:APPDATA "Microsoft\Windows\Start Menu\Programs\MedICS"
     $menuLnk = Join-Path $menuDir "MedICS.lnk"
-    $menuConsoleLnk = Join-Path $menuDir "MedICS_console.lnk"
-    New-Shortcut $menuLnk $pythonw $installDir $launchArgs $iconIco
-    New-Shortcut $menuConsoleLnk $pythonConsole $installDir $consoleArgs $iconIco
+    New-Shortcut $menuLnk $pythonw $installDir $medicsArgs $iconIco
     $shortcuts.Add($menuLnk) | Out-Null
-    $shortcuts.Add($menuConsoleLnk) | Out-Null
     $shortcuts.Add($menuDir) | Out-Null
-    Write-Host "Created Start Menu shortcuts: MedICS (default) and MedICS_console."
+    Write-Host "Created Start Menu shortcut: MedICS."
 }
 
 $uninstall = Join-Path $installDir "Uninstall-MedICS.bat"
@@ -472,11 +434,11 @@ Set-Content -LiteralPath (Join-Path $installDir "install-manifest.json") -Value 
 
 Write-Host ""
 Write-Host "Installation complete."
-Write-Host "Default launcher: MedICS (splash, no console)"
-Write-Host "Console launcher: MedICS_console (no splash, with console)"
+Write-Host "Launcher: MedICS"
+Write-Host "Console launcher (install folder): MedICS_console"
 Write-Host "Uninstall: $uninstall"
 
-if ($launch) {
+if (Test-InstallFlag "MEDICS_INSTALL_LAUNCH") {
     Write-Host "Launching MedICS..."
-    Start-Process -FilePath $pythonw -ArgumentList @($launchPy) -WorkingDirectory $installDir
+    Start-Process -FilePath $pythonw -ArgumentList @("-m", "medics") -WorkingDirectory $installDir
 }
