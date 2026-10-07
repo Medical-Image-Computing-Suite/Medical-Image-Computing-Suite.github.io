@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Toolboxes — MedICS Documentation</title>
+  <meta name="description" content="The built-in tools — FilePreview, ImportData, PyEditor and JupyterLab — and how to use them." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/docs.css" />
+  <link rel="icon" href="../icon/icon.ico" sizes="any" />
+  <link rel="icon" type="image/png" href="../icon/icon.png" />
+  <link rel="apple-touch-icon" href="../icon/icon.png" />
+  <meta property="og:image" content="https://medical-image-computing-suite.github.io/icon/logo.png" />
+</head>
+<body class="docs-body">
+  <nav class="nav" id="nav">
+  <div class="container nav__inner">
+    <a class="nav__logo" href="../index.html"><img src="../icon/icon.png" alt="" width="32" height="32" /><em>MedICS</em>Medical Image Computing Suite</a>
+    <button class="nav__hamburger" id="hamburger" aria-label="Open menu"><span></span><span></span><span></span></button>
+    <ul class="nav__links">
+      <li><a href="../index.html">Introduction</a></li>
+      <li><a href="../get-started.html">Get started</a></li>
+      <li><a href="../extensions.html">Extensions</a></li>
+      <li><a class="is-active" href="../document.html">Documents</a></li>
+      <li><a href="https://github.com/Medical-Image-Computing-Suite/MedICS-Community/wiki" target="_blank" rel="noopener">MedICS Wiki</a></li>
+      <li><a class="btn btn--ghost btn--sm" href="https://github.com/medical-image-computing-suite" target="_blank" rel="noopener">GitHub</a></li>
+    </ul>
+  </div>
+</nav>
+  <div class="docs-shell container">
+    <aside class="docs-side">
+  <a class="docs-side__home" href="../document.html">&#8592; Documents home</a>
+  <div class="docs-side__title">On this page</div>
+  <nav><ul><li><a class="lvl-2" href="#toolboxes">Toolboxes</a></li><li><a class="lvl-3" href="#filepreview">FilePreview</a></li><li><a class="lvl-3" href="#importdata">ImportData</a></li><li><a class="lvl-3" href="#pyeditor">PyEditor</a></li><li><a class="lvl-3" href="#jupyterlab">JupyterLab</a></li></ul></nav>
+  <div class="docs-side__all">
+    <div class="docs-side__title">User guide</div>
+    <nav><div class="docs-side__title" style="margin-top:.85rem">Basics</div><ul><li><a href="interface.html">Interface &amp; components</a></li><li><a href="settings.html">Settings &amp; preferences</a></li></ul><div class="docs-side__title" style="margin-top:.85rem">Features</div><ul><li><a class="is-current" href="toolboxes.html">Toolboxes</a></li><li><a href="python-workspace.html">Python console &amp; workspace</a></li><li><a href="ai-assistant.html">AI assistant</a></li></ul></nav>
+  </div>
+</aside>
+    <main class="docs-main">
+      <header class="docs-hero">
+        <div class="tag">Documents · Features</div>
+        <h1>Toolboxes</h1>
+        <p>The built-in tools — FilePreview, ImportData, PyEditor and JupyterLab — and how to use them.</p>
+      </header>
+      <article class="docs-content">
+<h2 id="toolboxes">Toolboxes</h2>
+<p>Toolboxes are the built-in tools that ship with MedICS. Each opens as a <strong>tab</strong> in the central
+area — from the <strong>Toolboxes</strong> menu, from the activity bar, or by double-clicking a supported
+file in File Explorer.</p>
+<h3 id="filepreview">FilePreview</h3>
+<p>Preview any file without changing it: 2-D images, DICOM and NIfTI volumes, TIFF stacks, tables
+(CSV, TSV, Excel, Parquet), Markdown, and source code. For image and volume views you can move
+through slices, adjust <strong>window/level</strong>, zoom and pan, and apply flips, rotations and
+transposes.</p>
+<p><img alt="FilePreview — previewing an image" src="../assets/img/toolbox/filepreview.png" /></p>
+<h3 id="importdata">ImportData</h3>
+<p>Load images and volumes into the workspace. Choose <strong>Image Sequence</strong>, <strong>Single File</strong> or
+<strong>DICOM Folder</strong>, drag files or folders onto the window, and let the importer load them in the
+background with a progress bar. Video files load as frame stacks. Imported data appears in the
+<strong>Variables</strong> panel.</p>
+<p><img alt="ImportData — the data importer" src="../assets/img/toolbox/importdata.png" /></p>
+<h3 id="pyeditor">PyEditor</h3>
+<p>A Python editor in a tab, with syntax highlighting, code completion, an outline and an
+integrated terminal. <strong>Run (F5)</strong> executes your script against the live console, so it can use
+the variables already in your workspace.</p>
+<p><img alt="PyEditor — the Python editor" src="../assets/img/toolbox/pyeditor.png" /></p>
+<h3 id="jupyterlab">JupyterLab</h3>
+<p>The full <strong>JupyterLab</strong> interface, embedded in a tab. It runs on MedICS's own Python
+environment, and your workspace is available inside notebooks.</p>
+<p><img alt="JupyterLab — notebooks in a tab" src="../assets/img/toolbox/jupyterlab.png" /></p>
+      </article>
+      <nav class="docs-pager"><a class="prev" href="settings.html"><span>&#8592; Previous</span>Settings &amp; preferences</a><a class="next" href="python-workspace.html"><span>Next &#8594;</span>Python console &amp; workspace</a></nav>
+    </main>
+  </div>
+  <footer class="footer">
+    <div class="container footer__inner">
+      <span class="footer__brand"><img src="../icon/icon.png" alt="" width="22" height="22" />© 2024–2026 MedICS. All rights reserved.</span>
+      <a href="../document.html">Documentation</a>
+    </div>
+  </footer>
+  <script src="../js/site.js"></script>
+</body>
+</html>

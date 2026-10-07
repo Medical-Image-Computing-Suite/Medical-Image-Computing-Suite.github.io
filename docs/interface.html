@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Interface &amp; components — MedICS Documentation</title>
+  <meta name="description" content="The MedICS window and its panels: File Explorer, Variables, Logging, Terminal, Jupyter console and Agent chat." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/docs.css" />
+  <link rel="icon" href="../icon/icon.ico" sizes="any" />
+  <link rel="icon" type="image/png" href="../icon/icon.png" />
+  <link rel="apple-touch-icon" href="../icon/icon.png" />
+  <meta property="og:image" content="https://medical-image-computing-suite.github.io/icon/logo.png" />
+</head>
+<body class="docs-body">
+  <nav class="nav" id="nav">
+  <div class="container nav__inner">
+    <a class="nav__logo" href="../index.html"><img src="../icon/icon.png" alt="" width="32" height="32" /><em>MedICS</em>Medical Image Computing Suite</a>
+    <button class="nav__hamburger" id="hamburger" aria-label="Open menu"><span></span><span></span><span></span></button>
+    <ul class="nav__links">
+      <li><a href="../index.html">Introduction</a></li>
+      <li><a href="../get-started.html">Get started</a></li>
+      <li><a href="../extensions.html">Extensions</a></li>
+      <li><a class="is-active" href="../document.html">Documents</a></li>
+      <li><a href="https://github.com/Medical-Image-Computing-Suite/MedICS-Community/wiki" target="_blank" rel="noopener">MedICS Wiki</a></li>
+      <li><a class="btn btn--ghost btn--sm" href="https://github.com/medical-image-computing-suite" target="_blank" rel="noopener">GitHub</a></li>
+    </ul>
+  </div>
+</nav>
+  <div class="docs-shell container">
+    <aside class="docs-side">
+  <a class="docs-side__home" href="../document.html">&#8592; Documents home</a>
+  <div class="docs-side__title">On this page</div>
+  <nav><ul><li><a class="lvl-2" href="#the-medics-window">The MedICS window</a></li><li><a class="lvl-3" href="#file-explorer">File Explorer</a></li><li><a class="lvl-3" href="#variables">Variables</a></li><li><a class="lvl-3" href="#logging">Logging</a></li><li><a class="lvl-3" href="#terminal">Terminal</a></li><li><a class="lvl-3" href="#jupyter-console">Jupyter console</a></li><li><a class="lvl-3" href="#agent-chat">Agent chat</a></li></ul></nav>
+  <div class="docs-side__all">
+    <div class="docs-side__title">User guide</div>
+    <nav><div class="docs-side__title" style="margin-top:.85rem">Basics</div><ul><li><a class="is-current" href="interface.html">Interface &amp; components</a></li><li><a href="settings.html">Settings &amp; preferences</a></li></ul><div class="docs-side__title" style="margin-top:.85rem">Features</div><ul><li><a href="toolboxes.html">Toolboxes</a></li><li><a href="python-workspace.html">Python console &amp; workspace</a></li><li><a href="ai-assistant.html">AI assistant</a></li></ul></nav>
+  </div>
+</aside>
+    <main class="docs-main">
+      <header class="docs-hero">
+        <div class="tag">Documents · Basics</div>
+        <h1>Interface &amp; components</h1>
+        <p>The MedICS window and its panels: File Explorer, Variables, Logging, Terminal, Jupyter console and Agent chat.</p>
+      </header>
+      <article class="docs-content">
+<h2 id="the-medics-window">The MedICS window</h2>
+<p>MedICS opens as a single window. Your tools open as <strong>tabs</strong> in the middle, and the panels
+around them give you the file tree, your variables, the log, a terminal and the Python
+console. Panels can be shown or hidden, resized and re-arranged.</p>
+<p>Show or hide panels from the <strong>View</strong> menu, or <strong>double-click a tab title</strong> to collapse the
+surrounding panels and focus on your work.</p>
+<h3 id="file-explorer">File Explorer</h3>
+<p>Browse the folder you are working in. Double-click a file to preview it in a tab, drag files
+or folders into the window to import them, and right-click for <strong>Open</strong>, <strong>Preview</strong>,
+<strong>Copy path</strong> and <strong>Reveal in Explorer</strong>. Use the folder button to switch folders.</p>
+<p><img alt="File Explorer — the current folder" src="../assets/img/components/file_explorer.png" /></p>
+<h3 id="variables">Variables</h3>
+<p>Every value you create in Python — arrays, images, tables and other objects — is kept in the
+<strong>workspace</strong> and listed here with its name, type and size. Double-click a variable to
+inspect or preview it.</p>
+<h3 id="logging">Logging</h3>
+<p>The in-app <strong>output</strong> panel shows messages from every part of MedICS. Filter by level
+(ALL / DEBUG / INFO / WARNING / ERROR / CRITICAL), clear the view, or export the entries to a
+text file.</p>
+<p><img alt="Logging — the in-app log" src="../assets/img/components/logging.png" /></p>
+<h3 id="terminal">Terminal</h3>
+<p>A real shell embedded in the window. It runs in its own process, separate from the
+application, so it is the place for command-line tools and scripts. <strong>+ New Terminal</strong> lets
+you open additional shells (PowerShell, Command Prompt, Git Bash, …); the list on the right
+switches, renames, clears or closes them.</p>
+<p><img alt="Terminal — the embedded shell" src="../assets/img/components/terminal.png" /></p>
+<h3 id="jupyter-console">Jupyter console</h3>
+<p>An interactive Python console that runs <strong>inside</strong> MedICS, so it shares your workspace. Use
+it for quick calculations, to inspect data, and to script an analysis without leaving the
+application. See <a href="python-workspace.html">Python console &amp; workspace</a>.</p>
+<p><img alt="Jupyter console — the shared Python console" src="../assets/img/components/jupyter_console.png" /></p>
+<h3 id="agent-chat">Agent chat</h3>
+<p>The AI assistant. Ask questions about your data, or ask it to carry out a task and it will
+use the tools it needs. Actions that create or change data ask for your <strong>approval</strong> first.
+See <a href="ai-assistant.html">AI assistant</a>.</p>
+<p><img alt="Agent chat — the AI assistant" src="../assets/img/components/agent_chat.png" /></p>
+      </article>
+      <nav class="docs-pager"><a class="next" href="settings.html"><span>Next &#8594;</span>Settings &amp; preferences</a></nav>
+    </main>
+  </div>
+  <footer class="footer">
+    <div class="container footer__inner">
+      <span class="footer__brand"><img src="../icon/icon.png" alt="" width="22" height="22" />© 2024–2026 MedICS. All rights reserved.</span>
+      <a href="../document.html">Documentation</a>
+    </div>
+  </footer>
+  <script src="../js/site.js"></script>
+</body>
+</html>
