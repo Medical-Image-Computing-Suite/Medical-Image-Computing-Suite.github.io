@@ -33,7 +33,7 @@
     <div class="container">
       <div class="tag">Get started</div>
       <h1>Install and run <span class="gradient">in minutes</span></h1>
-      <p>Build your install command below — pick your OS, Python version, shortcuts, and extensions.</p>
+      <p>Build your install command below — pick your OS, Python version, and shortcuts.</p>
     </div>
   </header>
 
@@ -56,7 +56,9 @@
       <p>
         Pick your options below and the command updates to match. The <strong>CLI installer</strong>
         downloads a portable Python runtime with <code>uv</code> (no system Python needed) and creates
-        launchers and shortcuts; <strong>pip</strong> installs into a Python 3.11+ you already have.
+        launchers and shortcuts; <strong>pip</strong> and <strong>uv</strong> install with a
+        package manager you already have. Only the core <code>medics</code> package is installed — add
+        <a href="extensions.html">extensions</a> separately afterwards.
       </p>
 
       <div class="selector" id="install-selector">
@@ -65,6 +67,7 @@
           <div class="seg" role="group" aria-label="Install method">
             <button type="button" class="seg__btn is-active" data-opt="method" data-value="cli">CLI installer</button>
             <button type="button" class="seg__btn" data-opt="method" data-value="pip">pip</button>
+            <button type="button" class="seg__btn" data-opt="method" data-value="uv">uv</button>
           </div>
         </div>
 
@@ -77,7 +80,7 @@
           </div>
         </div>
 
-        <div class="selector__row" data-row="shell" data-when="cli">
+        <div class="selector__row" data-row="shell">
           <div class="selector__label">Terminal</div>
           <div class="seg" role="group" aria-label="Terminal">
             <button type="button" class="seg__btn is-active" data-opt="shell" data-value="cmd">Command Prompt</button>
@@ -85,15 +88,16 @@
           </div>
         </div>
 
-        <div class="selector__row" data-row="python" data-when="cli">
+        <div class="selector__row" data-row="python">
           <div class="selector__label">Python version</div>
           <div class="seg" role="group" aria-label="Python version">
-            <button type="button" class="seg__btn is-active" data-opt="python" data-value="3.11">3.11 <span class="seg__tag">recommended</span></button>
+            <button type="button" class="seg__btn is-active" data-opt="python" data-value="3.11">3.11</button>
             <button type="button" class="seg__btn" data-opt="python" data-value="3.12">3.12</button>
+            <button type="button" class="seg__btn" data-opt="python" data-value="3.13">3.13</button>
           </div>
         </div>
 
-        <div class="selector__row" data-row="desktop" data-when="cli">
+        <div class="selector__row" data-row="desktop">
           <div class="selector__label">Desktop icon</div>
           <div class="seg" role="group" aria-label="Desktop icon">
             <button type="button" class="seg__btn is-active" data-opt="desktop" data-value="yes">Create</button>
@@ -101,7 +105,7 @@
           </div>
         </div>
 
-        <div class="selector__row" data-row="launch" data-when="cli">
+        <div class="selector__row" data-row="launch">
           <div class="selector__label">Launch after install</div>
           <div class="seg" role="group" aria-label="Launch after install">
             <button type="button" class="seg__btn is-active" data-opt="launch" data-value="yes">Yes</button>
@@ -109,12 +113,6 @@
           </div>
         </div>
 
-        <div class="selector__row selector__row--stack" data-row="ext">
-          <div class="selector__label">Extensions</div>
-          <div class="check-list" id="ext-list">
-            <p class="selector__empty">Loading available extensions…</p>
-          </div>
-        </div>
       </div>
 
       <div class="code-block code-block--run">
@@ -182,9 +180,22 @@ medics --help                       Show CLI help</code></pre>
               <td>FilePreview</td>
               <td>Read-only preview of text, code, markdown, spreadsheets, 2-D images, and volumetric data (DICOM series, stacked TIFF)</td>
             </tr>
+            <tr>
+              <td>JupyterLab</td>
+              <td>
+                Full JupyterLab web UI in a central tab. Its kernel runs MedICS's own Python
+                environment, exposes the live workspace as <code>ws</code>, and needs no setup —
+                notebooks, completions, and the debugger work out of the box.
+                Requires the extra: <code>pip install "medics[jupyterlab]"</code>
+              </td>
+            </tr>
           </tbody>
         </table>
       </div>
+      <p class="toolbox-note">
+        JupyterLab is an optional extra. Install it into MedICS's environment to enable the tab;
+        without it the tab opens and prints the install command instead of failing.
+      </p>
     </div>
   </section>
 

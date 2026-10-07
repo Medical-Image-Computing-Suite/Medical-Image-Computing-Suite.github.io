@@ -1,6 +1,6 @@
 # MedICS installer
 
-A single CLI script per platform. It downloads a portable Python 3.11 via [uv](https://docs.astral.sh/uv/), installs `medics` plus optional extensions, and creates launchers/shortcuts.
+A single CLI script per platform. It downloads a portable Python 3.11 via [uv](https://docs.astral.sh/uv/), installs `medics`, and creates launchers/shortcuts. Extensions are not installed by default.
 
 The published MedICS wheels target CPython 3.11, and the installer pins `medics` to the first token-free (Free mode) release so it never installs an older build that forces the startup token dialog.
 
@@ -8,18 +8,21 @@ Python does not need to be installed first. A network connection is required.
 
 ## Prompts
 
-The installer stays out of the way — it asks for only three things and each
+The installer stays out of the way — it asks for only two things and each
 accepts **Enter** as the default:
 
 1. **Accept the license?** — Enter accepts.
 2. **Install directory** — Enter keeps the default. Type a path, or type `b`
    to pick the folder in a native dialog (File Explorer on Windows, the
    Finder folder chooser on macOS, Zenity/KDialog on Linux).
-3. **Select extensions** (only when some are listed) — Enter installs none.
 
 Everything else uses sensible defaults: desktop/Start Menu shortcuts and a
 launch when it finishes. Pass the flags below to change any of that up front
 (for example `--dir` skips the folder prompt entirely).
+
+No extensions are installed. Add them afterwards with
+`pip install medics-ext-…` (see the [Extensions](https://medical-image-computing-suite.github.io/extensions.html)
+page), or opt in during install with `--ext`.
 
 ## Run
 
@@ -59,7 +62,7 @@ curl -fsSL https://medical-image-computing-suite.github.io/installer/install.sh 
 ```text
 --yes              Accept the license without prompting
 --dir PATH         Install directory
---ext SPEC         all, none, numbers (1,2), or pip package names
+--ext SPEC         optional extensions to add: all, or pip package names
 --python VERSION   Python version for the runtime (default: 3.11)
 --no-desktop       Skip Desktop shortcut
 --no-menu          Skip Start Menu / Applications / ~/.local/bin

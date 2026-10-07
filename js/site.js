@@ -37,30 +37,19 @@
     var cmdEl = document.getElementById("install-cmd");
     var capEl = document.getElementById("run-caption");
     var noteEl = document.getElementById("install-note");
-    var extHost = document.getElementById("ext-list");
     var state = {
       method: "cli",
       os: "windows",
       shell: "cmd",
       python: "3.11",
       desktop: "yes",
-      launch: "yes",
-      ext: []
+      launch: "yes"
     };
-
-    var FALLBACK_EXTS = [
-      {
-        name: "Retinal Layer Segmentation",
-        package: "medics-ext-retinal-layer-segmentation",
-        description: "AI-based retinal layer segmentation for OCT / OCTA volumes."
-      }
-    ];
 
     function cliArgs() {
       var a = ["--python " + state.python];
       if (state.desktop === "no") a.push("--no-desktop");
       if (state.launch === "no") a.push("--no-launch");
-      if (state.ext.length) a.push("--ext " + state.ext.join(","));
       return a;
     }
 
@@ -79,49 +68,54 @@
     }
 
     function pipCommand() {
-      return "pip install " + ["medics"].concat(state.ext).join(" ");
+      return "pip install medics";
+    }
+
+    function uvCommand() {
+      return "uv tool install medics --python " + state.python;
     }
 
     function caption() {
-      if (state.method === "pip") return "Run this command";
+      if (state.method !== "cli") return "Run this command in your terminal";
       if (state.os !== "windows") return "Run this command in your terminal";
       return state.shell === "powershell"
         ? "Run this command in PowerShell"
         : "Run this command in Command Prompt";
     }
 
+    // Which option rows apply to each method (the shell row is refined below).
+    var METHOD_ROWS = {
+      cli: ["os", "python", "desktop", "launch"],
+      uv: ["python"],
+      pip: []
+    };
+
     function render() {
-      var isCli = state.method === "cli";
-
-      selector.querySelectorAll("[data-when]").forEach(function (row) {
-        var rowName = row.getAttribute("data-row");
-        var show = isCli;
-        if (rowName === "shell") show = show && state.os === "windows";
-        row.hidden = !show;
-      });
-
       selector.querySelectorAll("[data-row]").forEach(function (row) {
         var rowName = row.getAttribute("data-row");
-        var irrelevant = !isCli && ["os", "shell", "python", "desktop", "launch"].indexOf(rowName) !== -1;
-        row.classList.toggle("is-disabled", irrelevant);
+        if (rowName === "method") return;
+        var visible;
+        if (rowName === "shell") {
+          visible = state.method === "cli" && state.os === "windows";
+        } else {
+          visible = METHOD_ROWS[state.method].indexOf(rowName) !== -1;
+        }
+        row.hidden = !visible;
       });
 
-      if (cmdEl) cmdEl.textContent = isCli ? cliCommand() : pipCommand();
+      var command = state.method === "cli" ? cliCommand()
+        : state.method === "uv" ? uvCommand()
+        : pipCommand();
+      if (cmdEl) cmdEl.textContent = command;
       if (capEl) capEl.textContent = caption();
 
       var note = "";
-      var warn = false;
-      if (!isCli) {
+      if (state.method === "pip") {
         note = "Requires Python 3.11+ already on your PATH. The CLI installer downloads a portable Python for you instead.";
-      } else if (state.python !== "3.11") {
-        note = "Published MedICS wheels target Python 3.11 — " + state.python +
-          " may resolve to an older build that asks for a token at startup.";
-        warn = true;
+      } else if (state.method === "uv") {
+        note = "Installs medics as an isolated tool with uv and puts it on your PATH. Requires the uv package manager.";
       }
-      if (noteEl) {
-        noteEl.textContent = note;
-        noteEl.classList.toggle("is-warn", warn);
-      }
+      if (noteEl) noteEl.textContent = note;
     }
 
     selector.querySelectorAll(".seg").forEach(function (group) {
@@ -137,71 +131,7 @@
       });
     });
 
-    function renderExtensions(list) {
-      if (!extHost) return;
-      extHost.textContent = "";
-      if (!list.length) {
-        var empty = document.createElement("p");
-        empty.className = "selector__empty";
-        empty.textContent = "No optional extensions are published yet.";
-        extHost.appendChild(empty);
-        return;
-      }
-      list.forEach(function (ext) {
-        var pkg = ext.package;
-        var label = document.createElement("label");
-        label.className = "check";
-
-        var input = document.createElement("input");
-        input.type = "checkbox";
-        input.value = pkg;
-        input.addEventListener("change", function () {
-          if (input.checked) {
-            if (state.ext.indexOf(pkg) === -1) state.ext.push(pkg);
-          } else {
-            state.ext = state.ext.filter(function (p) { return p !== pkg; });
-          }
-          render();
-        });
-
-        var text = document.createElement("span");
-        var name = document.createElement("span");
-        name.className = "check__name";
-        name.textContent = ext.name || pkg;
-        text.appendChild(name);
-        var desc = ext.description;
-        if (desc) {
-          var d = document.createElement("span");
-          d.className = "check__desc";
-          d.textContent = desc;
-          text.appendChild(d);
-        }
-
-        label.appendChild(input);
-        label.appendChild(text);
-        extHost.appendChild(label);
-      });
-    }
-
-    function loadExtensions() {
-      if (typeof fetch !== "function") {
-        renderExtensions(FALLBACK_EXTS);
-        return;
-      }
-      fetch("installer/catalog.json", { cache: "no-cache" })
-        .then(function (res) {
-          if (!res.ok) throw new Error("catalog unavailable");
-          return res.json();
-        })
-        .then(function (data) {
-          var list = (data && data.extensions) || [];
-          renderExtensions(list.length ? list : FALLBACK_EXTS);
-        })
-        .catch(function () { renderExtensions(FALLBACK_EXTS); });
-    }
-
     render();
-    loadExtensions();
   }
 
   var tabBtns = document.querySelectorAll("[data-tab]");

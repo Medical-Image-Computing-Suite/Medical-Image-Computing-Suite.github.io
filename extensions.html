@@ -42,12 +42,106 @@
       <h2>Install an extension</h2>
       <div class="code-block">
         <div class="code-block__header"><span>bash</span><button class="copy-btn" type="button">Copy</button></div>
-        <pre><code>pip install medics-ext-example
+        <pre><code>pip install medics-ext-volume-viewer
 medics</code></pre>
       </div>
       <p>
         Loaded extensions appear under the <strong>Extensions</strong> menu and, if they provide a UI,
         can open a tab or window. Enable, disable, and inspect them from the extension manager dialog.
+        Installed with <code>uv</code> instead? Use <code>uv pip install …</code>.
+      </p>
+    </div>
+  </section>
+
+  <section class="section" id="official">
+    <div class="container">
+      <h2>Official extensions</h2>
+      <p>
+        Maintained by the MedICS Team and published on
+        <a href="https://pypi.org/user/medics-team/" target="_blank" rel="noopener">PyPI</a>.
+        Install one with <code>pip</code>, then open it from the <strong>Extensions</strong> menu
+        (windowed extensions open as a central tab).
+      </p>
+
+      <div class="ext-grid">
+        <article class="ext-card">
+          <div class="ext-card__head">
+            <h3>Volume Labeler</h3>
+            <span class="ext-card__cat">Medical Imaging</span>
+          </div>
+          <p>Annotate 3D volumes: paint labels on B-frames / enface, constrain work to a slab with boundary curves, inspect in 3D, and export label maps.</p>
+          <div class="code-block code-block--compact">
+            <div class="code-block__header"><span>pip</span><button class="copy-btn" type="button">Copy</button></div>
+            <pre><code>pip install medics-ext-volume-labeler</code></pre>
+          </div>
+        </article>
+
+        <article class="ext-card">
+          <div class="ext-card__head">
+            <h3>Volume Viewer</h3>
+            <span class="ext-card__cat">Visualization</span>
+          </div>
+          <p>3-D and 2-D volume visualization with GPU-accelerated rendering and multi-planar reconstruction (MPR).</p>
+          <div class="code-block code-block--compact">
+            <div class="code-block__header"><span>pip</span><button class="copy-btn" type="button">Copy</button></div>
+            <pre><code>pip install medics-ext-volume-viewer</code></pre>
+          </div>
+        </article>
+
+        <article class="ext-card">
+          <div class="ext-card__head">
+            <h3>Image Labeler</h3>
+            <span class="ext-card__cat">Medical Imaging</span>
+          </div>
+          <p>Annotate 2-D images with multiple label types and annotation workflows.</p>
+          <div class="code-block code-block--compact">
+            <div class="code-block__header"><span>pip</span><button class="copy-btn" type="button">Copy</button></div>
+            <pre><code>pip install medics-ext-image-labeler</code></pre>
+          </div>
+        </article>
+
+        <article class="ext-card">
+          <div class="ext-card__head">
+            <h3>OCT Viewer</h3>
+            <span class="ext-card__cat">Medical Imaging</span>
+          </div>
+          <p>OCT / OCTA visualization and analysis.</p>
+          <div class="code-block code-block--compact">
+            <div class="code-block__header"><span>pip</span><button class="copy-btn" type="button">Copy</button></div>
+            <pre><code>pip install medics-ext-oct-viewer</code></pre>
+          </div>
+        </article>
+
+        <article class="ext-card">
+          <div class="ext-card__head">
+            <h3>Retinal Layer Segmentation</h3>
+            <span class="ext-card__cat">Medical Imaging</span>
+          </div>
+          <p>Automated retinal layer segmentation with quantitative features.</p>
+          <div class="code-block code-block--compact">
+            <div class="code-block__header"><span>pip</span><button class="copy-btn" type="button">Copy</button></div>
+            <pre><code>pip install medics-ext-retinal-layer-segmentation</code></pre>
+          </div>
+        </article>
+
+        <article class="ext-card">
+          <div class="ext-card__head">
+            <h3>GraphicPy</h3>
+            <span class="ext-card__cat">Visual Programming</span>
+          </div>
+          <p>Node-based visual programming for building and running computational graphs.</p>
+          <div class="code-block code-block--compact">
+            <div class="code-block__header"><span>pip</span><button class="copy-btn" type="button">Copy</button></div>
+            <pre><code>pip install medics-ext-graphicpy</code></pre>
+          </div>
+        </article>
+      </div>
+
+      <p class="ext-foot">
+        More official extensions are in development. Browse all published packages on
+        <a href="https://pypi.org/user/medics-team/" target="_blank" rel="noopener">PyPI</a>, or see the
+        <a href="https://github.com/Medical-Image-Computing-Suite/MedICS-Community/wiki/Official-Extensions" target="_blank" rel="noopener">wiki</a>
+        for the full catalogue. Update one later with <code>pip install --upgrade medics-ext-volume-viewer</code>.
       </p>
     </div>
   </section>

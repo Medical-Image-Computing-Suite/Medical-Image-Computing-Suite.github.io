@@ -101,17 +101,19 @@ Usage:
 Options:
   --yes              Accept the license without prompting
   --dir PATH         Install directory (skip the prompt)
-  --ext SPEC         Extensions: all, none, numbers (1,2), or pip package names
+  --ext SPEC         Optional extensions to add: all, or pip package names
   --python VERSION   Python version for the runtime (default: 3.11)
   --no-desktop       Skip Desktop shortcut / alias
   --no-menu          Skip Applications menu / ~/.local/bin
   --no-launch        Do not launch MedICS when finished
   --help             Show this help
 
-Only three things are ever asked: the license, the install folder, and optional
-extensions. Press Enter at any prompt to take the default (accept license,
-default folder, no extensions, create shortcuts, launch MedICS). At the install
-folder prompt, type B to choose the folder in your file manager.
+Only two things are ever asked: the license and the install folder. Press Enter
+at either prompt to take the default (accept license, default folder). At the
+folder prompt, type B to choose the folder in your file manager. Shortcuts and
+launching are on by default; pass the flags above to change them.
+
+No extensions are installed; add them later or pass --ext explicitly.
 EOF
 }
 
@@ -125,7 +127,6 @@ esac
 accept=0
 install_dir=""
 ext_spec=""
-ext_spec_set=0
 desktop=1
 menu=1
 launch=1
@@ -142,7 +143,6 @@ while [[ $# -gt 0 ]]; do
     --ext)
       [[ $# -ge 2 ]] || { echo "--ext requires a value" >&2; exit 1; }
       ext_spec="$2"
-      ext_spec_set=1
       shift
       ;;
     --python)
@@ -177,7 +177,7 @@ fi
 echo
 echo "MedICS installer"
 echo "================"
-echo "Installs a portable Python ${PYTHON_VERSION} runtime, MedICS, and optional extensions."
+echo "Installs a portable Python ${PYTHON_VERSION} runtime and MedICS."
 echo "A network connection is required. No system Python is needed."
 echo
 
@@ -221,17 +221,14 @@ install_dir="${install_dir/#\~/$HOME}"
 mkdir -p "$install_dir"
 install_dir="$(cd "$install_dir" && pwd)"
 
-ext_names=()
-ext_packages=()
-ext_descriptions=()
-load_builtin_exts() {
-  ext_names=("Retinal Layer Segmentation")
-  ext_packages=("medics-ext-retinal-layer-segmentation")
-  ext_descriptions=("AI-based retinal layer segmentation for OCT / OCTA volumes.")
-}
-
-if command -v python3 >/dev/null 2>&1; then
-  if catalog_json="$(python3 - "$CATALOG_URL" <<'PY' 2>/dev/null
+# Extensions are opt-in only (--ext); the default install is core-only.
+# The catalog is fetched lazily, only when --ext is actually used.
+load_extensions() {
+  ext_names=()
+  ext_packages=()
+  ext_descriptions=()
+  if command -v python3 >/dev/null 2>&1; then
+    if catalog_json="$(python3 - "$CATALOG_URL" <<'PY' 2>/dev/null
 import json, sys, urllib.request
 url = sys.argv[1]
 req = urllib.request.Request(url, headers={"User-Agent": "MedICS-Installer"})
@@ -245,20 +242,22 @@ for ext in data.get("extensions") or []:
     ]))
 PY
 )"; then
-    if [[ -n "$catalog_json" ]]; then
-      while IFS=$'\t' read -r name pkg desc; do
-        [[ -n "$pkg" ]] || continue
-        ext_names+=("$name")
-        ext_packages+=("$pkg")
-        ext_descriptions+=("$desc")
-      done <<< "$catalog_json"
+      if [[ -n "$catalog_json" ]]; then
+        while IFS=$'\t' read -r name pkg desc; do
+          [[ -n "$pkg" ]] || continue
+          ext_names+=("$name")
+          ext_packages+=("$pkg")
+          ext_descriptions+=("$desc")
+        done <<< "$catalog_json"
+      fi
     fi
   fi
-fi
-if [[ ${#ext_packages[@]} -eq 0 ]]; then
-  echo "Using built-in extension list (catalog not reachable)."
-  load_builtin_exts
-fi
+  if [[ ${#ext_packages[@]} -eq 0 ]]; then
+    ext_names=("Retinal Layer Segmentation")
+    ext_packages=("medics-ext-retinal-layer-segmentation")
+    ext_descriptions=("AI-based retinal layer segmentation for OCT / OCTA volumes.")
+  fi
+}
 
 echo
 if [[ "$PYTHON_MAJOR_MINOR" == "3.11" ]]; then
@@ -271,31 +270,9 @@ else
     echo "build that prompts for a token at startup. Use --python 3.11 for the current release."
   } >&2
 fi
-echo "Optional extensions:"
-if [[ ${#ext_packages[@]} -eq 0 ]]; then
-  echo "  (none listed)"
-else
-  for i in "${!ext_packages[@]}"; do
-    num=$((i + 1))
-    echo "  [$num] ${ext_names[$i]}"
-    echo "      ${ext_packages[$i]}"
-    if [[ -n "${ext_descriptions[$i]}" ]]; then
-      echo "      ${ext_descriptions[$i]}"
-    fi
-  done
-fi
-
-if [[ "$ext_spec_set" -eq 0 ]]; then
-  if [[ ${#ext_packages[@]} -eq 0 ]]; then
-    # Nothing to choose from — do not ask a pointless question.
-    ext_spec=""
-  else
-    ext_spec="$(prompt "Select extensions (numbers, 'all', or Enter to skip): ")"
-  fi
-fi
-
 packages=("$MEDICS_SPEC")
 if [[ -n "$ext_spec" && ! "$ext_spec" =~ ^(none|no)$ ]]; then
+  load_extensions
   if [[ "$ext_spec" =~ ^(all|\*)$ ]]; then
     packages+=("${ext_packages[@]}")
   else

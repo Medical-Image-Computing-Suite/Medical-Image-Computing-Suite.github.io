@@ -59,17 +59,19 @@ Usage:
 Options:
   --yes              Accept the license without prompting
   --dir PATH         Install directory (skip the prompt)
-  --ext SPEC         Extensions: all, none, numbers (1,2), or pip package names
+  --ext SPEC         Optional extensions to add: all, or pip package names
   --python VERSION   Python version for the runtime (default: 3.11)
   --no-desktop       Skip Desktop shortcut
   --no-menu          Skip Start Menu shortcut
   --no-launch        Do not launch MedICS when finished
   --help             Show this help
 
-Only three things are ever asked: the license, the install folder, and optional
-extensions. Press Enter at any prompt to take the default (accept license,
-default folder, no extensions, create shortcuts, launch MedICS). At the install
-folder prompt, type B to choose the folder in File Explorer.
+Only two things are ever asked: the license and the install folder. Press Enter
+at either prompt to take the default (accept license, default folder). At the
+folder prompt, type B to choose the folder in File Explorer. Shortcuts and
+launching are on by default; pass the flags above to change them.
+
+No extensions are installed; add them later or pass --ext explicitly.
 "@
 }
 
@@ -345,7 +347,7 @@ $defaultDir = Join-Path $localApp "Programs\MedICS"
 Write-Host ""
 Write-Host "MedICS installer"
 Write-Host "================"
-Write-Host "Installs a portable Python $PythonVersion runtime, MedICS, and optional extensions."
+Write-Host "Installs a portable Python $PythonVersion runtime and MedICS."
 Write-Host "A network connection is required. No system Python is needed."
 Write-Host ""
 
@@ -381,7 +383,6 @@ if (-not $installDir) {
 $installDir = [Environment]::ExpandEnvironmentVariables($installDir)
 $installDir = [IO.Path]::GetFullPath($installDir)
 
-$extensions = @(Get-Extensions)
 Write-Host ""
 if ($PythonMajorMinor -eq "3.11") {
     Write-Host "Core package (always installed): medics (>= $MinMedicsVersion)"
@@ -391,31 +392,14 @@ if ($PythonMajorMinor -eq "3.11") {
     Write-Host "CPython 3.11; on $PythonMajorMinor the installer may resolve to an older build that" -ForegroundColor Yellow
     Write-Host "prompts for a token at startup. Use --python 3.11 for the current release." -ForegroundColor Yellow
 }
-Write-Host "Optional extensions:"
-if ($extensions.Count -eq 0) {
-    Write-Host "  (none listed)"
-} else {
-    for ($n = 0; $n -lt $extensions.Count; $n++) {
-        $ext = $extensions[$n]
-        Write-Host ("  [{0}] {1}" -f ($n + 1), $ext.name)
-        Write-Host ("      {0}" -f $ext.package)
-        if ($ext.description) { Write-Host ("      {0}" -f $ext.description) }
-    }
-}
 
-if ($null -eq $extSpec) {
-    if ($extensions.Count -eq 0) {
-        # Nothing to choose from — do not ask a pointless question.
-        $extSpec = ""
-    } else {
-        $extSpec = Read-Input "Select extensions (numbers, 'all', or Enter to skip)" ""
-    }
-}
+# Extensions are opt-in only (--ext); the default install is core-only.
+$spec = if ($null -eq $extSpec) { "" } else { $extSpec.Trim() }
 
 $packages = New-Object System.Collections.Generic.List[string]
 $packages.Add($MedicsSpec) | Out-Null
-$spec = if ($null -eq $extSpec) { "" } else { $extSpec.Trim() }
 if ($spec -and $spec -notmatch '^(none|no)$') {
+    $extensions = @(Get-Extensions)
     if ($spec -match '^(all|\*)$') {
         foreach ($ext in $extensions) { $packages.Add([string]$ext.package) | Out-Null }
     } else {
