@@ -153,9 +153,14 @@
 .docs-content td { color: var(--muted); }
 .docs-content td:first-child { color: var(--text); }
 .docs-content img { max-width: 100%; border-radius: var(--radius); border: 1px solid var(--border); }
+/* Toolbox screenshots are written straight into a paragraph instead of a
+   figure, so centre them in the column rather than leaving them on the left. */
+.docs-content p > img { display: block; margin-inline: auto; }
 
 /* ---------- screenshots ---------- */
-.doc-screens { display: grid; gap: 1rem; margin: 0 0 2rem; }
+/* `margin: 0 auto` centres the width-constrained variants below; the unbounded
+   ones fill the column, where the auto margins resolve to zero. */
+.doc-screens { display: grid; gap: 1rem; margin: 0 auto 2rem; }
 .doc-screens--grid { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
 /* Two panel screenshots side by side, kept close to their native size. */
 .doc-screens--pair {
@@ -231,6 +236,9 @@
   font-size: 0.76rem;
   color: var(--muted);
   border-top: 1px solid var(--border);
+  /* The thumbnail is centred inside the tile (object-position: center), so the
+     label is centred too rather than hugging the left edge. */
+  text-align: center;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
