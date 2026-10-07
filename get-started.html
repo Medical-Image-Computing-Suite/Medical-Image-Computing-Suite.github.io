@@ -33,7 +33,7 @@
     <div class="container">
       <div class="tag">Get started</div>
       <h1>Install and run <span class="gradient">in minutes</span></h1>
-      <p>Use the CLI installer (Python integrated), or install from PyPI if you already have Python 3.11+.</p>
+      <p>Build your install command below — pick your OS, Python version, shortcuts, and extensions.</p>
     </div>
   </header>
 
@@ -50,47 +50,88 @@
   </section>
 
   <section class="section section--alt" id="installer">
+    <span id="install" aria-hidden="true"></span>
     <div class="container">
-      <h2>CLI installer</h2>
+      <h2>Install</h2>
       <p>
-        A single <code>install.bat</code> (Windows) or <code>install.sh</code> (macOS/Linux) script
-        downloads a portable Python runtime with <code>uv</code>, lets you choose an install
-        folder and extensions in the terminal, then creates launchers and shortcuts.
-        A network connection is required. No system Python is needed.
+        Pick your options below and the command updates to match. The <strong>CLI installer</strong>
+        downloads a portable Python runtime with <code>uv</code> (no system Python needed) and creates
+        launchers and shortcuts; <strong>pip</strong> installs into a Python 3.11+ you already have.
       </p>
 
-      <h3>Windows — Command Prompt (cmd)</h3>
-      <div class="code-block">
-        <div class="code-block__header"><span>cmd</span><button class="copy-btn" type="button">Copy</button></div>
-        <pre><code>curl -L -o "%TEMP%\medics-install.bat" https://medical-image-computing-suite.github.io/installer/install.bat &amp;&amp; "%TEMP%\medics-install.bat"</code></pre>
+      <div class="selector" id="install-selector">
+        <div class="selector__row" data-row="method">
+          <div class="selector__label">Install method</div>
+          <div class="seg" role="group" aria-label="Install method">
+            <button type="button" class="seg__btn is-active" data-opt="method" data-value="cli">CLI installer</button>
+            <button type="button" class="seg__btn" data-opt="method" data-value="pip">pip</button>
+          </div>
+        </div>
+
+        <div class="selector__row" data-row="os">
+          <div class="selector__label">Your OS</div>
+          <div class="seg" role="group" aria-label="Operating system">
+            <button type="button" class="seg__btn is-active" data-opt="os" data-value="windows">Windows</button>
+            <button type="button" class="seg__btn" data-opt="os" data-value="macos">macOS</button>
+            <button type="button" class="seg__btn" data-opt="os" data-value="linux">Linux</button>
+          </div>
+        </div>
+
+        <div class="selector__row" data-row="shell" data-when="cli">
+          <div class="selector__label">Terminal</div>
+          <div class="seg" role="group" aria-label="Terminal">
+            <button type="button" class="seg__btn is-active" data-opt="shell" data-value="cmd">Command Prompt</button>
+            <button type="button" class="seg__btn" data-opt="shell" data-value="powershell">PowerShell</button>
+          </div>
+        </div>
+
+        <div class="selector__row" data-row="python" data-when="cli">
+          <div class="selector__label">Python version</div>
+          <div class="seg" role="group" aria-label="Python version">
+            <button type="button" class="seg__btn is-active" data-opt="python" data-value="3.11">3.11 <span class="seg__tag">recommended</span></button>
+            <button type="button" class="seg__btn" data-opt="python" data-value="3.12">3.12</button>
+          </div>
+        </div>
+
+        <div class="selector__row" data-row="desktop" data-when="cli">
+          <div class="selector__label">Desktop icon</div>
+          <div class="seg" role="group" aria-label="Desktop icon">
+            <button type="button" class="seg__btn is-active" data-opt="desktop" data-value="yes">Create</button>
+            <button type="button" class="seg__btn" data-opt="desktop" data-value="no">Skip</button>
+          </div>
+        </div>
+
+        <div class="selector__row" data-row="launch" data-when="cli">
+          <div class="selector__label">Launch after install</div>
+          <div class="seg" role="group" aria-label="Launch after install">
+            <button type="button" class="seg__btn is-active" data-opt="launch" data-value="yes">Yes</button>
+            <button type="button" class="seg__btn" data-opt="launch" data-value="no">No</button>
+          </div>
+        </div>
+
+        <div class="selector__row selector__row--stack" data-row="ext">
+          <div class="selector__label">Extensions</div>
+          <div class="check-list" id="ext-list">
+            <p class="selector__empty">Loading available extensions…</p>
+          </div>
+        </div>
       </div>
 
-      <h3>Windows — PowerShell</h3>
-      <div class="code-block">
-        <div class="code-block__header"><span>powershell</span><button class="copy-btn" type="button">Copy</button></div>
-        <pre><code>Invoke-WebRequest -Uri "https://medical-image-computing-suite.github.io/installer/install.bat" -OutFile "$env:TEMP\medics-install.bat"; &amp; "$env:TEMP\medics-install.bat"</code></pre>
+      <div class="code-block code-block--run">
+        <div class="code-block__header">
+          <span id="run-caption">Run this command</span>
+          <button class="copy-btn" type="button">Copy</button>
+        </div>
+        <pre><code id="install-cmd">curl -L -o "%TEMP%\medics-install.bat" https://medical-image-computing-suite.github.io/installer/install.bat &amp;&amp; "%TEMP%\medics-install.bat" --python 3.11</code></pre>
       </div>
-
-      <h3>macOS and Linux</h3>
-      <div class="code-block">
-        <div class="code-block__header"><span>bash</span><button class="copy-btn" type="button">Copy</button></div>
-        <pre><code>curl -fsSL https://medical-image-computing-suite.github.io/installer/install.sh | bash</code></pre>
-      </div>
-
+      <p class="selector__note" id="install-note"></p>
     </div>
   </section>
 
-  <section class="section" id="install">
+  <section class="section" id="verify">
     <div class="container">
-      <h2>Install with pip</h2>
-      <p>If Python 3.11+ is already on your PATH, you can install MedICS without the CLI installer.</p>
-      <h3>From PyPI</h3>
-      <div class="code-block">
-        <div class="code-block__header"><span>bash</span><button class="copy-btn" type="button">Copy</button></div>
-        <pre><code>pip install medics</code></pre>
-      </div>
-
-      <h3>Verify</h3>
+      <h2>Verify</h2>
+      <p>After installing (either method), confirm the package and CLI are available:</p>
       <div class="code-block">
         <div class="code-block__header"><span>bash</span><button class="copy-btn" type="button">Copy</button></div>
         <pre><code>python -c "import medics; print(medics.__version__)"

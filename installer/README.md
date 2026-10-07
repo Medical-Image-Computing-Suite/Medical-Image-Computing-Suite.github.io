@@ -6,6 +6,21 @@ The published MedICS wheels target CPython 3.11, and the installer pins `medics`
 
 Python does not need to be installed first. A network connection is required.
 
+## Prompts
+
+The installer stays out of the way — it asks for only three things and each
+accepts **Enter** as the default:
+
+1. **Accept the license?** — Enter accepts.
+2. **Install directory** — Enter keeps the default. Type a path, or type `b`
+   to pick the folder in a native dialog (File Explorer on Windows, the
+   Finder folder chooser on macOS, Zenity/KDialog on Linux).
+3. **Select extensions** (only when some are listed) — Enter installs none.
+
+Everything else uses sensible defaults: desktop/Start Menu shortcuts and a
+launch when it finishes. Pass the flags below to change any of that up front
+(for example `--dir` skips the folder prompt entirely).
+
 ## Run
 
 From this `installer/` directory:

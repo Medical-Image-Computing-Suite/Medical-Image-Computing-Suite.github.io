@@ -58,7 +58,7 @@ Usage:
 
 Options:
   --yes              Accept the license without prompting
-  --dir PATH         Install directory
+  --dir PATH         Install directory (skip the prompt)
   --ext SPEC         Extensions: all, none, numbers (1,2), or pip package names
   --python VERSION   Python version for the runtime (default: 3.11)
   --no-desktop       Skip Desktop shortcut
@@ -66,7 +66,10 @@ Options:
   --no-launch        Do not launch MedICS when finished
   --help             Show this help
 
-Interactive prompts are used for anything you do not pass on the command line.
+Only three things are ever asked: the license, the install folder, and optional
+extensions. Press Enter at any prompt to take the default (accept license,
+default folder, no extensions, create shortcuts, launch MedICS). At the install
+folder prompt, type B to choose the folder in File Explorer.
 "@
 }
 
@@ -88,6 +91,59 @@ function Read-YesNo([string]$Prompt, [bool]$Default = $true) {
     if ($value -match '^(?i)n(o)?$') { return $false }
     Write-Host "Unrecognized answer '$value'; using default: $(if ($Default) { 'Yes' } else { 'No' })."
     return [bool]$Default
+}
+
+function Select-Folder([string]$Title, [string]$Initial = "") {
+    # Native File Explorer folder picker.  Returns the chosen path, or $null
+    # when the user cancels.  Tries WinForms first, then the shell COM dialog.
+    try {
+        Add-Type -AssemblyName System.Windows.Forms -ErrorAction Stop | Out-Null
+        $dlg = New-Object System.Windows.Forms.FolderBrowserDialog
+        $dlg.Description = $Title
+        $dlg.ShowNewFolderButton = $true
+        if ($Initial -and (Test-Path -LiteralPath $Initial)) { $dlg.SelectedPath = $Initial }
+        # Own it by a top-most form so it appears in front of the console.
+        $owner = New-Object System.Windows.Forms.Form
+        $owner.TopMost = $true
+        $owner.ShowInTaskbar = $false
+        $owner.StartPosition = "CenterScreen"
+        try {
+            if ($dlg.ShowDialog($owner) -eq [System.Windows.Forms.DialogResult]::OK) {
+                return $dlg.SelectedPath
+            }
+            return $null
+        } finally {
+            $owner.Dispose()
+            $dlg.Dispose()
+        }
+    } catch {
+        # Fall through to the shell COM dialog below.
+    }
+    try {
+        $shell = New-Object -ComObject Shell.Application
+        $folder = $shell.BrowseForFolder(0, $Title, 0, $Initial)
+        if ($folder) { return $folder.Self.Path }
+        return $null
+    } catch {
+        Write-Host "Could not open the folder picker. Please type a path instead." -ForegroundColor Yellow
+        return $null
+    }
+}
+
+function Read-Directory([string]$Prompt, [string]$Default) {
+    # Enter accepts the default; "b" opens the native folder picker.
+    while ($true) {
+        $value = Read-Host "$Prompt [$Default]  (Enter = default, B = browse)"
+        if ([string]::IsNullOrWhiteSpace($value)) { return $Default }
+        $value = $value.Trim()
+        if ($value -match '^(?i)b(rowse)?$') {
+            $picked = Select-Folder "Select the MedICS install directory" $Default
+            if ($picked) { return $picked }
+            Write-Host "No folder selected; keeping the default."
+            continue
+        }
+        return $value
+    }
 }
 
 function Get-Extensions {
@@ -309,12 +365,18 @@ if ($licenseFile) {
     Write-Host "-----------------"
 }
 if (-not $accept) {
-    $answer = Read-Host "Type YES to accept the MedICS Software License Agreement"
-    if ($answer -ne "YES") { throw "License not accepted." }
+    # Enter accepts the license and everything else defaults to yes.
+    if (-not (Read-YesNo "Accept the MedICS Software License Agreement?" $true)) {
+        throw "License not accepted."
+    }
 }
 
 if (-not $installDir) {
-    $installDir = Read-Input "Install directory" $defaultDir
+    if ($accept) {
+        $installDir = $defaultDir
+    } else {
+        $installDir = Read-Directory "Install directory" $defaultDir
+    }
 }
 $installDir = [Environment]::ExpandEnvironmentVariables($installDir)
 $installDir = [IO.Path]::GetFullPath($installDir)
@@ -342,10 +404,11 @@ if ($extensions.Count -eq 0) {
 }
 
 if ($null -eq $extSpec) {
-    $extSpec = Read-Input "Select extensions (numbers, all, or Enter for none)" ""
-    $custom = Read-Input "Additional pip packages (comma-separated, optional)" ""
-    if ($custom) {
-        if ($extSpec) { $extSpec = "$extSpec,$custom" } else { $extSpec = $custom }
+    if ($extensions.Count -eq 0) {
+        # Nothing to choose from — do not ask a pointless question.
+        $extSpec = ""
+    } else {
+        $extSpec = Read-Input "Select extensions (numbers, 'all', or Enter to skip)" ""
     }
 }
 
@@ -369,12 +432,6 @@ if ($spec -and $spec -notmatch '^(none|no)$') {
 }
 
 $unique = [string[]]($packages | Select-Object -Unique)
-
-if (-not $accept) {
-    Set-InstallFlag "MEDICS_INSTALL_DESKTOP" (Read-YesNo "Create a Desktop shortcut?" $true)
-    Set-InstallFlag "MEDICS_INSTALL_MENU" (Read-YesNo "Create a Start Menu shortcut?" $true)
-    Set-InstallFlag "MEDICS_INSTALL_LAUNCH" (Read-YesNo "Launch MedICS when installation finishes?" $true)
-}
 
 Write-Host ""
 Write-Host "Install directory: $installDir"

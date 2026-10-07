@@ -23,16 +23,50 @@ prompt() {
   printf '%s' "$value"
 }
 
-prompt_default() {
-  local msg="$1"
-  local default="$2"
-  local value
-  value="$(prompt "$msg [$default]: ")"
-  if [[ -z "$value" ]]; then
-    printf '%s' "$default"
-  else
+browse_dir() {
+  # Native folder picker.  Prints the chosen path, or nothing on cancel.
+  local title="$1" initial="$2" picked=""
+  case "$(uname -s)" in
+    Darwin)
+      picked="$(osascript -e "try" \
+        -e "POSIX path of (choose folder with prompt \"$title\")" \
+        -e "end try" 2>/dev/null)" || true
+      ;;
+    *)
+      if command -v zenity >/dev/null 2>&1; then
+        picked="$(zenity --file-selection --directory --title="$title" 2>/dev/null)" || true
+      elif command -v kdialog >/dev/null 2>&1; then
+        picked="$(kdialog --getexistingdirectory "$initial" --title "$title" 2>/dev/null)" || true
+      fi
+      ;;
+  esac
+  picked="${picked%/}"
+  printf '%s' "$picked"
+}
+
+prompt_dir() {
+  # Enter accepts the default; "b" opens the native folder picker.
+  local msg="$1" default="$2" value picked
+  while :; do
+    value="$(prompt "$msg [$default]  (Enter = default, B = browse): ")"
+    value="${value#"${value%%[![:space:]]*}"}"
+    value="${value%"${value##*[![:space:]]}"}"
+    if [[ -z "$value" ]]; then
+      printf '%s' "$default"
+      return
+    fi
+    if [[ "$value" =~ ^[Bb]([Rr][Oo][Ww][Ss][Ee])?$ ]]; then
+      picked="$(browse_dir "Select the MedICS install directory" "$default")"
+      if [[ -n "$picked" ]]; then
+        printf '%s' "$picked"
+        return
+      fi
+      echo "No folder selected; keeping the default." >&2
+      continue
+    fi
     printf '%s' "$value"
-  fi
+    return
+  done
 }
 
 prompt_yes() {
@@ -66,7 +100,7 @@ Usage:
 
 Options:
   --yes              Accept the license without prompting
-  --dir PATH         Install directory
+  --dir PATH         Install directory (skip the prompt)
   --ext SPEC         Extensions: all, none, numbers (1,2), or pip package names
   --python VERSION   Python version for the runtime (default: 3.11)
   --no-desktop       Skip Desktop shortcut / alias
@@ -74,7 +108,10 @@ Options:
   --no-launch        Do not launch MedICS when finished
   --help             Show this help
 
-Interactive prompts are used for anything you do not pass on the command line.
+Only three things are ever asked: the license, the install folder, and optional
+extensions. Press Enter at any prompt to take the default (accept license,
+default folder, no extensions, create shortcuts, launch MedICS). At the install
+folder prompt, type B to choose the folder in your file manager.
 EOF
 }
 
@@ -166,15 +203,19 @@ if [[ -n "$license_file" ]]; then
 fi
 
 if [[ "$accept" -eq 0 ]]; then
-  answer="$(prompt "Type YES to accept the MedICS Software License Agreement: ")"
-  if [[ "$answer" != "YES" ]]; then
+  # Enter accepts the license and everything else defaults to yes.
+  if ! prompt_yes "Accept the MedICS Software License Agreement?" Y; then
     echo "License not accepted." >&2
     exit 1
   fi
 fi
 
 if [[ -z "$install_dir" ]]; then
-  install_dir="$(prompt_default "Install directory" "$default_dir")"
+  if [[ "$accept" -eq 1 ]]; then
+    install_dir="$default_dir"
+  else
+    install_dir="$(prompt_dir "Install directory" "$default_dir")"
+  fi
 fi
 install_dir="${install_dir/#\~/$HOME}"
 mkdir -p "$install_dir"
@@ -245,14 +286,11 @@ else
 fi
 
 if [[ "$ext_spec_set" -eq 0 ]]; then
-  ext_spec="$(prompt "Select extensions (numbers, all, or Enter for none): ")"
-  custom="$(prompt "Additional pip packages (comma-separated, optional): ")"
-  if [[ -n "$custom" ]]; then
-    if [[ -n "$ext_spec" ]]; then
-      ext_spec="$ext_spec,$custom"
-    else
-      ext_spec="$custom"
-    fi
+  if [[ ${#ext_packages[@]} -eq 0 ]]; then
+    # Nothing to choose from — do not ask a pointless question.
+    ext_spec=""
+  else
+    ext_spec="$(prompt "Select extensions (numbers, 'all', or Enter to skip): ")"
   fi
 fi
 
@@ -288,16 +326,6 @@ for pkg in "${packages[@]}"; do
   done
   [[ $seen -eq 0 ]] && unique+=("$pkg")
 done
-
-if [[ "$accept" -eq 0 ]]; then
-  if prompt_yes "Create a Desktop shortcut?" Y; then desktop=1; else desktop=0; fi
-  if [[ "$os_name" == "Darwin" ]]; then
-    if prompt_yes "Add MedICS.app to the Applications folder?" Y; then menu=1; else menu=0; fi
-  else
-    if prompt_yes "Add to the applications menu and ~/.local/bin?" Y; then menu=1; else menu=0; fi
-  fi
-  if prompt_yes "Launch MedICS when installation finishes?" Y; then launch=1; else launch=0; fi
-fi
 
 echo
 echo "Install directory: $install_dir"
