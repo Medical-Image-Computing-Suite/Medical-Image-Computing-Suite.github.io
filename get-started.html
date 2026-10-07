@@ -12,22 +12,34 @@
   <link rel="icon" type="image/png" href="icon/icon.png" />
   <link rel="apple-touch-icon" href="icon/icon.png" />
   <meta property="og:image" content="https://medical-image-computing-suite.github.io/icon/logo.png" />
+  <script>
+    // Apply the saved theme before first paint, so a light-theme visitor never
+    // sees a flash of the dark theme while js/site.js is still loading.
+    (function () {
+      try {
+        var t = localStorage.getItem("medics-theme");
+        if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t);
+      } catch (e) { /* private mode: keep the dark default */ }
+    })();
+  </script>
+  <script src="js/site.js" defer></script>
 </head>
 <body>
-  <nav class="nav">
-    <div class="container nav__inner">
-      <a class="nav__logo" href="index.html"><img src="icon/icon.png" alt="" width="32" height="32" /><em>MedICS</em>Medical Image Computing Suite</a>
-      <button class="nav__hamburger" id="hamburger" aria-label="Open menu"><span></span><span></span><span></span></button>
-      <ul class="nav__links">
-        <li><a href="index.html">Introduction</a></li>
-        <li><a class="is-active" href="get-started.html">Get started</a></li>
-        <li><a href="extensions.html">Extensions</a></li>
-        <li><a href="document.html">Documents</a></li>
-        <li><a href="https://github.com/Medical-Image-Computing-Suite/MedICS-Community/wiki" target="_blank" rel="noopener">MedICS Wiki</a></li>
-        <li><a class="btn btn--ghost btn--sm" href="https://github.com/medical-image-computing-suite/MedICS" target="_blank" rel="noopener">GitHub</a></li>
-      </ul>
-    </div>
-  </nav>
+  <header class="nav" id="site-nav">
+    <noscript>
+      <div class="container nav__inner">
+        <a class="nav__logo" href="index.html"><img src="icon/icon.png" alt="" width="32" height="32" /><em>MedICS</em>Medical Image Computing Suite</a>
+        <ul class="nav__fallback">
+          <li><a href="index.html">Introduction</a></li>
+          <li><a href="get-started.html">Get started</a></li>
+          <li><a href="extensions.html">Extensions</a></li>
+          <li><a href="document.html">Documents</a></li>
+          <li><a class="btn btn--ghost btn--sm" href="https://github.com/Medical-Image-Computing-Suite/MedICS-Community/wiki" target="_blank" rel="noopener">MedICS Wiki</a></li>
+          <li><a class="btn btn--ghost btn--sm" href="https://github.com/medical-image-computing-suite" target="_blank" rel="noopener">GitHub</a></li>
+        </ul>
+      </div>
+    </noscript>
+  </header>
 
   <header class="page-hero">
     <div class="container">
@@ -204,6 +216,5 @@ medics --help                       Show CLI help</code></pre>
       <a href="index.html">Back to introduction</a>
     </div>
   </footer>
-  <script src="js/site.js"></script>
 </body>
 </html>

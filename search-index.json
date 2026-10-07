@@ -1,0 +1,421 @@
+{
+ "generatedFrom": 9,
+ "entries": [
+  {
+   "page": "index.html",
+   "pageTitle": "Medical Image Computing Suite",
+   "section": "The MedICS window",
+   "id": "window",
+   "url": "index.html#window",
+   "text": "The MedICS window Everything happens in one window. Your tools open as tabs in the middle, and the panels around them give you the File Explorer, your workspace variables, the log, a terminal and the Python console. Extensions add their own tabs and menus. The MedICS main window. Tools open as tabs, with the File Explorer, workspace variables and the bottom panel (Logging · Terminal · Jupyter · Results) around them. Interface & components →"
+  },
+  {
+   "page": "index.html",
+   "pageTitle": "Medical Image Computing Suite",
+   "section": "Features",
+   "id": "features",
+   "url": "index.html#features",
+   "text": "Features Area What you get Image I/O DICOM, TIFF stacks, HDF5 / .med , MATLAB .mat , PNG/JPEG, and other scientific formats Preview Double-click files in Explorer to inspect text, markdown, tables, 2-D images, and volumes (slice, window/level, transforms) Import Drag-and-drop importer with background loading and progress Python In-process Jupyter kernel plus a full editor (syntax highlighting, completions, terminal) Workspace Named variables, inspector, load/save .med workspaces Extensions Discover installed extension packages or drop-in folders; load, show, and unload without restarting the a"
+  },
+  {
+   "page": "index.html",
+   "pageTitle": "Medical Image Computing Suite",
+   "section": "Toolboxes",
+   "id": "features",
+   "url": "index.html#features",
+   "text": "Toolboxes PyEditor, ImportData, and FilePreview open as central tabs and share the workspace."
+  },
+  {
+   "page": "index.html",
+   "pageTitle": "Medical Image Computing Suite",
+   "section": "Extensions",
+   "id": "features",
+   "url": "index.html#features",
+   "text": "Extensions Add UI and tools with pip packages — no core patch required."
+  },
+  {
+   "page": "get-started.html",
+   "pageTitle": "Install and run in minutes",
+   "section": "Requirements",
+   "id": "requirements",
+   "url": "get-started.html#requirements",
+   "text": "Requirements Windows, macOS, or Linux CLI installer: a network connection — Python is downloaded for you pip install: Python 3.11 or later Scientific stack (NumPy, SciPy, scikit-image, pydicom, h5py, PySide6, and others) — installed automatically with the package"
+  },
+  {
+   "page": "get-started.html",
+   "pageTitle": "Install and run in minutes",
+   "section": "Install",
+   "id": "installer",
+   "url": "get-started.html#installer",
+   "text": "Install Pick your options below and the command updates to match. The CLI installer downloads a portable Python runtime with uv (no system Python needed) and creates launchers and shortcuts; pip and uv install with a package manager you already have. Only the core medics package is installed — add extensions separately afterwards. Install method CLI installer pip uv Your OS Windows macOS Linux Terminal Command Prompt PowerShell Python version 3.11 3.12 3.13 Desktop icon Create Skip Launch after install Yes No Run this command Copy curl -L -o \"%TEMP%\\medics-install.bat\" https://medical-image-co"
+  },
+  {
+   "page": "get-started.html",
+   "pageTitle": "Install and run in minutes",
+   "section": "Verify",
+   "id": "verify",
+   "url": "get-started.html#verify",
+   "text": "Verify After installing (either method), confirm the package and CLI are available: bash Copy python -c \"import medics; print(medics.__version__)\" medics --help"
+  },
+  {
+   "page": "get-started.html",
+   "pageTitle": "Install and run in minutes",
+   "section": "Launch",
+   "id": "launch",
+   "url": "get-started.html#launch",
+   "text": "Launch bash Copy medics # or python -m medics Useful CLI commands: text Copy medics Start the application medics --create-ext [NAME] [DIR] Scaffold a new extension medics --build-ext [OPTIONS] Build an extension wheel medics --version, -V Print the installed version medics --help Show CLI help"
+  },
+  {
+   "page": "get-started.html",
+   "pageTitle": "Install and run in minutes",
+   "section": "Toolboxes",
+   "id": "toolboxes",
+   "url": "get-started.html#toolboxes",
+   "text": "Toolboxes Toolbox Role PyEditor Python IDE: syntax highlighting, completions, AST outline, integrated terminal, run against the Jupyter kernel ImportData Unified importer for DICOM, TIFF/PNG/JPEG, HDF5, MAT, NumPy, CSV, and related formats; background workers with progress FilePreview Read-only preview of text, code, markdown, spreadsheets, 2-D images, and volumetric data (DICOM series, stacked TIFF) JupyterLab Full JupyterLab web UI in a central tab. Its kernel runs MedICS's own Python environment, exposes the live workspace as ws , and needs no setup — notebooks, completions, and the debugge"
+  },
+  {
+   "page": "extensions.html",
+   "pageTitle": "Extending abilities of MedICS",
+   "section": "Install an extension",
+   "id": "install",
+   "url": "extensions.html#install",
+   "text": "Install an extension bash Copy pip install medics-ext-volume-viewer medics Loaded extensions appear under the Extensions menu and, if they provide a UI, can open a tab or window. Enable, disable, and inspect them from the extension manager dialog. Installed with uv instead? Use uv pip install … . The Extensions manager. Browse the extensions installed in MedICS, enable or disable each one, reload it after an update, and see what it adds to the interface."
+  },
+  {
+   "page": "extensions.html",
+   "pageTitle": "Extending abilities of MedICS",
+   "section": "Official extensions",
+   "id": "official",
+   "url": "extensions.html#official",
+   "text": "Official extensions Maintained by the MedICS Team and published on PyPI . Install one with pip , then open it from the Extensions menu (windowed extensions open as a central tab)."
+  },
+  {
+   "page": "extensions.html",
+   "pageTitle": "Extending abilities of MedICS",
+   "section": "Volume Labeler",
+   "id": "official",
+   "url": "extensions.html#official",
+   "text": "Volume Labeler Medical Imaging Annotate 3D volumes: paint labels on B-frames / enface, constrain work to a slab with boundary curves, inspect in 3D, and export label maps. pip Copy pip install medics-ext-volume-labeler"
+  },
+  {
+   "page": "extensions.html",
+   "pageTitle": "Extending abilities of MedICS",
+   "section": "Volume Viewer",
+   "id": "official",
+   "url": "extensions.html#official",
+   "text": "Volume Viewer Visualization 3-D and 2-D volume visualization with GPU-accelerated rendering and multi-planar reconstruction (MPR). pip Copy pip install medics-ext-volume-viewer"
+  },
+  {
+   "page": "extensions.html",
+   "pageTitle": "Extending abilities of MedICS",
+   "section": "Image Labeler",
+   "id": "official",
+   "url": "extensions.html#official",
+   "text": "Image Labeler Medical Imaging Annotate 2-D images with multiple label types and annotation workflows. pip Copy pip install medics-ext-image-labeler"
+  },
+  {
+   "page": "extensions.html",
+   "pageTitle": "Extending abilities of MedICS",
+   "section": "OCT Viewer",
+   "id": "official",
+   "url": "extensions.html#official",
+   "text": "OCT Viewer Medical Imaging OCT / OCTA visualization and analysis. pip Copy pip install medics-ext-oct-viewer"
+  },
+  {
+   "page": "extensions.html",
+   "pageTitle": "Extending abilities of MedICS",
+   "section": "Retinal Layer Segmentation",
+   "id": "official",
+   "url": "extensions.html#official",
+   "text": "Retinal Layer Segmentation Medical Imaging Automated retinal layer segmentation with quantitative features. pip Copy pip install medics-ext-retinal-layer-segmentation"
+  },
+  {
+   "page": "extensions.html",
+   "pageTitle": "Extending abilities of MedICS",
+   "section": "GraphicPy",
+   "id": "official",
+   "url": "extensions.html#official",
+   "text": "GraphicPy Visual Programming Node-based visual programming for building and running computational graphs. pip Copy pip install medics-ext-graphicpy More official extensions are in development. Browse all published packages on PyPI , or see the wiki for the full catalogue. Update one later with pip install --upgrade medics-ext-volume-viewer ."
+  },
+  {
+   "page": "extensions.html",
+   "pageTitle": "Extending abilities of MedICS",
+   "section": "Create your own extension",
+   "id": "create",
+   "url": "extensions.html#create",
+   "text": "Create your own extension bash Copy medics --create-ext # or with a name: medics --create-ext medics-ext-my-tool A typical layout of an extension: text Copy medics-ext-my-tool/ ├── medics_ext_my_tool/ │ ├── __init__.py # ExtensionInterface implementation │ ├── extension.json # Display metadata │ └── ui/ │ └── main_widget.py # Optional PySide6 widget ├── tests/ ├── pyproject.toml └── README.md"
+  },
+  {
+   "page": "extensions.html",
+   "pageTitle": "Extending abilities of MedICS",
+   "section": "ExtensionInterface",
+   "id": "create",
+   "url": "extensions.html#create",
+   "text": "ExtensionInterface Every extension implements: python Copy def get_name(self) -> str: ... def get_version(self) -> str: ... def get_description(self) -> str: ... def get_author(self) -> str: ... def get_category(self) -> str: ... def initialize(self, app_context) -> bool: ... def cleanup(self) -> None: ... def show_extension(self) -> None: ... initialize(app_context) receives the running MedICS application instance, so the extension can use the workspace, config, event bus, menus, and docks."
+  },
+  {
+   "page": "extensions.html",
+   "pageTitle": "Extending abilities of MedICS",
+   "section": "extension.json",
+   "id": "create",
+   "url": "extensions.html#create",
+   "text": "extension.json json Copy { \"name\": \"My Tool\", \"version\": \"1.0.0\", \"description\": \"Does XYZ\", \"author\": \"Your Name\", \"category\": \"Image Analysis\", \"enabled\": true, \"windowed\": true, \"icon\": null }"
+  },
+  {
+   "page": "extensions.html",
+   "pageTitle": "Extending abilities of MedICS",
+   "section": "Entry point ( pyproject.toml )",
+   "id": "create",
+   "url": "extensions.html#create",
+   "text": "Entry point ( pyproject.toml ) toml Copy [project.entry-points.\"medics.extensions\"] my_tool = \"medics_ext_my_tool:MyToolExtension\" Lifecycle in short: discover → initialize(app_context) → menu/toolbar action → show_extension() → cleanup() on unload."
+  },
+  {
+   "page": "extensions.html",
+   "pageTitle": "Extending abilities of MedICS",
+   "section": "Build and publish",
+   "id": "build",
+   "url": "extensions.html#build",
+   "text": "Build and publish Run from the extension project directory: bash Copy medics --build-ext # plain Python wheel (default) medics --build-ext --protect # Cython-compiled, source-stripped medics --build-ext -p # same as --protect medics --build-ext --upload # build, then upload to PyPI (you must have an PyPI account) medics --build-ext --upload --test-pypi <p> Full notes: <a href=\"https://github.com/medical-image-computing-suite/MedICS/blob/main/docs/extension-system.md\" target=\"_blank\" rel=\"noopener\">docs/extension-system.md</a> and <a href=\"https://github.com/medical-image-computing-suite/MedICS"
+  },
+  {
+   "page": "document.html",
+   "pageTitle": "MedICS user guide",
+   "section": "What MedICS is",
+   "id": "overview",
+   "url": "document.html#overview",
+   "text": "What MedICS is MedICS (Medical Image Computing Suite) is a desktop application for loading, inspecting and analyzing medical images. Image viewing, Python scripting, data import and third-party tools all live in one window instead of being spread across separate programs."
+  },
+  {
+   "page": "document.html",
+   "pageTitle": "MedICS user guide",
+   "section": "Key features",
+   "id": "key-features",
+   "url": "document.html#key-features",
+   "text": "Key features Area What you get Image I/O Open DICOM (including JPEG 2000 and OCT series), TIFF stacks, NIfTI, HDF5, MATLAB .mat , PNG/JPEG, video and more. Preview Inspect images, volumes, tables, Markdown and code — with slice navigation and window/level, without changing the file. Import Load image sequences, single files and whole DICOM folders, with drag-and-drop and background progress. Python An interactive console and the PyEditor IDE share one live workspace. Workspace Keep every result in a named workspace and save it to a .med file. Toolboxes FilePreview, ImportData, PyEditor and Jup"
+  },
+  {
+   "page": "document.html",
+   "pageTitle": "MedICS user guide",
+   "section": "Supported formats",
+   "id": "supported-formats",
+   "url": "document.html#supported-formats",
+   "text": "Supported formats Type Formats Images PNG, JPEG, BMP, GIF, WebP, ICO, PPM/PGM/PBM, SVG, single-frame TIFF Volumes NIfTI, MetaImage, DICOM series, stacked TIFF, MedICS image bundles Scientific containers HDF5, MedICS .med , MATLAB .mat , NumPy .npy / .npz Tables CSV, TSV, Excel, Parquet Documents Markdown, plain text and source code Video MP4, AVI, MKV, MOV, WebM, WMV, M4V, MPG/MPEG, OGV, 3GP"
+  },
+  {
+   "page": "document.html",
+   "pageTitle": "MedICS user guide",
+   "section": "The panels",
+   "id": "the-panels",
+   "url": "document.html#the-panels",
+   "text": "The panels Show or hide panels from the View menu. Interface & components → File Explorer Variables Logging Jupyter console Terminal Agent chat"
+  },
+  {
+   "page": "document.html",
+   "pageTitle": "MedICS user guide",
+   "section": "The toolboxes",
+   "id": "the-toolboxes",
+   "url": "document.html#the-toolboxes",
+   "text": "The toolboxes Built-in tools that open as tabs. Toolboxes → ImportData — load images and volumes. FilePreview — preview images and volumes. PyEditor — the Python editor. JupyterLab — notebooks in a tab."
+  },
+  {
+   "page": "document.html",
+   "pageTitle": "MedICS user guide",
+   "section": "Read the guide",
+   "id": "read-the-guide",
+   "url": "document.html#read-the-guide",
+   "text": "Read the guide Looking for more? Extensions shows how to add tools to MedICS, and the MedICS Wiki has community tips and examples."
+  },
+  {
+   "page": "docs/interface.html",
+   "pageTitle": "Interface & components",
+   "section": "The MedICS window",
+   "id": "the-medics-window",
+   "url": "docs/interface.html#the-medics-window",
+   "text": "The MedICS window MedICS opens as a single window. Your tools open as tabs in the middle, and the panels around them give you the file tree, your variables, the log, a terminal and the Python console. Panels can be shown or hidden, resized and re-arranged. Show or hide panels from the View menu, or double-click a tab title to collapse the surrounding panels and focus on your work."
+  },
+  {
+   "page": "docs/interface.html",
+   "pageTitle": "Interface & components",
+   "section": "File Explorer",
+   "id": "file-explorer",
+   "url": "docs/interface.html#file-explorer",
+   "text": "File Explorer Browse the folder you are working in. Double-click a file to preview it in a tab, drag files or folders into the window to import them, and right-click for Open , Preview , Copy path and Reveal in Explorer . Use the folder button to switch folders. On startup. It opens on the folder you were last working in; the toolbar switches folders. The current folder. Double-click a file to preview it, or right-click for Open , Copy path and Reveal in Explorer ."
+  },
+  {
+   "page": "docs/interface.html",
+   "pageTitle": "Interface & components",
+   "section": "Variables",
+   "id": "variables",
+   "url": "docs/interface.html#variables",
+   "text": "Variables Every value you create in Python — arrays, images, tables and other objects — is kept in the workspace and listed here with its name, type and size. Double-click a variable to inspect or preview it. Variables. Everything in the workspace, with its name, type and size. Double-click an entry to inspect or preview it."
+  },
+  {
+   "page": "docs/interface.html",
+   "pageTitle": "Interface & components",
+   "section": "Logging",
+   "id": "logging",
+   "url": "docs/interface.html#logging",
+   "text": "Logging The in-app output panel shows messages from every part of MedICS. Filter by level (ALL / DEBUG / INFO / WARNING / ERROR / CRITICAL), clear the view, or export the entries to a text file. Logging. Messages from every part of MedICS, filtered by level (ALL / DEBUG / INFO / WARNING / ERROR / CRITICAL), with buttons to clear the view or export the entries to a text file."
+  },
+  {
+   "page": "docs/interface.html",
+   "pageTitle": "Interface & components",
+   "section": "Terminal",
+   "id": "terminal",
+   "url": "docs/interface.html#terminal",
+   "text": "Terminal A real shell embedded in the window. It runs in its own process, separate from the application, so it is the place for command-line tools and scripts. + New Terminal lets you open additional shells (PowerShell, Command Prompt, Git Bash, …); the list on the right switches, renames, clears or closes them. Terminal. A shell in its own process, with a list of open shells on the right to switch, rename, clear or close them."
+  },
+  {
+   "page": "docs/interface.html",
+   "pageTitle": "Interface & components",
+   "section": "Jupyter console",
+   "id": "jupyter-console",
+   "url": "docs/interface.html#jupyter-console",
+   "text": "Jupyter console An interactive Python console that runs inside MedICS, so it shares your workspace. Use it for quick calculations, to inspect data, and to script an analysis without leaving the application. See Python console & workspace . Jupyter console. An interactive Python console that shares your workspace, so anything you create here appears in Variables straight away."
+  },
+  {
+   "page": "docs/interface.html",
+   "pageTitle": "Interface & components",
+   "section": "Agent chat",
+   "id": "agent-chat",
+   "url": "docs/interface.html#agent-chat",
+   "text": "Agent chat The AI assistant. Ask questions about your data, or ask it to carry out a task and it will use the tools it needs. Actions that create or change data ask for your approval first. See AI assistant . Agent chat. The assistant docked beside your work — ask a question, or hand off a task and watch each step."
+  },
+  {
+   "page": "docs/settings.html",
+   "pageTitle": "Settings & preferences",
+   "section": "Settings & preferences",
+   "id": "settings-preferences",
+   "url": "docs/settings.html#settings-preferences",
+   "text": "Settings & preferences Open preferences from Edit → Preferences . Every group lives in one dialog, so you can move between appearance, logging, chat and workspace options without leaving it. Preferences. Appearance, window geometry, logging, chat and workspace options, grouped in a single dialog. Group What you can set Appearance Dark or light theme Window Window size and starting geometry Logging Log level and log file location Chat AI provider, model, API keys, temperature and maximum tokens Workspace Auto-save for the workspace Extensions Whether extensions load automatically at startup"
+  },
+  {
+   "page": "docs/settings.html",
+   "pageTitle": "Settings & preferences",
+   "section": "Extension manager",
+   "id": "extension-manager",
+   "url": "docs/settings.html#extension-manager",
+   "text": "Extension manager Extensions you install are managed from Extensions → Extension Manager . Browse what is installed, turn each one on or off, and reload an extension after an update without restarting MedICS. New packages are installed with pip — see Extensions . The Extensions manager. Every installed extension with its status, so you can enable or disable one, reload it, or see what it contributes to MedICS. Changes are saved and applied the next time the relevant part of the application starts."
+  },
+  {
+   "page": "docs/toolboxes.html",
+   "pageTitle": "Toolboxes",
+   "section": "Toolboxes",
+   "id": "toolboxes",
+   "url": "docs/toolboxes.html#toolboxes",
+   "text": "Toolboxes Toolboxes are the built-in tools that ship with MedICS. Each opens as a tab in the central area — from the Toolboxes menu, from the activity bar, or by double-clicking a supported file in File Explorer."
+  },
+  {
+   "page": "docs/toolboxes.html",
+   "pageTitle": "Toolboxes",
+   "section": "FilePreview",
+   "id": "filepreview",
+   "url": "docs/toolboxes.html#filepreview",
+   "text": "FilePreview Preview any file without changing it: 2-D images, DICOM and NIfTI volumes, TIFF stacks, tables (CSV, TSV, Excel, Parquet), Markdown, and source code. For image and volume views you can move through slices, adjust window/level , zoom and pan, and apply flips, rotations and transposes."
+  },
+  {
+   "page": "docs/toolboxes.html",
+   "pageTitle": "Toolboxes",
+   "section": "ImportData",
+   "id": "importdata",
+   "url": "docs/toolboxes.html#importdata",
+   "text": "ImportData Load images and volumes into the workspace. Choose Image Sequence , Single File or DICOM Folder , drag files or folders onto the window, and let the importer load them in the background with a progress bar. Video files load as frame stacks. Imported data appears in the Variables panel."
+  },
+  {
+   "page": "docs/toolboxes.html",
+   "pageTitle": "Toolboxes",
+   "section": "PyEditor",
+   "id": "pyeditor",
+   "url": "docs/toolboxes.html#pyeditor",
+   "text": "PyEditor A Python editor in a tab, with syntax highlighting, code completion, an outline and an integrated terminal. Run (F5) executes your script against the live console, so it can use the variables already in your workspace."
+  },
+  {
+   "page": "docs/toolboxes.html",
+   "pageTitle": "Toolboxes",
+   "section": "JupyterLab",
+   "id": "jupyterlab",
+   "url": "docs/toolboxes.html#jupyterlab",
+   "text": "JupyterLab The full JupyterLab interface, embedded in a tab. It runs on MedICS's own Python environment, and your workspace is available inside notebooks."
+  },
+  {
+   "page": "docs/python-workspace.html",
+   "pageTitle": "Python console & workspace",
+   "section": "Python console & workspace",
+   "id": "python-console-workspace",
+   "url": "docs/python-workspace.html#python-console-workspace",
+   "text": "Python console & workspace"
+  },
+  {
+   "page": "docs/python-workspace.html",
+   "pageTitle": "Python console & workspace",
+   "section": "The workspace",
+   "id": "the-workspace",
+   "url": "docs/python-workspace.html#the-workspace",
+   "text": "The workspace When you import an image, open a file or run code, the results are kept in a workspace . The Variables panel lists everything in it. The Python console and PyEditor share the same workspace, so a variable created in one is immediately available in the other."
+  },
+  {
+   "page": "docs/python-workspace.html",
+   "pageTitle": "Python console & workspace",
+   "section": "The Python console",
+   "id": "the-python-console",
+   "url": "docs/python-workspace.html#the-python-console",
+   "text": "The Python console Open the Jupyter tab at the bottom of the window. It is an interactive console with the scientific stack ready to use — NumPy and Matplotlib, plus a ws handle to your workspace: import numpy as np ws.keys() # list the variables in the workspace print(ws['brain_volume'].shape)"
+  },
+  {
+   "page": "docs/python-workspace.html",
+   "pageTitle": "Python console & workspace",
+   "section": "Running scripts",
+   "id": "running-scripts",
+   "url": "docs/python-workspace.html#running-scripts",
+   "text": "Running scripts Write a script in PyEditor and press F5 to run it. It executes in the live console, so it sees the same variables you do."
+  },
+  {
+   "page": "docs/python-workspace.html",
+   "pageTitle": "Python console & workspace",
+   "section": "Saving and loading",
+   "id": "saving-and-loading",
+   "url": "docs/python-workspace.html#saving-and-loading",
+   "text": "Saving and loading Action Where Save the workspace to a .med file File → Save Workspace Choose a location and name File → Save Workspace As… Load a saved workspace File → Open Workspace Protect a long session turn on auto-save in Preferences"
+  },
+  {
+   "page": "docs/ai-assistant.html",
+   "pageTitle": "AI assistant",
+   "section": "AI assistant",
+   "id": "ai-assistant",
+   "url": "docs/ai-assistant.html#ai-assistant",
+   "text": "AI assistant The Agent chat panel is an assistant that can answer questions and carry out tasks in MedICS. You can ask it about the data you have open, or ask it to do something and it will use the tools it needs — reading files, running Python, working with the toolboxes — and report back."
+  },
+  {
+   "page": "docs/ai-assistant.html",
+   "pageTitle": "AI assistant",
+   "section": "Using the chat",
+   "id": "using-the-chat",
+   "url": "docs/ai-assistant.html#using-the-chat",
+   "text": "Using the chat Open the Agent chat panel from the View menu, type a request and send it. While the assistant works you can watch each step it takes. Actions that create or change data ask for your approval before they run."
+  },
+  {
+   "page": "docs/ai-assistant.html",
+   "pageTitle": "AI assistant",
+   "section": "The Agents Window",
+   "id": "the-agents-window",
+   "url": "docs/ai-assistant.html#the-agents-window",
+   "text": "The Agents Window The same assistant also opens in its own window ( Ctrl+Shift+A , or View → Agents Window ). Use it when you want a full-size conversation next to the main window instead of a docked panel, or when you are working across more than one screen. Each conversation is listed on the left, so you can keep several going and switch between them. The Agents Window. The assistant in a window of its own, with the conversation list on the left and the transcript beside it."
+  },
+  {
+   "page": "docs/ai-assistant.html",
+   "pageTitle": "AI assistant",
+   "section": "What it is good at",
+   "id": "what-it-is-good-at",
+   "url": "docs/ai-assistant.html#what-it-is-good-at",
+   "text": "What it is good at Answering questions about your images, tables and variables. Running Python against your live workspace. Driving the toolboxes for you — opening a tool, importing, previewing. Multi-step tasks that combine the above."
+  },
+  {
+   "page": "docs/ai-assistant.html",
+   "pageTitle": "AI assistant",
+   "section": "Configuration",
+   "id": "configuration",
+   "url": "docs/ai-assistant.html#configuration",
+   "text": "Configuration Choose the provider and model and enter your API key in Edit → Preferences → Chat . The assistant is optional — MedICS works fully without it. Chat settings. Pick the provider and model, enter your API key, and set the temperature and maximum tokens the assistant may use."
+  }
+ ]
+}

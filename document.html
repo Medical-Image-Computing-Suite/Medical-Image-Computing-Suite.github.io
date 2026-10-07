@@ -13,79 +13,114 @@
   <link rel="icon" type="image/png" href="icon/icon.png" />
   <link rel="apple-touch-icon" href="icon/icon.png" />
   <meta property="og:image" content="https://medical-image-computing-suite.github.io/icon/logo.png" />
+  <script>
+    // Apply the saved theme before first paint, so a light-theme visitor never
+    // sees a flash of the dark theme while js/site.js is still loading.
+    (function () {
+      try {
+        var t = localStorage.getItem("medics-theme");
+        if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t);
+      } catch (e) { /* private mode: keep the dark default */ }
+    })();
+  </script>
+  <script src="js/site.js" defer></script>
 </head>
 <body>
-  <nav class="nav" id="nav">
-  <div class="container nav__inner">
-    <a class="nav__logo" href="index.html"><img src="icon/icon.png" alt="" width="32" height="32" /><em>MedICS</em>Medical Image Computing Suite</a>
-    <button class="nav__hamburger" id="hamburger" aria-label="Open menu"><span></span><span></span><span></span></button>
-    <ul class="nav__links">
-      <li><a href="index.html">Introduction</a></li>
-      <li><a href="get-started.html">Get started</a></li>
-      <li><a href="extensions.html">Extensions</a></li>
-      <li><a class="is-active" href="document.html">Documents</a></li>
-      <li><a href="https://github.com/Medical-Image-Computing-Suite/MedICS-Community/wiki" target="_blank" rel="noopener">MedICS Wiki</a></li>
-      <li><a class="btn btn--ghost btn--sm" href="https://github.com/medical-image-computing-suite" target="_blank" rel="noopener">GitHub</a></li>
-    </ul>
-  </div>
-</nav>
-
-  <header class="page-hero">
-    <div class="container">
-      <div class="tag">Documents</div>
-      <h1>MedICS <span class="gradient">user guide</span></h1>
-      <p>What MedICS can do, and how to use it. This guide covers the workspace, the built-in
-      toolboxes, Python, settings and the AI assistant. New to MedICS? Start with
-      <a href="get-started.html">Get started</a> to install and launch it.</p>
-    </div>
+  <header class="nav" id="site-nav">
+    <noscript>
+      <div class="container nav__inner">
+        <a class="nav__logo" href="index.html"><img src="icon/icon.png" alt="" width="32" height="32" /><em>MedICS</em>Medical Image Computing Suite</a>
+        <ul class="nav__fallback">
+          <li><a href="index.html">Introduction</a></li>
+          <li><a href="get-started.html">Get started</a></li>
+          <li><a href="extensions.html">Extensions</a></li>
+          <li><a href="document.html">Documents</a></li>
+          <li><a class="btn btn--ghost btn--sm" href="https://github.com/Medical-Image-Computing-Suite/MedICS-Community/wiki" target="_blank" rel="noopener">MedICS Wiki</a></li>
+          <li><a class="btn btn--ghost btn--sm" href="https://github.com/medical-image-computing-suite" target="_blank" rel="noopener">GitHub</a></li>
+        </ul>
+      </div>
+    </noscript>
   </header>
 
-  <section class="section">
-    <div class="container">
+  <div class="docs-shell container">
+    <aside class="docs-side">
+      <div class="docs-side__title">Documentation</div>
+      <nav>
+        <div class="docs-side__group">Getting started</div>
+        <ul>
+          <li><a class="is-current" href="document.html">Overview</a></li>
+        </ul>
+        <div class="docs-side__group">Basics</div>
+        <ul>
+          <li><a href="docs/interface.html">Interface &amp; components</a></li>
+          <li><a href="docs/settings.html">Settings &amp; preferences</a></li>
+        </ul>
+        <div class="docs-side__group">Features</div>
+        <ul>
+          <li><a href="docs/toolboxes.html">Toolboxes</a></li>
+          <li><a href="docs/python-workspace.html">Python console &amp; workspace</a></li>
+          <li><a href="docs/ai-assistant.html">AI assistant</a></li>
+        </ul>
+      </nav>
+    </aside>
+    <main class="docs-main">
+      <header class="docs-hero">
+        <div class="tag">Documents</div>
+        <h1>MedICS <span class="gradient">user guide</span></h1>
+        <p>What MedICS can do, and how to use it. This guide covers the workspace, the built-in
+        toolboxes, Python, settings and the AI assistant. New to MedICS? Start with
+        <a href="get-started.html">Get started</a> to install and launch it.</p>
+      </header>
+      <article class="docs-content">
       <div class="doc-screens">
         <figure class="doc-figure">
-          <a href="assets/img/overview/main_window.png" target="_blank" rel="noopener">
-            <img src="assets/img/overview/main_window.png" alt="The MedICS main window" />
+          <a href="docs/interface.html#the-medics-window">
+            <img src="assets/img/overview/main_window.png" alt="The MedICS main window" width="1560" height="980" />
           </a>
           <figcaption><strong>The MedICS window.</strong> Tools open as tabs, with the File Explorer,
           workspace variables and the bottom panel (Logging · Terminal · Jupyter · Results) around them.</figcaption>
         </figure>
       </div>
 
-      <h2 style="margin-top:0">What MedICS is</h2>
+      <h2 id="overview">What MedICS is</h2>
       <p>MedICS (Medical Image Computing Suite) is a desktop application for loading, inspecting
       and analyzing medical images. Image viewing, Python scripting, data import and third-party
       tools all live in one window instead of being spread across separate programs.</p>
 
-      <h2>Key features</h2>
+      <h2 id="key-features">Key features</h2>
       <div class="table-wrap"><table>
         <thead><tr><th>Area</th><th>What you get</th></tr></thead>
         <tbody><tr><td>Image I/O</td><td>Open DICOM (including JPEG 2000 and OCT series), TIFF stacks, NIfTI, HDF5, MATLAB <code>.mat</code>, PNG/JPEG, video and more.</td></tr><tr><td>Preview</td><td>Inspect images, volumes, tables, Markdown and code — with slice navigation and window/level, without changing the file.</td></tr><tr><td>Import</td><td>Load image sequences, single files and whole DICOM folders, with drag-and-drop and background progress.</td></tr><tr><td>Python</td><td>An interactive console and the PyEditor IDE share one live workspace.</td></tr><tr><td>Workspace</td><td>Keep every result in a named workspace and save it to a <code>.med</code> file.</td></tr><tr><td>Toolboxes</td><td>FilePreview, ImportData, PyEditor and JupyterLab open as tabs beside your work.</td></tr><tr><td>Extensions</td><td>Add new tools and panels from installable packages — no rebuild of MedICS required.</td></tr><tr><td>AI assistant</td><td>Ask questions or hand off multi-step tasks; each action that changes data needs your approval.</td></tr></tbody>
       </table></div>
 
-      <h2>Supported formats</h2>
+      <h2 id="supported-formats">Supported formats</h2>
       <div class="table-wrap"><table>
         <thead><tr><th>Type</th><th>Formats</th></tr></thead>
         <tbody><tr><td>Images</td><td>PNG, JPEG, BMP, GIF, WebP, ICO, PPM/PGM/PBM, SVG, single-frame TIFF</td></tr><tr><td>Volumes</td><td>NIfTI, MetaImage, DICOM series, stacked TIFF, MedICS image bundles</td></tr><tr><td>Scientific containers</td><td>HDF5, MedICS <code>.med</code>, MATLAB <code>.mat</code>, NumPy <code>.npy</code>/<code>.npz</code></td></tr><tr><td>Tables</td><td>CSV, TSV, Excel, Parquet</td></tr><tr><td>Documents</td><td>Markdown, plain text and source code</td></tr><tr><td>Video</td><td>MP4, AVI, MKV, MOV, WebM, WMV, M4V, MPG/MPEG, OGV, 3GP</td></tr></tbody>
       </table></div>
 
-      <h2>The panels</h2>
+      <h2 id="the-panels">The panels</h2>
       <p class="tight-lead">Show or hide panels from the <strong>View</strong> menu.
       <a href="docs/interface.html">Interface &amp; components &#8594;</a></p>
-      <div class="panel-strip"><figure class="panel-tile"><a href="assets/img/components/file_explorer.png" target="_blank" rel="noopener"><img loading="lazy" src="assets/img/components/file_explorer.png" alt="File Explorer" /></a><figcaption>File Explorer</figcaption></figure><figure class="panel-tile"><a href="assets/img/components/logging.png" target="_blank" rel="noopener"><img loading="lazy" src="assets/img/components/logging.png" alt="Logging" /></a><figcaption>Logging</figcaption></figure><figure class="panel-tile"><a href="assets/img/components/jupyter_console.png" target="_blank" rel="noopener"><img loading="lazy" src="assets/img/components/jupyter_console.png" alt="Jupyter console" /></a><figcaption>Jupyter console</figcaption></figure><figure class="panel-tile"><a href="assets/img/components/terminal.png" target="_blank" rel="noopener"><img loading="lazy" src="assets/img/components/terminal.png" alt="Terminal" /></a><figcaption>Terminal</figcaption></figure><figure class="panel-tile"><a href="assets/img/components/agent_chat.png" target="_blank" rel="noopener"><img loading="lazy" src="assets/img/components/agent_chat.png" alt="Agent chat" /></a><figcaption>Agent chat</figcaption></figure></div>
+      <div class="panel-strip"><figure class="panel-tile"><a href="docs/interface.html#file-explorer"><img loading="lazy" src="assets/img/components/file_explorer.png" alt="File Explorer" width="240" height="300" /></a><figcaption>File Explorer</figcaption></figure><figure class="panel-tile"><a href="docs/interface.html#variables"><img loading="lazy" src="assets/img/components/workspace_variables.png" alt="Variables" width="369" height="496" /></a><figcaption>Variables</figcaption></figure><figure class="panel-tile"><a href="docs/interface.html#logging"><img loading="lazy" src="assets/img/components/logging.png" alt="Logging" width="963" height="240" /></a><figcaption>Logging</figcaption></figure><figure class="panel-tile"><a href="docs/interface.html#jupyter-console"><img loading="lazy" src="assets/img/components/jupyter_console.png" alt="Jupyter console" width="963" height="240" /></a><figcaption>Jupyter console</figcaption></figure><figure class="panel-tile"><a href="docs/interface.html#terminal"><img loading="lazy" src="assets/img/components/terminal.png" alt="Terminal" width="963" height="240" /></a><figcaption>Terminal</figcaption></figure><figure class="panel-tile"><a href="docs/interface.html#agent-chat"><img loading="lazy" src="assets/img/components/agent_chat.png" alt="Agent chat" width="300" height="640" /></a><figcaption>Agent chat</figcaption></figure></div>
 
-      <h2>The toolboxes</h2>
+      <h2 id="the-toolboxes">The toolboxes</h2>
       <p>Built-in tools that open as tabs. <a href="docs/toolboxes.html">Toolboxes &#8594;</a></p>
-      <div class="doc-screens doc-screens--grid"><figure class="doc-figure"><a href="assets/img/toolbox/importdata.png" target="_blank" rel="noopener"><img loading="lazy" src="assets/img/toolbox/importdata.png" alt="&lt;strong&gt;ImportData&lt;/strong&gt; — load images and volumes." /></a><figcaption><strong>ImportData</strong> — load images and volumes.</figcaption></figure><figure class="doc-figure"><a href="assets/img/toolbox/filepreview.png" target="_blank" rel="noopener"><img loading="lazy" src="assets/img/toolbox/filepreview.png" alt="&lt;strong&gt;FilePreview&lt;/strong&gt; — preview images and volumes." /></a><figcaption><strong>FilePreview</strong> — preview images and volumes.</figcaption></figure><figure class="doc-figure"><a href="assets/img/toolbox/pyeditor.png" target="_blank" rel="noopener"><img loading="lazy" src="assets/img/toolbox/pyeditor.png" alt="&lt;strong&gt;PyEditor&lt;/strong&gt; — the Python editor." /></a><figcaption><strong>PyEditor</strong> — the Python editor.</figcaption></figure><figure class="doc-figure"><a href="assets/img/toolbox/jupyterlab.png" target="_blank" rel="noopener"><img loading="lazy" src="assets/img/toolbox/jupyterlab.png" alt="&lt;strong&gt;JupyterLab&lt;/strong&gt; — notebooks in a tab." /></a><figcaption><strong>JupyterLab</strong> — notebooks in a tab.</figcaption></figure></div>
+      <div class="doc-screens doc-screens--grid"><figure class="doc-figure"><a href="docs/toolboxes.html#importdata"><img loading="lazy" src="assets/img/toolbox/importdata.png" alt="&lt;strong&gt;ImportData&lt;/strong&gt; — load images and volumes." width="961" height="650" /></a><figcaption><strong>ImportData</strong> — load images and volumes.</figcaption></figure><figure class="doc-figure"><a href="docs/toolboxes.html#filepreview"><img loading="lazy" src="assets/img/toolbox/filepreview.png" alt="&lt;strong&gt;FilePreview&lt;/strong&gt; — preview images and volumes." width="961" height="650" /></a><figcaption><strong>FilePreview</strong> — preview images and volumes.</figcaption></figure><figure class="doc-figure"><a href="docs/toolboxes.html#pyeditor"><img loading="lazy" src="assets/img/toolbox/pyeditor.png" alt="&lt;strong&gt;PyEditor&lt;/strong&gt; — the Python editor." width="961" height="650" /></a><figcaption><strong>PyEditor</strong> — the Python editor.</figcaption></figure><figure class="doc-figure"><a href="docs/toolboxes.html#jupyterlab"><img loading="lazy" src="assets/img/toolbox/jupyterlab.png" alt="&lt;strong&gt;JupyterLab&lt;/strong&gt; — notebooks in a tab." width="1315" height="824" /></a><figcaption><strong>JupyterLab</strong> — notebooks in a tab.</figcaption></figure></div>
 
-      <h2>Read the guide</h2>
+      <h2 id="read-the-guide">Read the guide</h2>
       <h2 class="hub-group">Basics</h2><div class="doc-cards"><a class="doc-card" href="docs/interface.html"><span class="doc-card__tag">Basics</span><h3>Interface &amp; components</h3><p>The MedICS window and its panels: File Explorer, Variables, Logging, Terminal, Jupyter console and Agent chat.</p></a><a class="doc-card" href="docs/settings.html"><span class="doc-card__tag">Basics</span><h3>Settings &amp; preferences</h3><p>Configure appearance, logging, the AI provider and workspace auto-save.</p></a></div><h2 class="hub-group">Features</h2><div class="doc-cards"><a class="doc-card" href="docs/toolboxes.html"><span class="doc-card__tag">Features</span><h3>Toolboxes</h3><p>The built-in tools — FilePreview, ImportData, PyEditor and JupyterLab — and how to use them.</p></a><a class="doc-card" href="docs/python-workspace.html"><span class="doc-card__tag">Features</span><h3>Python console &amp; workspace</h3><p>Work with data in Python, inspect your variables, and save or load a workspace.</p></a><a class="doc-card" href="docs/ai-assistant.html"><span class="doc-card__tag">Features</span><h3>AI assistant</h3><p>Ask questions and let the assistant perform tasks in MedICS, with your approval.</p></a></div>
 
       <p style="margin-top:1.5rem">Looking for more? <a href="extensions.html">Extensions</a> shows how to add
       tools to MedICS, and the <a href="https://github.com/Medical-Image-Computing-Suite/MedICS-Community/wiki" target="_blank" rel="noopener">MedICS Wiki</a> has
       community tips and examples.</p>
-    </div>
-  </section>
+      </article>
+    </main>
+    <aside class="docs-toc">
+      <div class="docs-toc__title">On this page</div>
+      <nav><ul><li><a class="lvl-2" href="#overview">Overview</a></li><li><a class="lvl-2" href="#key-features">Key features</a></li><li><a class="lvl-2" href="#supported-formats">Supported formats</a></li><li><a class="lvl-2" href="#the-panels">The panels</a></li><li><a class="lvl-2" href="#the-toolboxes">The toolboxes</a></li><li><a class="lvl-2" href="#read-the-guide">Read the guide</a></li></ul></nav>
+    </aside>
+  </div>
 
   <footer class="footer">
     <div class="container footer__inner">
@@ -93,6 +128,5 @@
       <a href="document.html">Documentation</a>
     </div>
   </footer>
-  <script src="js/site.js"></script>
 </body>
 </html>

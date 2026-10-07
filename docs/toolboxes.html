@@ -13,32 +13,39 @@
   <link rel="icon" type="image/png" href="../icon/icon.png" />
   <link rel="apple-touch-icon" href="../icon/icon.png" />
   <meta property="og:image" content="https://medical-image-computing-suite.github.io/icon/logo.png" />
+  <script>
+    // Apply the saved theme before first paint, so a light-theme visitor never
+    // sees a flash of the dark theme while js/site.js is still loading.
+    (function () {
+      try {
+        var t = localStorage.getItem("medics-theme");
+        if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t);
+      } catch (e) { /* private mode: keep the dark default */ }
+    })();
+  </script>
+  <script src="../js/site.js" defer></script>
 </head>
 <body class="docs-body">
-  <nav class="nav" id="nav">
-  <div class="container nav__inner">
-    <a class="nav__logo" href="../index.html"><img src="../icon/icon.png" alt="" width="32" height="32" /><em>MedICS</em>Medical Image Computing Suite</a>
-    <button class="nav__hamburger" id="hamburger" aria-label="Open menu"><span></span><span></span><span></span></button>
-    <ul class="nav__links">
-      <li><a href="../index.html">Introduction</a></li>
-      <li><a href="../get-started.html">Get started</a></li>
-      <li><a href="../extensions.html">Extensions</a></li>
-      <li><a class="is-active" href="../document.html">Documents</a></li>
-      <li><a href="https://github.com/Medical-Image-Computing-Suite/MedICS-Community/wiki" target="_blank" rel="noopener">MedICS Wiki</a></li>
-      <li><a class="btn btn--ghost btn--sm" href="https://github.com/medical-image-computing-suite" target="_blank" rel="noopener">GitHub</a></li>
-    </ul>
-  </div>
-</nav>
+  <header class="nav" id="site-nav">
+    <noscript>
+      <div class="container nav__inner">
+        <a class="nav__logo" href="../index.html"><img src="../icon/icon.png" alt="" width="32" height="32" /><em>MedICS</em>Medical Image Computing Suite</a>
+        <ul class="nav__fallback">
+          <li><a href="../index.html">Introduction</a></li>
+          <li><a href="../get-started.html">Get started</a></li>
+          <li><a href="../extensions.html">Extensions</a></li>
+          <li><a href="../document.html">Documents</a></li>
+          <li><a class="btn btn--ghost btn--sm" href="https://github.com/Medical-Image-Computing-Suite/MedICS-Community/wiki" target="_blank" rel="noopener">MedICS Wiki</a></li>
+          <li><a class="btn btn--ghost btn--sm" href="https://github.com/medical-image-computing-suite" target="_blank" rel="noopener">GitHub</a></li>
+        </ul>
+      </div>
+    </noscript>
+  </header>
   <div class="docs-shell container">
     <aside class="docs-side">
-  <a class="docs-side__home" href="../document.html">&#8592; Documents home</a>
-  <div class="docs-side__title">On this page</div>
-  <nav><ul><li><a class="lvl-2" href="#toolboxes">Toolboxes</a></li><li><a class="lvl-3" href="#filepreview">FilePreview</a></li><li><a class="lvl-3" href="#importdata">ImportData</a></li><li><a class="lvl-3" href="#pyeditor">PyEditor</a></li><li><a class="lvl-3" href="#jupyterlab">JupyterLab</a></li></ul></nav>
-  <div class="docs-side__all">
-    <div class="docs-side__title">User guide</div>
-    <nav><div class="docs-side__title" style="margin-top:.85rem">Basics</div><ul><li><a href="interface.html">Interface &amp; components</a></li><li><a href="settings.html">Settings &amp; preferences</a></li></ul><div class="docs-side__title" style="margin-top:.85rem">Features</div><ul><li><a class="is-current" href="toolboxes.html">Toolboxes</a></li><li><a href="python-workspace.html">Python console &amp; workspace</a></li><li><a href="ai-assistant.html">AI assistant</a></li></ul></nav>
-  </div>
-</aside>
+      <div class="docs-side__title">Documentation</div>
+      <nav><div class="docs-side__group">Getting started</div><ul><li><a href="../document.html">Overview</a></li></ul><div class="docs-side__group">Basics</div><ul><li><a href="interface.html">Interface &amp; components</a></li><li><a href="settings.html">Settings &amp; preferences</a></li></ul><div class="docs-side__group">Features</div><ul><li><a class="is-current" href="toolboxes.html">Toolboxes</a></li><li><a href="python-workspace.html">Python console &amp; workspace</a></li><li><a href="ai-assistant.html">AI assistant</a></li></ul></nav>
+    </aside>
     <main class="docs-main">
       <header class="docs-hero">
         <div class="tag">Documents · Features</div>
@@ -55,25 +62,29 @@ file in File Explorer.</p>
 (CSV, TSV, Excel, Parquet), Markdown, and source code. For image and volume views you can move
 through slices, adjust <strong>window/level</strong>, zoom and pan, and apply flips, rotations and
 transposes.</p>
-<p><img alt="FilePreview — previewing an image" src="../assets/img/toolbox/filepreview.png" /></p>
+<p><img alt="FilePreview — previewing an image" src="../assets/img/toolbox/filepreview.png" width="961" height="650" /></p>
 <h3 id="importdata">ImportData</h3>
 <p>Load images and volumes into the workspace. Choose <strong>Image Sequence</strong>, <strong>Single File</strong> or
 <strong>DICOM Folder</strong>, drag files or folders onto the window, and let the importer load them in the
 background with a progress bar. Video files load as frame stacks. Imported data appears in the
 <strong>Variables</strong> panel.</p>
-<p><img alt="ImportData — the data importer" src="../assets/img/toolbox/importdata.png" /></p>
+<p><img alt="ImportData — the data importer" src="../assets/img/toolbox/importdata.png" width="961" height="650" /></p>
 <h3 id="pyeditor">PyEditor</h3>
 <p>A Python editor in a tab, with syntax highlighting, code completion, an outline and an
 integrated terminal. <strong>Run (F5)</strong> executes your script against the live console, so it can use
 the variables already in your workspace.</p>
-<p><img alt="PyEditor — the Python editor" src="../assets/img/toolbox/pyeditor.png" /></p>
+<p><img alt="PyEditor — the Python editor" src="../assets/img/toolbox/pyeditor.png" width="961" height="650" /></p>
 <h3 id="jupyterlab">JupyterLab</h3>
 <p>The full <strong>JupyterLab</strong> interface, embedded in a tab. It runs on MedICS's own Python
 environment, and your workspace is available inside notebooks.</p>
-<p><img alt="JupyterLab — notebooks in a tab" src="../assets/img/toolbox/jupyterlab.png" /></p>
+<p><img alt="JupyterLab — notebooks in a tab" src="../assets/img/toolbox/jupyterlab.png" width="1315" height="824" /></p>
       </article>
       <nav class="docs-pager"><a class="prev" href="settings.html"><span>&#8592; Previous</span>Settings &amp; preferences</a><a class="next" href="python-workspace.html"><span>Next &#8594;</span>Python console &amp; workspace</a></nav>
     </main>
+    <aside class="docs-toc">
+      <div class="docs-toc__title">On this page</div>
+      <nav><ul><li><a class="lvl-2" href="#toolboxes">Toolboxes</a></li><li><a class="lvl-3" href="#filepreview">FilePreview</a></li><li><a class="lvl-3" href="#importdata">ImportData</a></li><li><a class="lvl-3" href="#pyeditor">PyEditor</a></li><li><a class="lvl-3" href="#jupyterlab">JupyterLab</a></li></ul></nav>
+    </aside>
   </div>
   <footer class="footer">
     <div class="container footer__inner">
@@ -81,6 +92,5 @@ environment, and your workspace is available inside notebooks.</p>
       <a href="../document.html">Documentation</a>
     </div>
   </footer>
-  <script src="../js/site.js"></script>
 </body>
 </html>

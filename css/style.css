@@ -1,6 +1,7 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
+  color-scheme: dark;
   --bg: #080c14;
   --bg-alt: #0d1220;
   --surface: #111827;
@@ -12,12 +13,56 @@
   --accent-3: #06b6d4;
   --text: #e2e8f0;
   --muted: #8b99b5;
+  /* Surfaces that would otherwise be hard-coded, so the light theme can
+     restate them without duplicating whole rules. */
+  --nav-bg: rgba(8, 12, 20, 0.86);
+  --nav-bg-solid: rgba(8, 12, 20, 0.97);
+  --ghost-bg: rgba(255, 255, 255, 0.05);
+  --ghost-bg-hover: rgba(255, 255, 255, 0.1);
+  --hover-tint: rgba(255, 255, 255, 0.04);
+  --code-bg: #0b1220;
+  --code-text: #d6e4ff;
+  --code-text-dim: #b9c8e6;
   --font: "Inter", system-ui, sans-serif;
   --mono: "JetBrains Mono", "Fira Code", ui-monospace, monospace;
   --radius: 12px;
+  /* Height of the sticky nav, used to offset anchor scrolling. */
+  --nav-h: 64px;
+}
+
+/* Light theme — the same variable names, restated. Applied to <html> by the
+   theme switcher (js/site.js), so every page picks it up from this one file. */
+[data-theme="light"] {
+  color-scheme: light;
+  --bg: #f6f8fc;
+  --bg-alt: #eaeff7;
+  --surface: #ffffff;
+  --surface-2: #f1f5f9;
+  --border: rgba(15, 23, 42, 0.1);
+  --border-2: rgba(15, 23, 42, 0.18);
+  --accent: #2563eb;
+  --accent-2: #7c3aed;
+  /* Darker cyan: --accent-3 is small uppercase text, which needs the contrast. */
+  --accent-3: #0e7490;
+  --text: #0f172a;
+  --muted: #55637a;
+  --nav-bg: rgba(246, 248, 252, 0.86);
+  --nav-bg-solid: rgba(246, 248, 252, 0.97);
+  --ghost-bg: rgba(15, 23, 42, 0.04);
+  --ghost-bg-hover: rgba(15, 23, 42, 0.08);
+  --hover-tint: rgba(15, 23, 42, 0.05);
+  --code-bg: #f4f7fb;
+  --code-text: #1e293b;
+  --code-text-dim: #4a5568;
 }
 
 html { scroll-behavior: smooth; }
+
+/* The nav is sticky, so an anchor jump would put the target underneath it.
+   Reserve the nav's height (plus breathing room) for anything that can be an
+   anchor target, which also covers cross-page links such as
+   docs/interface.html#variables and in-page ones like #installer. */
+[id] { scroll-margin-top: calc(var(--nav-h) + 1.25rem); }
 
 body {
   font-family: var(--font);
@@ -25,6 +70,7 @@ body {
   color: var(--text);
   line-height: 1.65;
   -webkit-font-smoothing: antialiased;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 a { color: var(--accent); text-decoration: none; }
@@ -63,21 +109,35 @@ a:hover { color: var(--accent-3); }
 }
 .btn--primary:hover { color: #fff; transform: translateY(-2px); }
 .btn--ghost {
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--ghost-bg);
   color: var(--text);
   border: 1.5px solid var(--border-2);
 }
-.btn--ghost:hover { color: var(--text); background: rgba(255, 255, 255, 0.1); }
+.btn--ghost:hover { color: var(--text); background: var(--ghost-bg-hover); }
 .btn--sm { padding: 0.4rem 0.95rem; font-size: 0.8rem; }
 
 .nav {
   position: sticky;
   top: 0;
   z-index: 50;
-  background: rgba(8, 12, 20, 0.86);
+  /* Reserved so the bar keeps its height before js/site.js renders the links. */
+  min-height: 64px;
+  background: var(--nav-bg);
   backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--border);
 }
+/* No-JS fallback inside <noscript>: a plain row that is always visible. */
+.nav__fallback {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.9rem;
+  margin-left: auto;
+  list-style: none;
+}
+.nav__fallback a { color: var(--muted); font-size: 0.9rem; font-weight: 500; }
+.nav__fallback a:hover { color: var(--text); }
+.nav__fallback .btn { color: var(--text); }
 .nav__inner {
   display: flex;
   align-items: center;
@@ -104,10 +164,15 @@ a:hover { color: var(--accent-3); }
 .nav__links {
   display: flex;
   align-items: center;
-  gap: 1.25rem;
+  /* Tight, but the bar carries eight items (four links, two off-site buttons,
+     the search switcher and the theme switcher) and must stay inside the
+     1080px content column. */
+  gap: 0.55rem;
   margin-left: auto;
   list-style: none;
 }
+/* The two off-site buttons sit tighter in the bar than a page CTA would. */
+.nav__links .btn--sm { padding-inline: 0.75rem; }
 .nav__links a {
   color: var(--muted);
   font-size: 0.9rem;
@@ -115,6 +180,65 @@ a:hover { color: var(--accent-3); }
 }
 .nav__links a:hover,
 .nav__links a.is-active { color: var(--text); }
+/* Nav items keep their intrinsic size. Shrinking them (or letting their labels
+   wrap) is what broke the bar: two-word entries folded onto a second line. */
+.nav__logo,
+.nav__links a { white-space: nowrap; }
+.nav__links > li { flex-shrink: 0; }
+
+/* Theme switcher (top right of the nav) */
+.nav__theme { display: flex; align-items: center; }
+.nav__search { display: flex; align-items: center; }
+.search-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  padding: 0;
+  border: 1.5px solid var(--border-2);
+  border-radius: 9px;
+  background: var(--ghost-bg);
+  color: var(--muted);
+  cursor: pointer;
+  transition: color 0.18s, border-color 0.18s, background 0.18s;
+}
+.search-toggle:hover { color: var(--text); border-color: var(--accent); }
+.search-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.search-toggle svg { width: 18px; height: 18px; display: block; }
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  padding: 0;
+  border: 1.5px solid var(--border-2);
+  border-radius: 9px;
+  background: var(--ghost-bg);
+  color: var(--muted);
+  cursor: pointer;
+  transition: color 0.18s, border-color 0.18s, background 0.18s;
+}
+.theme-toggle:hover { color: var(--text); border-color: var(--accent); }
+.theme-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.theme-toggle__icon {
+  width: 18px;
+  height: 18px;
+  display: block;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+/* Show the icon of the theme the click switches TO. */
+.theme-toggle__icon--moon { display: none; }
+[data-theme="light"] .theme-toggle__icon--sun { display: none; }
+[data-theme="light"] .theme-toggle__icon--moon { display: block; }
+
 .nav__hamburger {
   display: none;
   flex-direction: column;
@@ -273,7 +397,7 @@ td { color: var(--muted); }
 td:first-child { color: var(--text); white-space: nowrap; }
 
 .code-block {
-  background: #0b1220;
+  background: var(--code-bg);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   margin: 0.85rem 0 1.4rem;
@@ -309,7 +433,7 @@ td:first-child { color: var(--text); white-space: nowrap; }
   background: none;
   border: none;
   padding: 0;
-  color: #d6e4ff;
+  color: var(--code-text);
   line-height: 1.55;
 }
 
@@ -487,7 +611,112 @@ td:first-child { color: var(--text); white-space: nowrap; }
   display: block;
 }
 
-@media (max-width: 760px) {
+/* ---------- Documentation search ---------- */
+.search-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 12vh 1.25rem 2rem;
+  /* No backdrop-filter: a blurred full-screen layer forces the whole overlay
+     onto its own compositing layer, which made its contents repaint
+     unreliably. A denser plain scrim reads the same and costs nothing. */
+  background: rgba(4, 8, 15, 0.78);
+}
+.search-overlay[hidden] { display: none; }
+[data-theme="light"] .search-overlay { background: rgba(15, 23, 42, 0.42); }
+body.is-searching { overflow: hidden; }
+
+.search-dialog {
+  display: flex;
+  flex-direction: column;
+  width: min(680px, 100%);
+  max-height: 70vh;
+  overflow: hidden;
+  background: var(--surface);
+  border: 1px solid var(--border-2);
+  border-radius: var(--radius);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+}
+.search-field {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--border);
+}
+.search-field__icon { display: flex; color: var(--muted); }
+.search-field__icon svg { width: 18px; height: 18px; display: block; }
+.search-input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  background: none;
+  color: var(--text);
+  font: inherit;
+  font-size: 1rem;
+  outline: none;
+}
+.search-input::placeholder { color: var(--muted); }
+.search-kbd {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  color: var(--muted);
+  border: 1px solid var(--border-2);
+  border-radius: 5px;
+  padding: 0.15rem 0.4rem;
+}
+.search-results { overflow-y: auto; padding: 0.35rem; }
+.search-result {
+  display: block;
+  padding: 0.55rem 0.7rem;
+  border-radius: 8px;
+  color: var(--text);
+  text-decoration: none;
+}
+.search-result.is-active { background: var(--ghost-bg-hover); }
+.search-result:hover { color: var(--text); }
+.search-result__where {
+  display: block;
+  margin-bottom: 0.15rem;
+  font-size: 0.72rem;
+  color: var(--muted);
+}
+.search-result__sep { margin: 0 0.35rem; }
+.search-result__section { color: var(--text); font-weight: 600; }
+.search-result__text {
+  display: block;
+  font-size: 0.84rem;
+  line-height: 1.45;
+  color: var(--muted);
+}
+.search-result mark {
+  background: rgba(59, 130, 246, 0.3);
+  color: var(--text);
+  border-radius: 3px;
+  padding: 0 1px;
+}
+.search-empty {
+  margin: 0;
+  padding: 1.1rem 0.9rem;
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+.search-foot {
+  margin: 0;
+  padding: 0.5rem 0.9rem;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+
+/* The nav holds seven items (four links, two off-site buttons, the theme
+   switcher). The full bar needs ~1053px inside the 1080px container — and a
+   scrollbar eats ~15px — so it collapses below 1120px rather than spilling
+   past the content column or squeezing items onto a second line. */
+@media (max-width: 1120px) {
   .nav__hamburger { display: flex; }
   .nav__links {
     display: none;
@@ -498,11 +727,14 @@ td:first-child { color: var(--text); white-space: nowrap; }
     flex-direction: column;
     align-items: flex-start;
     padding: 1rem 1.25rem 1.25rem;
-    background: rgba(8, 12, 20, 0.97);
+    background: var(--nav-bg-solid);
     border-bottom: 1px solid var(--border);
     margin: 0;
   }
   .nav__links.is-open { display: flex; }
+}
+
+@media (max-width: 760px) {
   .hero__inner {
     grid-template-columns: 1fr;
     gap: 1.5rem;

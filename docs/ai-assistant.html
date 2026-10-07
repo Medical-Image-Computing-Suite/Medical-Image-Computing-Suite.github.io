@@ -13,32 +13,39 @@
   <link rel="icon" type="image/png" href="../icon/icon.png" />
   <link rel="apple-touch-icon" href="../icon/icon.png" />
   <meta property="og:image" content="https://medical-image-computing-suite.github.io/icon/logo.png" />
+  <script>
+    // Apply the saved theme before first paint, so a light-theme visitor never
+    // sees a flash of the dark theme while js/site.js is still loading.
+    (function () {
+      try {
+        var t = localStorage.getItem("medics-theme");
+        if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t);
+      } catch (e) { /* private mode: keep the dark default */ }
+    })();
+  </script>
+  <script src="../js/site.js" defer></script>
 </head>
 <body class="docs-body">
-  <nav class="nav" id="nav">
-  <div class="container nav__inner">
-    <a class="nav__logo" href="../index.html"><img src="../icon/icon.png" alt="" width="32" height="32" /><em>MedICS</em>Medical Image Computing Suite</a>
-    <button class="nav__hamburger" id="hamburger" aria-label="Open menu"><span></span><span></span><span></span></button>
-    <ul class="nav__links">
-      <li><a href="../index.html">Introduction</a></li>
-      <li><a href="../get-started.html">Get started</a></li>
-      <li><a href="../extensions.html">Extensions</a></li>
-      <li><a class="is-active" href="../document.html">Documents</a></li>
-      <li><a href="https://github.com/Medical-Image-Computing-Suite/MedICS-Community/wiki" target="_blank" rel="noopener">MedICS Wiki</a></li>
-      <li><a class="btn btn--ghost btn--sm" href="https://github.com/medical-image-computing-suite" target="_blank" rel="noopener">GitHub</a></li>
-    </ul>
-  </div>
-</nav>
+  <header class="nav" id="site-nav">
+    <noscript>
+      <div class="container nav__inner">
+        <a class="nav__logo" href="../index.html"><img src="../icon/icon.png" alt="" width="32" height="32" /><em>MedICS</em>Medical Image Computing Suite</a>
+        <ul class="nav__fallback">
+          <li><a href="../index.html">Introduction</a></li>
+          <li><a href="../get-started.html">Get started</a></li>
+          <li><a href="../extensions.html">Extensions</a></li>
+          <li><a href="../document.html">Documents</a></li>
+          <li><a class="btn btn--ghost btn--sm" href="https://github.com/Medical-Image-Computing-Suite/MedICS-Community/wiki" target="_blank" rel="noopener">MedICS Wiki</a></li>
+          <li><a class="btn btn--ghost btn--sm" href="https://github.com/medical-image-computing-suite" target="_blank" rel="noopener">GitHub</a></li>
+        </ul>
+      </div>
+    </noscript>
+  </header>
   <div class="docs-shell container">
     <aside class="docs-side">
-  <a class="docs-side__home" href="../document.html">&#8592; Documents home</a>
-  <div class="docs-side__title">On this page</div>
-  <nav><ul><li><a class="lvl-2" href="#ai-assistant">AI assistant</a></li><li><a class="lvl-3" href="#using-the-chat">Using the chat</a></li><li><a class="lvl-3" href="#what-it-is-good-at">What it is good at</a></li><li><a class="lvl-3" href="#configuration">Configuration</a></li></ul></nav>
-  <div class="docs-side__all">
-    <div class="docs-side__title">User guide</div>
-    <nav><div class="docs-side__title" style="margin-top:.85rem">Basics</div><ul><li><a href="interface.html">Interface &amp; components</a></li><li><a href="settings.html">Settings &amp; preferences</a></li></ul><div class="docs-side__title" style="margin-top:.85rem">Features</div><ul><li><a href="toolboxes.html">Toolboxes</a></li><li><a href="python-workspace.html">Python console &amp; workspace</a></li><li><a class="is-current" href="ai-assistant.html">AI assistant</a></li></ul></nav>
-  </div>
-</aside>
+      <div class="docs-side__title">Documentation</div>
+      <nav><div class="docs-side__group">Getting started</div><ul><li><a href="../document.html">Overview</a></li></ul><div class="docs-side__group">Basics</div><ul><li><a href="interface.html">Interface &amp; components</a></li><li><a href="settings.html">Settings &amp; preferences</a></li></ul><div class="docs-side__group">Features</div><ul><li><a href="toolboxes.html">Toolboxes</a></li><li><a href="python-workspace.html">Python console &amp; workspace</a></li><li><a class="is-current" href="ai-assistant.html">AI assistant</a></li></ul></nav>
+    </aside>
     <main class="docs-main">
       <header class="docs-hero">
         <div class="tag">Documents · Features</div>
@@ -55,6 +62,20 @@ back.</p>
 <p>Open the <strong>Agent chat</strong> panel from the <strong>View</strong> menu, type a request and send it. While the
 assistant works you can watch each step it takes. Actions that create or change data ask for
 your <strong>approval</strong> before they run.</p>
+<h3 id="the-agents-window">The Agents Window</h3>
+<p>The same assistant also opens in its own window (<strong>Ctrl+Shift+A</strong>, or
+<strong>View → Agents Window</strong>). Use it when you want a full-size conversation next to the main
+window instead of a docked panel, or when you are working across more than one screen. Each
+conversation is listed on the left, so you can keep several going and switch between them.</p>
+<div class="doc-screens">
+  <figure class="doc-figure">
+    <a href="../assets/img/components/agent_window.png" target="_blank" rel="noopener">
+      <img loading="lazy" src="../assets/img/components/agent_window.png" alt="The Agents Window" width="1395" height="1039" />
+    </a>
+    <figcaption><strong>The Agents Window.</strong> The assistant in a window of its own, with the
+    conversation list on the left and the transcript beside it.</figcaption>
+  </figure>
+</div>
 <h3 id="what-it-is-good-at">What it is good at</h3>
 <ul>
 <li>Answering questions about your images, tables and variables.</li>
@@ -65,9 +86,22 @@ your <strong>approval</strong> before they run.</p>
 <h3 id="configuration">Configuration</h3>
 <p>Choose the provider and model and enter your API key in <strong>Edit → Preferences → Chat</strong>. The
 assistant is optional — MedICS works fully without it.</p>
+<div class="doc-screens">
+  <figure class="doc-figure">
+    <a href="../assets/img/components/chat_agent_setting.png" target="_blank" rel="noopener">
+      <img loading="lazy" src="../assets/img/components/chat_agent_setting.png" alt="Chat settings — provider, model and API key" width="1050" height="1012" />
+    </a>
+    <figcaption><strong>Chat settings.</strong> Pick the provider and model, enter your API key, and
+    set the temperature and maximum tokens the assistant may use.</figcaption>
+  </figure>
+</div>
       </article>
       <nav class="docs-pager"><a class="prev" href="python-workspace.html"><span>&#8592; Previous</span>Python console &amp; workspace</a></nav>
     </main>
+    <aside class="docs-toc">
+      <div class="docs-toc__title">On this page</div>
+      <nav><ul><li><a class="lvl-2" href="#ai-assistant">AI assistant</a></li><li><a class="lvl-3" href="#using-the-chat">Using the chat</a></li><li><a class="lvl-3" href="#the-agents-window">The Agents Window</a></li><li><a class="lvl-3" href="#what-it-is-good-at">What it is good at</a></li><li><a class="lvl-3" href="#configuration">Configuration</a></li></ul></nav>
+    </aside>
   </div>
   <footer class="footer">
     <div class="container footer__inner">
@@ -75,6 +109,5 @@ assistant is optional — MedICS works fully without it.</p>
       <a href="../document.html">Documentation</a>
     </div>
   </footer>
-  <script src="../js/site.js"></script>
 </body>
 </html>

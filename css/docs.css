@@ -2,62 +2,77 @@
 
 .docs-shell {
   display: grid;
-  grid-template-columns: 260px minmax(0, 1fr);
+  grid-template-columns: 232px minmax(0, 1fr) 200px;
   gap: 2.5rem;
   align-items: start;
   padding-top: 2.25rem;
   padding-bottom: 3.5rem;
 }
+/* The three-column shell needs more room than the default content container. */
+.docs-shell.container { width: min(1440px, 100% - 3rem); }
 
-/* ---------- sidebar ---------- */
-.docs-side {
+/* ---------- side columns ---------- */
+/* Both side columns stick below the nav. They are deliberately flat — no card
+   or border — so the three columns read as one page, as they do in the VS Code
+   docs. The accent left-rule on an item is what marks the current entry. */
+.docs-side,
+.docs-toc {
   position: sticky;
-  top: 84px;
-  max-height: calc(100vh - 104px);
+  top: 88px;
+  max-height: calc(100vh - 112px);
   overflow-y: auto;
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  background: var(--surface);
-  padding: 1rem 1rem 1.2rem;
-  font-size: 0.86rem;
+  overscroll-behavior: contain;
 }
-.docs-side__title {
+.docs-side { font-size: 0.86rem; }
+.docs-toc { font-size: 0.8rem; }
+
+.docs-side__title,
+.docs-toc__title {
   display: block;
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+/* Group label inside the global nav (Basics, Features, …). */
+.docs-side__group {
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--accent-3);
   font-weight: 600;
-  margin-bottom: 0.6rem;
+  margin: 1.05rem 0 0.3rem;
 }
-.docs-side__home {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  color: var(--text);
-  font-weight: 600;
-  padding: 0.4rem 0.5rem;
-  border-radius: 8px;
-  background: rgba(59, 130, 246, 0.1);
-  border: 1px solid var(--border);
-  margin-bottom: 0.85rem;
-}
-.docs-side__home:hover { color: var(--text); border-color: var(--accent); }
-.docs-side nav ul { list-style: none; padding: 0; margin: 0; }
-.docs-side nav a {
+.docs-side nav ul,
+.docs-toc nav ul { list-style: none; padding: 0; margin: 0; }
+
+/* A left rule per item reads as a continuous guide down the column and turns
+   into the accent colour for the hovered / current entry. */
+.docs-side nav a,
+.docs-toc nav a {
   display: block;
   color: var(--muted);
-  padding: 0.28rem 0.5rem;
-  border-radius: 6px;
+  padding: 0.3rem 0.6rem;
   line-height: 1.4;
-  border-left: 2px solid transparent;
+  border-left: 2px solid var(--border);
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
 }
-.docs-side nav a:hover { color: var(--text); background: rgba(255, 255, 255, 0.04); }
-.docs-side nav a.lvl-3 { padding-left: 1.15rem; font-size: 0.82rem; }
-.docs-side nav a.is-current { color: var(--text); border-left-color: var(--accent); }
-.docs-side__all { margin-top: 1rem; border-top: 1px solid var(--border); padding-top: 0.85rem; }
-.docs-side__all ul { columns: 1; }
-.docs-side__all a { font-size: 0.81rem; }
+.docs-side nav a { font-size: 0.84rem; }
+.docs-toc nav a.lvl-3 { padding-left: 1.15rem; }
+.docs-side nav a:hover,
+.docs-toc nav a:hover {
+  color: var(--text);
+  border-left-color: var(--border-2);
+  background: var(--hover-tint);
+}
+.docs-side nav a.is-current,
+.docs-toc nav a.is-active {
+  color: var(--text);
+  border-left-color: var(--accent);
+  font-weight: 600;
+}
 
 /* ---------- main column ---------- */
 .docs-main { min-width: 0; }
@@ -106,7 +121,7 @@
 
 /* code + tables inside docs */
 .docs-content pre {
-  background: #0b1220;
+  background: var(--code-bg);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 1rem 1.1rem;
@@ -119,7 +134,7 @@
   background: none;
   border: none;
   padding: 0;
-  color: #d6e4ff;
+  color: var(--code-text);
   line-height: 1.55;
 }
 .docs-content :not(pre) > code {
@@ -129,7 +144,7 @@
   border: 1px solid var(--border);
   border-radius: 5px;
   padding: 0.08rem 0.35rem;
-  color: #cfe0ff;
+  color: var(--text);
   white-space: nowrap;
 }
 .docs-content table { width: 100%; border-collapse: collapse; font-size: 0.9rem; margin: 0.8rem 0 1.4rem; }
@@ -142,6 +157,16 @@
 /* ---------- screenshots ---------- */
 .doc-screens { display: grid; gap: 1rem; margin: 0 0 2rem; }
 .doc-screens--grid { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+/* Two panel screenshots side by side, kept close to their native size. */
+.doc-screens--pair {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  max-width: 520px;
+}
+/* A single narrow panel screenshot (a dock), kept close to its native size. */
+.doc-screens--narrow { max-width: 250px; }
+/* A single dialog screenshot: smaller than full width, still readable. */
+.doc-screens--medium { max-width: 460px; }
 .doc-figure {
   margin: 0;
   border: 1px solid var(--border);
@@ -199,7 +224,7 @@
   object-fit: contain;
   object-position: center;
   padding: 4px;
-  background: #0b1220;
+  background: var(--code-bg);
 }
 .panel-tile figcaption {
   padding: 0.4rem 0.6rem;
@@ -214,6 +239,8 @@
 
 @media (max-width: 560px) {
   .panel-tile img { height: 104px; }
+  /* A phone column is too narrow for two shots side by side. */
+  .doc-screens--pair { grid-template-columns: minmax(0, 1fr); max-width: 320px; }
 }
 
 /* ---------- hub cards ---------- */
@@ -247,7 +274,7 @@
 /* ---------- misc ---------- */
 .docs-content .anchor-note { font-size: 0.85rem; color: var(--muted); }
 .diagram {
-  background: #0b1220;
+  background: var(--code-bg);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 1.1rem 1.2rem;
@@ -255,15 +282,17 @@
   font-family: var(--mono);
   font-size: 0.78rem;
   line-height: 1.5;
-  color: #b9c8e6;
+  color: var(--code-text-dim);
   margin: 1rem 0 1.5rem;
 }
 
+/* Drop the in-page TOC once three columns would crowd the article. */
+@media (max-width: 1240px) {
+  .docs-shell { grid-template-columns: 232px minmax(0, 1fr); }
+  .docs-toc { display: none; }
+}
+/* Single column: the global nav moves above the article and stops sticking. */
 @media (max-width: 980px) {
   .docs-shell { grid-template-columns: 1fr; gap: 1.5rem; }
   .docs-side { position: static; max-height: none; }
-  .docs-side nav ul { columns: 2; }
-}
-@media (max-width: 560px) {
-  .docs-side nav ul { columns: 1; }
 }
