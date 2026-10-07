@@ -1,6 +1,8 @@
 # MedICS installer
 
-A single CLI script per platform. It downloads a portable Python 3.12 via [uv](https://docs.astral.sh/uv/), installs `medics` plus optional extensions, and creates launchers/shortcuts.
+A single CLI script per platform. It downloads a portable Python 3.11 via [uv](https://docs.astral.sh/uv/), installs `medics` plus optional extensions, and creates launchers/shortcuts.
+
+The published MedICS wheels target CPython 3.11, and the installer pins `medics` to the first token-free (Free mode) release so it never installs an older build that forces the startup token dialog.
 
 Python does not need to be installed first. A network connection is required.
 
@@ -19,9 +21,19 @@ chmod +x install.sh
 
 One-liners from [Get started](https://medical-image-computing-suite.github.io/get-started.html#installer):
 
+Command Prompt (cmd):
+
 ```bat
 curl -L -o "%TEMP%\medics-install.bat" https://medical-image-computing-suite.github.io/installer/install.bat && "%TEMP%\medics-install.bat"
 ```
+
+PowerShell:
+
+```powershell
+Invoke-WebRequest -Uri "https://medical-image-computing-suite.github.io/installer/install.bat" -OutFile "$env:TEMP\medics-install.bat"; & "$env:TEMP\medics-install.bat"
+```
+
+macOS and Linux:
 
 ```bash
 curl -fsSL https://medical-image-computing-suite.github.io/installer/install.sh | bash
@@ -33,6 +45,7 @@ curl -fsSL https://medical-image-computing-suite.github.io/installer/install.sh 
 --yes              Accept the license without prompting
 --dir PATH         Install directory
 --ext SPEC         all, none, numbers (1,2), or pip package names
+--python VERSION   Python version for the runtime (default: 3.11)
 --no-desktop       Skip Desktop shortcut
 --no-menu          Skip Start Menu / Applications / ~/.local/bin
 --no-launch        Do not launch MedICS when finished
@@ -44,6 +57,20 @@ Example:
 ```bash
 ./install.sh --yes --dir ~/Apps/MedICS --ext 1
 ```
+
+Choose a different Python runtime (default is 3.11):
+
+```bat
+install.bat --python 3.12
+```
+
+```bash
+./install.sh --python 3.12
+```
+
+MedICS wheels are built for CPython 3.11, so `--python` values other than 3.11
+may resolve to an older release that prompts for a token at startup. The
+installer warns when this is the case.
 
 ## What it installs
 

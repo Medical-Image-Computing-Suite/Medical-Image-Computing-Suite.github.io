@@ -10,7 +10,12 @@ exit /b %ERRORLEVEL%
 $ErrorActionPreference = "Stop"
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
-$PythonVersion = "3.12"
+$PythonVersion = "3.11"   # override with: --python 3.12
+# The Windows wheels on PyPI are built for CPython 3.11 only; a 3.12 runtime
+# resolves to the outdated 2026.7.9 release, which still forces the startup
+# token dialog.  Pin the first token-free (Free mode) release so the installer
+# never silently downgrades to it.  The pin is only applied on 3.11.
+$MinMedicsVersion = "202608250449"
 $LicenseUrl = "https://medical-image-computing-suite.github.io/license.html"
 $CatalogUrl = "https://medical-image-computing-suite.github.io/installer/catalog.json"
 $IconUrl = "https://medical-image-computing-suite.github.io/icon/icon.ico"
@@ -23,17 +28,25 @@ $DefaultExts = @(
 )
 
 function Get-Tokens {
+    # Split the raw command line ourselves instead of using PSParser.  PSParser
+    # parses a *leading* "--flag" as an operator plus a command name ("--yes"
+    # becomes "--", "yes"), which made every option fail when it came first.
+    # This splitter honours double quotes and keeps the leading dashes intact.
     $raw = $env:MEDICS_INSTALLER_ARGS
     if ([string]::IsNullOrWhiteSpace($raw)) { return @() }
-    $errs = $null
-    $toks = [System.Management.Automation.PSParser]::Tokenize($raw, [ref]$errs)
-    $out = @()
-    foreach ($t in $toks) {
-        if ($t.Type -in @("Command", "CommandArgument", "String", "Number")) {
-            $out += $t.Content
+    $out = New-Object System.Collections.Generic.List[string]
+    $sb = New-Object System.Text.StringBuilder
+    $inQuote = $false
+    foreach ($ch in $raw.ToCharArray()) {
+        if ($ch -eq '"') { $inQuote = -not $inQuote; continue }
+        if (-not $inQuote -and [char]::IsWhiteSpace($ch)) {
+            if ($sb.Length -gt 0) { $out.Add($sb.ToString()); [void]$sb.Clear() }
+            continue
         }
+        [void]$sb.Append($ch)
     }
-    return $out
+    if ($sb.Length -gt 0) { $out.Add($sb.ToString()) }
+    return $out.ToArray()
 }
 
 function Show-Help {
@@ -47,6 +60,7 @@ Options:
   --yes              Accept the license without prompting
   --dir PATH         Install directory
   --ext SPEC         Extensions: all, none, numbers (1,2), or pip package names
+  --python VERSION   Python version for the runtime (default: 3.11)
   --no-desktop       Skip Desktop shortcut
   --no-menu          Skip Start Menu shortcut
   --no-launch        Do not launch MedICS when finished
@@ -244,8 +258,28 @@ for ($i = 0; $i -lt $tokens.Count; $i++) {
             if ($i -ge $tokens.Count) { throw "--ext requires a value (all, none, 1,2, or package names)" }
             $extSpec = $tokens[$i]
         }
+        '^(--python)$' {
+            $i++
+            if ($i -ge $tokens.Count) { throw "--python requires a version (e.g. 3.11, 3.12)" }
+            $PythonVersion = $tokens[$i].Trim()
+        }
         default { throw "Unknown option: $($tokens[$i])  (use --help)" }
     }
+}
+
+if ($PythonVersion -notmatch '^\d+\.\d+(\.\d+)?$') {
+    throw "Invalid --python version '$PythonVersion'. Use a form like 3.11 or 3.12."
+}
+# Major.minor, so both "3.11" and "3.11.9" compare equal.
+$PythonMajorMinor = (($PythonVersion -split '\.')[0..1] -join '.')
+
+# The Windows wheels are published for CPython 3.11 only; every other
+# interpreter resolves to the older 2026.7.9 build, which still forces the
+# startup token dialog.  The lower bound can therefore only be honored on 3.11.
+if ($PythonMajorMinor -eq "3.11") {
+    $MedicsSpec = "medics>=$MinMedicsVersion"
+} else {
+    $MedicsSpec = "medics"
 }
 
 $localApp = $env:LOCALAPPDATA
@@ -287,7 +321,14 @@ $installDir = [IO.Path]::GetFullPath($installDir)
 
 $extensions = @(Get-Extensions)
 Write-Host ""
-Write-Host "Core package (always installed): medics"
+if ($PythonMajorMinor -eq "3.11") {
+    Write-Host "Core package (always installed): medics (>= $MinMedicsVersion)"
+} else {
+    Write-Host "Core package (always installed): medics"
+    Write-Host "Warning: Python $PythonVersion is not 3.11. Published MedICS wheels target" -ForegroundColor Yellow
+    Write-Host "CPython 3.11; on $PythonMajorMinor the installer may resolve to an older build that" -ForegroundColor Yellow
+    Write-Host "prompts for a token at startup. Use --python 3.11 for the current release." -ForegroundColor Yellow
+}
 Write-Host "Optional extensions:"
 if ($extensions.Count -eq 0) {
     Write-Host "  (none listed)"
@@ -309,7 +350,7 @@ if ($null -eq $extSpec) {
 }
 
 $packages = New-Object System.Collections.Generic.List[string]
-$packages.Add("medics") | Out-Null
+$packages.Add($MedicsSpec) | Out-Null
 $spec = if ($null -eq $extSpec) { "" } else { $extSpec.Trim() }
 if ($spec -and $spec -notmatch '^(none|no)$') {
     if ($spec -match '^(all|\*)$') {

@@ -59,10 +59,16 @@
         A network connection is required. No system Python is needed.
       </p>
 
-      <h3>Windows</h3>
+      <h3>Windows — Command Prompt (cmd)</h3>
       <div class="code-block">
         <div class="code-block__header"><span>cmd</span><button class="copy-btn" type="button">Copy</button></div>
         <pre><code>curl -L -o "%TEMP%\medics-install.bat" https://medical-image-computing-suite.github.io/installer/install.bat &amp;&amp; "%TEMP%\medics-install.bat"</code></pre>
+      </div>
+
+      <h3>Windows — PowerShell</h3>
+      <div class="code-block">
+        <div class="code-block__header"><span>powershell</span><button class="copy-btn" type="button">Copy</button></div>
+        <pre><code>Invoke-WebRequest -Uri "https://medical-image-computing-suite.github.io/installer/install.bat" -OutFile "$env:TEMP\medics-install.bat"; &amp; "$env:TEMP\medics-install.bat"</code></pre>
       </div>
 
       <h3>macOS and Linux</h3>

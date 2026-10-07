@@ -1,9 +1,13 @@
 #!/usr/bin/env bash
 # MedICS CLI installer for macOS and Linux.
-# Usage: ./install.sh [--yes] [--dir PATH] [--ext SPEC] [--no-desktop] [--no-menu] [--no-launch]
+# Usage: ./install.sh [--yes] [--dir PATH] [--ext SPEC] [--python VERSION] [--no-desktop] [--no-menu] [--no-launch]
 set -euo pipefail
 
-PYTHON_VERSION="3.12"
+PYTHON_VERSION="3.11"     # override with: --python 3.12
+# Published MedICS builds target CPython 3.11 and older releases forced the
+# startup token dialog.  Pin the first token-free (Free mode) release so the
+# installer never selects an older, token-prompting version.  Only applied on 3.11.
+MIN_MEDICS_VERSION="202608250449"
 LICENSE_URL="https://medical-image-computing-suite.github.io/license.html"
 CATALOG_URL="https://medical-image-computing-suite.github.io/installer/catalog.json"
 ICON_URL="https://medical-image-computing-suite.github.io/icon/icon.ico"
@@ -64,6 +68,7 @@ Options:
   --yes              Accept the license without prompting
   --dir PATH         Install directory
   --ext SPEC         Extensions: all, none, numbers (1,2), or pip package names
+  --python VERSION   Python version for the runtime (default: 3.11)
   --no-desktop       Skip Desktop shortcut / alias
   --no-menu          Skip Applications menu / ~/.local/bin
   --no-launch        Do not launch MedICS when finished
@@ -103,6 +108,11 @@ while [[ $# -gt 0 ]]; do
       ext_spec_set=1
       shift
       ;;
+    --python)
+      [[ $# -ge 2 ]] || { echo "--python requires a version (e.g. 3.11, 3.12)" >&2; exit 1; }
+      PYTHON_VERSION="$2"
+      shift
+      ;;
     --no-desktop) desktop=0 ;;
     --no-menu) menu=0 ;;
     --no-launch) launch=0 ;;
@@ -110,6 +120,22 @@ while [[ $# -gt 0 ]]; do
   esac
   shift
 done
+
+if ! [[ "$PYTHON_VERSION" =~ ^[0-9]+\.[0-9]+(\.[0-9]+)?$ ]]; then
+  echo "Invalid --python version '$PYTHON_VERSION'. Use a form like 3.11 or 3.12." >&2
+  exit 1
+fi
+# Major.minor, so both "3.11" and "3.11.9" compare equal.
+PYTHON_MAJOR_MINOR="$(printf '%s' "$PYTHON_VERSION" | cut -d. -f1,2)"
+
+# Published MedICS builds target CPython 3.11 and older releases forced the
+# startup token dialog.  The lower bound can therefore only be honored on 3.11;
+# other interpreters resolve to an older, token-prompting build.
+if [[ "$PYTHON_MAJOR_MINOR" == "3.11" ]]; then
+  MEDICS_SPEC="medics>=${MIN_MEDICS_VERSION}"
+else
+  MEDICS_SPEC="medics"
+fi
 
 echo
 echo "MedICS installer"
@@ -194,7 +220,16 @@ if [[ ${#ext_packages[@]} -eq 0 ]]; then
 fi
 
 echo
-echo "Core package (always installed): medics"
+if [[ "$PYTHON_MAJOR_MINOR" == "3.11" ]]; then
+  echo "Core package (always installed): medics (>= ${MIN_MEDICS_VERSION})"
+else
+  echo "Core package (always installed): medics"
+  {
+    echo "Warning: Python ${PYTHON_VERSION} is not 3.11. Published MedICS builds target"
+    echo "CPython 3.11; on ${PYTHON_MAJOR_MINOR} the installer may resolve to an older"
+    echo "build that prompts for a token at startup. Use --python 3.11 for the current release."
+  } >&2
+fi
 echo "Optional extensions:"
 if [[ ${#ext_packages[@]} -eq 0 ]]; then
   echo "  (none listed)"
@@ -221,7 +256,7 @@ if [[ "$ext_spec_set" -eq 0 ]]; then
   fi
 fi
 
-packages=("medics")
+packages=("$MEDICS_SPEC")
 if [[ -n "$ext_spec" && ! "$ext_spec" =~ ^(none|no)$ ]]; then
   if [[ "$ext_spec" =~ ^(all|\*)$ ]]; then
     packages+=("${ext_packages[@]}")
