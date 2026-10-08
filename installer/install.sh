@@ -340,7 +340,10 @@ export UV_LINK_MODE="copy"
 unset VIRTUAL_ENV || true
 
 echo "Installing Python ${PYTHON_VERSION}..."
-"$uv" python install "$PYTHON_VERSION"
+# --no-bin: the runtime venv is used directly, so uv's shim in ~/.local/bin is
+# never needed.  Skipping it also avoids uv failing to install that shim when a
+# non-uv-managed python is already there.
+"$uv" python install "$PYTHON_VERSION" --no-bin
 
 runtime="$install_dir/runtime"
 if [[ -d "$runtime" ]]; then

@@ -211,6 +211,92 @@ function Repair-Pythonw([string]$Runtime) {
     Write-Host "Warning: pythonw.exe is a console trampoline; the MedICS shortcut may show a terminal."
 }
 
+function Get-ProcessesUnder([string]$Root) {
+    # Windows keeps a running program's files locked, so a MedICS left open from
+    # a previous install blocks replacing the runtime.  Anything whose executable
+    # lives under $Root is a candidate: medics.exe, its runtime python, a
+    # JupyterLab or terminal child, and so on.
+    $prefix = [IO.Path]::GetFullPath($Root).TrimEnd('\') + '\'
+    # Typed as Process (not object): enumerating a List[object] inside @() throws
+    # "Argument types do not match" on Windows PowerShell 5.1.
+    $found = New-Object 'System.Collections.Generic.List[System.Diagnostics.Process]'
+    foreach ($proc in (Get-Process -ErrorAction SilentlyContinue)) {
+        try {
+            $exe = $proc.Path
+        } catch {
+            # Protected and system processes do not expose their path.
+            continue
+        }
+        if ($exe -and $exe.StartsWith($prefix, [StringComparison]::OrdinalIgnoreCase)) {
+            $found.Add($proc)
+        }
+    }
+    return $found.ToArray()
+}
+
+function Close-ProcessesUnder([string]$Root) {
+    # Returns $true once nothing runs from $Root, $false to abort the install.
+    $procs = @(Get-ProcessesUnder $Root)
+    if ($procs.Count -eq 0) { return $true }
+
+    Write-Host ""
+    Write-Host "MedICS is running from this folder, and its files are locked:" -ForegroundColor Yellow
+    foreach ($proc in $procs) {
+        Write-Host ("  {0} (PID {1})" -f $proc.ProcessName, $proc.Id)
+    }
+    if ($accept) {
+        # Non-interactive (--yes): never prompt, and never force-close an app that
+        # may hold unsaved work.  The caller reports the clear next step instead.
+        Write-Host "Re-run install.bat without --yes once it is closed." -ForegroundColor Yellow
+        return $false
+    }
+    if (-not (Read-YesNo "Close these processes and continue? Unsaved work will be lost." $true)) {
+        return $false
+    }
+    foreach ($proc in $procs) {
+        try {
+            Stop-Process -Id $proc.Id -Force -ErrorAction Stop
+        } catch {
+            Write-Host ("  Could not close {0} (PID {1}): {2}" -f $proc.ProcessName, $proc.Id, $_.Exception.Message) -ForegroundColor Yellow
+        }
+    }
+    # Give Windows a moment to release the file handles it closed with the process.
+    Start-Sleep -Milliseconds 800
+
+    $remaining = @(Get-ProcessesUnder $Root)
+    if ($remaining.Count -eq 0) { return $true }
+    Write-Host "Still running from this folder:" -ForegroundColor Yellow
+    foreach ($proc in $remaining) {
+        Write-Host ("  {0} (PID {1})" -f $proc.ProcessName, $proc.Id)
+    }
+    return $false
+}
+
+function Remove-OldRuntime([string]$Runtime) {
+    # A locked file can also be antivirus or Explorer holding it briefly, so a
+    # plain removal is retried before giving up with actionable advice.
+    for ($attempt = 1; $attempt -le 4; $attempt++) {
+        try {
+            Remove-Item -LiteralPath $Runtime -Recurse -Force -ErrorAction Stop
+            return
+        } catch {
+            if ($attempt -lt 4) {
+                Start-Sleep -Milliseconds 600
+                continue
+            }
+            Write-Host ""
+            Write-Host "Could not remove the previous runtime:" -ForegroundColor Red
+            Write-Host "  $Runtime"
+            Write-Host "  $($_.Exception.Message)"
+            Write-Host ""
+            Write-Host "Close MedICS, and any JupyterLab or Python window started from this" -ForegroundColor Yellow
+            Write-Host "install, then re-run install.bat.  Antivirus software can also hold" -ForegroundColor Yellow
+            Write-Host "these files briefly." -ForegroundColor Yellow
+            throw "Previous runtime is in use at $Runtime."
+        }
+    }
+}
+
 function Get-DesktopDir {
     try {
         $ws = New-Object -ComObject WScript.Shell
@@ -429,13 +515,19 @@ $env:UV_LINK_MODE = "copy"
 $env:VIRTUAL_ENV = ""
 
 Write-Host "Installing Python $PythonVersion..."
-& $uv python install $PythonVersion
+# --no-bin: the runtime venv is used directly, so uv's `python3.11.exe` shim in
+# ~/.local/bin is never needed.  Skipping it also avoids uv failing to install
+# that shim when a non-uv-managed python3.11.exe is already there.
+if (-not (Close-ProcessesUnder $installDir)) {
+    throw "MedICS is still running from $installDir. Close it and re-run install.bat."
+}
+& $uv python install $PythonVersion --no-bin
 if ($LASTEXITCODE) { throw "uv python install failed." }
 
 $runtime = Join-Path $installDir "runtime"
 if (Test-Path $runtime) {
     Write-Host "Removing previous runtime..."
-    Remove-Item -LiteralPath $runtime -Recurse -Force
+    Remove-OldRuntime $runtime
 }
 Write-Host "Creating virtual environment..."
 & $uv venv $runtime --python $PythonVersion
