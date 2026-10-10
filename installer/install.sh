@@ -165,10 +165,65 @@ fi
 # Major.minor, so both "3.11" and "3.11.9" compare equal.
 PYTHON_MAJOR_MINOR="$(printf '%s' "$PYTHON_VERSION" | cut -d. -f1,2)"
 
-# Published MedICS builds target CPython 3.11 and older releases forced the
-# startup token dialog.  The lower bound can therefore only be honored on 3.11;
-# other interpreters resolve to an older, token-prompting build.
-if [[ "$PYTHON_MAJOR_MINOR" == "3.11" ]]; then
+detect_medics_version() {
+  # The exact medics version uv will install here: the newest PyPI release that
+  # ships a wheel for this OS and interpreter.  Prints nothing when PyPI cannot
+  # be reached (or python3 is unavailable), so the caller can fall back.
+  local major_minor="$1"
+  command -v python3 >/dev/null 2>&1 || return 0
+  python3 - "$major_minor" <<'PY' 2>/dev/null || true
+import json, platform, re, sys, urllib.request
+
+major_minor = sys.argv[1]
+cp_tag = "cp" + major_minor.replace(".", "")
+
+system = platform.system()
+if system == "Darwin":
+    plat = re.compile(r"macosx")
+elif system == "Linux":
+    plat = re.compile(r"manylinux|musllinux|linux")
+else:
+    raise SystemExit(0)
+
+req = urllib.request.Request(
+    "https://pypi.org/pypi/medics/json",
+    headers={"User-Agent": "MedICS-Installer"},
+)
+try:
+    with urllib.request.urlopen(req, timeout=8) as resp:
+        data = json.load(resp)
+except Exception:
+    raise SystemExit(0)
+
+releases = []
+for version, files in (data.get("releases") or {}).items():
+    if not files:
+        continue
+    stamp = max((f.get("upload_time_iso_8601", "") for f in files), default="")
+    releases.append((stamp, version, files))
+
+for _stamp, version, files in sorted(releases, reverse=True):
+    for entry in files:
+        name = entry.get("filename", "")
+        if not name.endswith(".whl"):
+            continue
+        if cp_tag + "-" not in name and "py3-none-any" not in name and "py2.py3-none-any" not in name:
+            continue
+        if not plat.search(name):
+            continue
+        print(version)
+        raise SystemExit(0)
+PY
+}
+
+# Prefer the exact release uv will install (the newest PyPI build with a wheel
+# for this OS + interpreter).  Fall back to the pinned token-free floor when
+# PyPI is unreachable, so an offline install still avoids the older,
+# token-prompting build.
+MEDICS_VERSION="$(detect_medics_version "$PYTHON_MAJOR_MINOR" | head -n1)"
+if [[ -n "$MEDICS_VERSION" ]]; then
+  MEDICS_SPEC="medics==${MEDICS_VERSION}"
+elif [[ "$PYTHON_MAJOR_MINOR" == "3.11" ]]; then
   MEDICS_SPEC="medics>=${MIN_MEDICS_VERSION}"
 else
   MEDICS_SPEC="medics"
@@ -259,11 +314,7 @@ PY
   fi
 }
 
-echo
-if [[ "$PYTHON_MAJOR_MINOR" == "3.11" ]]; then
-  echo "Core package (always installed): medics (>= ${MIN_MEDICS_VERSION})"
-else
-  echo "Core package (always installed): medics"
+if [[ "$PYTHON_MAJOR_MINOR" != "3.11" ]]; then
   {
     echo "Warning: Python ${PYTHON_VERSION} is not 3.11. Published MedICS builds target"
     echo "CPython 3.11; on ${PYTHON_MAJOR_MINOR} the installer may resolve to an older"

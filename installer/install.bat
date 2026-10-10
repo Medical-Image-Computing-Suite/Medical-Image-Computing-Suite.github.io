@@ -158,6 +158,41 @@ function Get-Extensions {
     return $DefaultExts
 }
 
+function Get-MedicsInstallVersion([string]$MajorMinor) {
+    # The exact version uv will install: the newest medics release on PyPI that
+    # ships a wheel for this interpreter (CPython $MajorMinor) on Windows.
+    # Returns $null when PyPI is unreachable or nothing matches, so the caller
+    # can fall back to the pinned floor.
+    $cp = "cp" + ($MajorMinor -replace '\.', '')
+    try {
+        $data = Invoke-RestMethod -Uri "https://pypi.org/pypi/medics/json" -TimeoutSec 8
+    } catch {
+        return $null
+    }
+    if (-not $data.releases) { return $null }
+    $candidates = New-Object System.Collections.Generic.List[object]
+    foreach ($prop in $data.releases.PSObject.Properties) {
+        $files = @($prop.Value)
+        if ($files.Count -eq 0) { continue }
+        $stamp = (@($files | ForEach-Object { [string]$_.upload_time_iso_8601 }) |
+            Sort-Object -Descending | Select-Object -First 1)
+        $candidates.Add([pscustomobject]@{
+            Version = [string]$prop.Name
+            Stamp   = [string]$stamp
+            Files   = $files
+        }) | Out-Null
+    }
+    foreach ($rel in ($candidates | Sort-Object Stamp -Descending)) {
+        foreach ($file in $rel.Files) {
+            $name = [string]$file.filename
+            if ($name -notlike "*.whl") { continue }
+            if ($name -notlike "*win_amd64*") { continue }
+            if ($name -like "*$cp-*") { return $rel.Version }
+        }
+    }
+    return $null
+}
+
 function Find-Uv {
     $cmd = Get-Command uv -ErrorAction SilentlyContinue
     if ($cmd) { return $cmd.Source }
@@ -417,10 +452,13 @@ if ($PythonVersion -notmatch '^\d+\.\d+(\.\d+)?$') {
 # Major.minor, so both "3.11" and "3.11.9" compare equal.
 $PythonMajorMinor = (($PythonVersion -split '\.')[0..1] -join '.')
 
-# The Windows wheels are published for CPython 3.11 only; every other
-# interpreter resolves to the older 2026.7.9 build, which still forces the
-# startup token dialog.  The lower bound can therefore only be honored on 3.11.
-if ($PythonMajorMinor -eq "3.11") {
+# Resolve the exact release uv will install: the newest PyPI build that ships a
+# wheel for this interpreter on Windows.  Falls back to the pinned token-free
+# floor (3.11) or an unpinned spec when PyPI cannot be reached.
+$MedicsVersion = Get-MedicsInstallVersion $PythonMajorMinor
+if ($MedicsVersion) {
+    $MedicsSpec = "medics==$MedicsVersion"
+} elseif ($PythonMajorMinor -eq "3.11") {
     $MedicsSpec = "medics>=$MinMedicsVersion"
 } else {
     $MedicsSpec = "medics"
@@ -470,10 +508,7 @@ $installDir = [Environment]::ExpandEnvironmentVariables($installDir)
 $installDir = [IO.Path]::GetFullPath($installDir)
 
 Write-Host ""
-if ($PythonMajorMinor -eq "3.11") {
-    Write-Host "Core package (always installed): medics (>= $MinMedicsVersion)"
-} else {
-    Write-Host "Core package (always installed): medics"
+if ($PythonMajorMinor -ne "3.11") {
     Write-Host "Warning: Python $PythonVersion is not 3.11. Published MedICS wheels target" -ForegroundColor Yellow
     Write-Host "CPython 3.11; on $PythonMajorMinor the installer may resolve to an older build that" -ForegroundColor Yellow
     Write-Host "prompts for a token at startup. Use --python 3.11 for the current release." -ForegroundColor Yellow
