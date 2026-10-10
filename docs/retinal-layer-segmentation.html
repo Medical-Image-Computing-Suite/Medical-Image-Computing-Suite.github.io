@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Retinal Layer Segmentation — MedICS Documentation</title>
+  <meta name="description" content="User guide for the MedICS Retinal Layer Segmentation extension: OCT/OCTA AI segmentation, layer editing, interpolation, 3-D views and export." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/docs.css" />
+  <link rel="icon" href="../icon/icon.ico" sizes="any" />
+  <link rel="icon" type="image/png" href="../icon/icon.png" />
+  <link rel="apple-touch-icon" href="../icon/icon.png" />
+  <meta property="og:image" content="https://medical-image-computing-suite.github.io/icon/logo.png" />
+  <script>
+    // Apply the saved theme before first paint, so a light-theme visitor never
+    // sees a flash of the dark theme while js/site.js is still loading.
+    (function () {
+      try {
+        var t = localStorage.getItem("medics-theme");
+        if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t);
+      } catch (e) { /* private mode: keep the dark default */ }
+    })();
+  </script>
+  <script src="../js/site.js" defer></script>
+<style id="gl-design-system-variables">
+:root { --bg: #080c14; --bg-alt: #0d1220; --surface: #111827; --surface-2: #1a2236; --border: rgba(255, 255, 255, 0.08); --border-2: rgba(255, 255, 255, 0.14); --accent: #3b82f6; --accent-2: #8b5cf6; --accent-3: #06b6d4; --text: #e2e8f0; --muted: #8b99b5; --nav-bg: rgba(8, 12, 20, 0.86); --nav-bg-solid: rgba(8, 12, 20, 0.97); --ghost-bg: rgba(255, 255, 255, 0.05); --ghost-bg-hover: rgba(255, 255, 255, 0.1); --hover-tint: rgba(255, 255, 255, 0.04); --code-bg: #0b1220; --code-text: #d6e4ff; --code-text-dim: #b9c8e6; --font: "Inter", system-ui, sans-serif; --mono: "JetBrains Mono", "Fira Code", ui-monospace, monospace; --radius: 12px; --nav-h: 64px; }
+</style>
+</head>
+<body class="docs-body">
+  <header class="nav" id="site-nav">
+    <noscript>
+      <div class="container nav__inner">
+        <a class="nav__logo" href="../index.html"><img src="../icon/icon.png" alt="" width="32" height="32" /><em>MedICS</em>Medical Image Computing Suite</a>
+        <ul class="nav__fallback">
+          <li><a href="../index.html">Introduction</a></li>
+          <li><a href="../get-started.html">Get started</a></li>
+          <li><a href="../extensions.html">Extensions</a></li>
+          <li><a href="../document.html">Documents</a></li>
+          <li><a class="btn btn--ghost btn--sm" href="https://github.com/Medical-Image-Computing-Suite/MedICS-Community/wiki" target="_blank" rel="noopener">MedICS Wiki</a></li>
+          <li><a class="btn btn--ghost btn--sm" href="https://github.com/medical-image-computing-suite" target="_blank" rel="noopener">GitHub</a></li>
+        </ul>
+      </div>
+    </noscript>
+  </header>
+  <div class="docs-shell container">
+    <aside class="docs-side">
+      <div class="docs-side__title">Documentation</div>
+      <nav><div class="docs-side__group">Getting started</div><ul><li><a href="../document.html">Overview</a></li></ul><div class="docs-side__group">Basics</div><ul><li><a href="interface.html">Interface &amp; components</a></li><li><a href="settings.html">Settings &amp; preferences</a></li></ul><div class="docs-side__group">Features</div><ul><li><a href="toolboxes.html">Toolboxes</a></li><li><a href="python-workspace.html">Python console &amp; workspace</a></li><li><a href="ai-assistant.html">AI assistant</a></li></ul><div class="docs-side__group">Official Extensions</div><ul><li><a class="is-current" href="retinal-layer-segmentation.html">Retinal Layer Segmentation</a></li></ul></nav>
+    </aside>
+    <main class="docs-main">
+      <header class="docs-hero">
+        <div class="tag">Documents · Official Extensions</div>
+        <h1>Retinal Layer Segmentation</h1>
+        <p>AI segmentation of retinal layers in OCT/OCTA volumes, detect the layer boundaries,
+        review and correct them, interpolate across sparse B-scans, and export the result.</p>
+      </header>
+      <article class="docs-content">
+<h2 id="overview">Overview</h2>
+<p><strong>Retinal Layer Segmentation</strong> runs on OCT/OCTA volume for segmenting
+retina. It runs a deep-learning model on every B-scan, detects the retinal layer boundaries,
+reconstructs them into smooth curves, and builds a 3-D view of the
+layers across the volume. Everything runs locally. Your data never leave the machine.</p>
+<p>The extension opens its own window, titled <strong>RetinalLayerSegmentation</strong>.</p>
+<div class="doc-screens"><figure class="doc-figure"><a href="../assets/img/extensions/retinal-layer-segmentation/mainwindow.png" target="_blank" rel="noopener"><img loading="lazy" src="../assets/img/extensions/retinal-layer-segmentation/mainwindow.png" alt="Retinal Layer Segmentation. A data source and control panel on the left, and four linked views on the right."></a><figcaption><strong>Retinal Layer Segmentation.</strong> A data source and control panel on the left, and four linked views on the right.</figcaption></figure></div>
+
+<h3 id="what-you-can-do">What you can do</h3>
+<ul>
+<li>Load OCT and OCTA volumes, load any previously saved segmentation.</li>
+<li>Segment the retina with one click, on the GPU if available.</li>
+<li>Review the detected boundaries, show or hide individual layers, and correct any boundary by hand.</li>
+<li>Interpolate the segmentation across sparse B-scans to fill the whole volume.</li>
+<li>Inspect the result as B-scans, en-face projections and a 3-D surface.</li>
+<li>Send the curves and masks back to the MedICS workspace, or save them to files.</li>
+</ul>
+
+<h2 id="requirements">Requirements</h2>
+<ul>
+<li>MedICS, installed and running.</li>
+<li>GPU is required for accelate AI retinal layer segmentation.</li>
+</ul>
+
+<h2 id="install">Install</h2>
+<p>Install the extension from inside MedICS, the <strong>Settings-&gt; Extension</strong>.</p>
+<div class="steps">
+  <div class="step"><h4 id="install-open-manager">Open the Extension Manager</h4><p>In MedICS, open
+  <strong>Extensions → Manager…</strong> from the menu bar.</p></div>
+  <div class="step"><h4 id="install-find">Find the extension</h4><p>Scroll the list to <strong>Retinal Layer Segmentation</strong>.</p></div>
+  <div class="step"><h4 id="install-click">Install it</h4><p>Select the extension and click
+  <strong>Install</strong>, then wait for the download to finish.</p></div>
+  <div class="step"><h4 id="install-enable">Enable it</h4><p>If it is not already enabled, click
+  <strong>Load</strong>. The extension then appears under the <strong>Extensions</strong> menu, and show on the <strong style="color: rgb(226, 232, 240); font-size: 14.72px;">Activity Bar</strong><span style="font-size: 14.72px;">.</span></p></div>
+  <div class="step"><h4 id="install-first-run">First run</h4><p>Open <strong>Retinal Layer Segmentation</strong>. Click the icon shown&nbsp;<span style="font-size: 14.72px;">on the </span><strong style="color: rgb(226, 232, 240); font-size: 14.72px;">Activity Bar</strong><span style="font-size: 14.72px;">.</span></p></div>
+</div>
+
+<h2 id="quick-start">Quick start</h2>
+<div class="steps">
+  <div class="step"><h4 id="step-open-the-extension">Open the extension</h4><p>From the <strong>Extensions</strong> menu or&nbsp;<strong>Activity Bar</strong>&nbsp;, open
+  <strong>Retinal Layer Segmentation</strong>. The RetinalLayerSegmentation opens.</p></div>
+  <div class="step"><h4 id="step-load-data">Load data</h4><p>Option 1: On the <strong>File</strong> tab pick your OCT volume (and
+  optionally OCTA), then click <strong>Load Data</strong> — or drag files onto the window.<div>Option 2: Drag the file from System File Explorer to extension window.</div><div>Option 3: Drag the loaded variable in&nbsp;<strong style="color: rgb(226, 232, 240); font-size: 14.72px;">Workspace (ws)&nbsp;</strong>to extension window</div></p></div>
+  <div class="step"><h4 id="step-segment">Segment</h4><p>Click <strong>Run AI Segmentation</strong>. Adjust <strong style="color: rgb(226, 232, 240); font-size: 14.72px;">ROI</strong>&nbsp;to make sure retinal tissue included inside of&nbsp;<strong style="color: rgb(226, 232, 240); font-size: 14.72px;">ROI</strong><span style="font-size: 14.72px;"></span>. Choose the compute device if you want to run other divice.</p></div>
+  <div class="step" style="position: absolute; left: 362px; width: 928px; height: 83.8594px;"><h4 id="step-review-and-refine">Review &amp; refine</h4><p>Hide or show layers, and use the corrector to fix
+  any boundary.</p></div>
+  <div class="step"><h4 id="step-save">Save</h4><p>Use <strong>Save to WS</strong> to send results to the MedICS
+  workspace, or <strong>Save</strong> to write files.</p></div>
+</div>
+
+<h2 id="window">The Retinal Layer Segmentation window</h2>
+<p>The window has two areas. The <strong>left panel</strong> holds everything you operate; the
+<strong>right side</strong> shows four linked views of the data.</p>
+<div class="doc-screens"><figure class="doc-figure"><a href="../assets/img/extensions/retinal-layer-segmentation/mainwindow_with_oct.png" target="_blank" rel="noopener"><img loading="lazy" src="../assets/img/extensions/retinal-layer-segmentation/mainwindow_with_oct.png" alt="Loaded volume. An OCT volume loaded and segmented; the four views show the corresponding frames."></a><figcaption><strong>Loaded volume.</strong> An OCT volume loaded and segmented; the four views show the corresponding frames.</figcaption></figure></div>
+
+<h2 id="data-source">Data source</h2>
+<p>The top of the left panel loads input data. It has two tabs.</p>
+<div class="doc-screens doc-screens--medium"><figure class="doc-figure"><a href="../assets/img/extensions/retinal-layer-segmentation/data-source.png" target="_blank" rel="noopener"><img loading="lazy" src="../assets/img/extensions/retinal-layer-segmentation/data-source.png" alt="Data source. The File and Save to WS tabs at the top of the left panel."></a><figcaption><strong>Data source.</strong> The File and Save to WS tabs at the top of the left panel.</figcaption></figure></div>
+<div class="doc-screens doc-screens--medium"><figure class="doc-figure"><a href="../assets/img/extensions/retinal-layer-segmentation/gif/data-source-tabs.gif" target="_blank" rel="noopener"><img loading="lazy" src="../assets/img/extensions/retinal-layer-segmentation/gif/data-source-tabs.gif" alt="Switching tabs between File (load) and Save to WS (transfer)."></a><figcaption><strong>Switching tabs</strong> between <em>File</em> (load) and <em>Save to WS</em> (transfer).</figcaption></figure></div>
+
+<h3 id="file-tab">File tab</h3>
+<p>Choose a file for each input with its folder button, or type the path, then click
+<strong>Load Data</strong> to read them together.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Field</th><th>What it loads</th><th>Formats</th></tr></thead>
+<tbody>
+<tr><td>OCT</td><td>The OCT volume (B-scans)</td><td><code>.foct</code>, <code>.oct</code>, <code>.dcm</code>, <code>.mat</code>, <code>.tif</code>/<code>.tiff</code></td></tr>
+<tr><td>OCTA</td><td>An optional OCTA (angiography) volume, co-registered with the OCT</td><td><code>.ssada</code>, <code>.octa</code>, <code>.dcm</code>, <code>.mat</code>, <code>.tif</code>/<code>.tiff</code></td></tr>
+<tr><td>Segment</td><td>A previous segmentation (layer curves)</td><td><code>.json</code>, <code>.dcm</code>, <code>.mat</code>, <code>.med</code></td></tr>
+</tbody></table></div>
+<ul>
+<li><strong>OCTA checkbox</strong> — uncheck it to load an OCT-only dataset.</li>
+<li><strong>setting…</strong> — opens <em>Load Data Settings</em>, where you can review, assign and
+manage the loader functions used for each data type.</li>
+<li><strong>Load Data</strong> — reads everything selected at once.</li>
+</ul>
+<div class="doc-screens doc-screens--medium"><figure class="doc-figure"><a href="../assets/img/extensions/retinal-layer-segmentation/gif/octa-load-toggle.gif" target="_blank" rel="noopener"><img loading="lazy" src="../assets/img/extensions/retinal-layer-segmentation/gif/octa-load-toggle.gif" alt="Toggling the OCTA checkbox decides whether OCTA data is loaded with the OCT."></a><figcaption>Toggling the <strong>OCTA</strong> checkbox decides whether OCTA data is loaded with the OCT.</figcaption></figure></div>
+
+<h3 id="save-to-ws-tab">Save to WS tab</h3>
+<p>Transfer what is currently loaded back into the MedICS workspace under the names shown. Edit a
+name if you want a different one, then click the <strong>&gt;&gt;</strong> button in that row.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Row</th><th>Transfers</th><th>Default name</th></tr></thead>
+<tbody>
+<tr><td>OCT</td><td>The loaded OCT volume</td><td><code>oct_data</code></td></tr>
+<tr><td>OCTA</td><td>The loaded OCTA volume</td><td><code>octa_data</code></td></tr>
+<tr><td>Segment</td><td>The segmentation (curves and fluid mask)</td><td><code>seg_data</code></td></tr>
+</tbody></table></div>
+
+<h3 id="dragdrop">Drag and drop</h3>
+<p>Drop OCT, OCTA or segmentation files anywhere on the window. Files are matched by their name
+and routed to the right input automatically; you can also drag a variable out of the MedICS
+<strong>Variables</strong> panel and drop it on the window to load it.</p>
+
+<h2 id="frame">Frame &amp; resolution</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>Control</th><th>What it does</th></tr></thead>
+<tbody>
+<tr><td>Frame</td><td>The B-scan currently shown. Type a number or use the arrows to move through the volume; every view follows.</td></tr>
+<tr><td>/ total</td><td>Read-only total number of frames in the loaded volume.</td></tr>
+<tr><td>Upate data resolution</td><td>Opens a helper to set or correct the physical resolution (pixel size, scan width/height/depth) so measurements and the 3-D view are to scale. Useful when combining volumes acquired at different scales.</td></tr>
+</tbody></table></div>
+
+<h2 id="roi">Region of interest</h2>
+<p>Restrict processing to a vertical band of each B-scan — this speeds segmentation up and avoids
+the empty space above and below the retina.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Control</th><th>What it does</th></tr></thead>
+<tbody>
+<tr><td>ROI top / bottom</td><td>The first and last row (in pixels) that the segmentation will use.</td></tr>
+<tr><td>Auto</td><td>Estimates the retinal band automatically from the loaded OCT and fills in the values.</td></tr>
+</tbody></table></div>
+
+<h2 id="segmentation">Segmentation controls</h2>
+<p>These controls drive the AI model and the manual refinement. They sit below the data and
+preprocessing groups.</p>
+<div class="doc-screens doc-screens--medium"><figure class="doc-figure"><a href="../assets/img/extensions/retinal-layer-segmentation/ai-controls.png" target="_blank" rel="noopener"><img loading="lazy" src="../assets/img/extensions/retinal-layer-segmentation/ai-controls.png" alt="Segmentation controls. Run AI Segmentation, sparse mode, device, corrector, interpolation and save."></a><figcaption><strong>Segmentation controls.</strong> Run AI Segmentation, sparse mode, device, corrector, interpolation and save.</figcaption></figure></div>
+
+<h3 id="run-ai">Run AI Segmentation</h3>
+<p>Runs the deep-learning model on every B-scan and fills in the layer boundaries. If a GPU device
+is available you are asked which one to use; otherwise it runs on the CPU. Progress and any
+errors are reported in the <a href="#status-bar">status bar</a>.</p>
+
+<h3 id="sparse">Sparse data mode</h3>
+<p>Turn this on for <em>sparse</em> OCT data — scans where only some B-scans were acquired. The
+model segments only the acquired frames, and you fill the gaps with
+<a href="#interp">interpolation</a>. It also keeps memory use down on large volumes.</p>
+
+<h3 id="device">Device</h3>
+<p>Chooses how the model runs. <strong>AUTO</strong> picks the best available device; named
+entries are the GPUs found on the machine; <strong>CPU</strong> always works. If a GPU fails, the
+extension falls back to the CPU automatically.</p>
+
+<h3 id="corrector">Corrector</h3>
+<p>Selects the manual editing tool for a boundary. Pick the boundary by clicking it in the
+B-Frame&nbsp;B view, then edit it with the chosen tool.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Mode</th><th>How you edit</th></tr></thead>
+<tbody>
+<tr><td>None</td><td>No manual editing — review only.</td></tr>
+<tr><td>Liner</td><td>Draw straight segments by clicking along the boundary.</td></tr>
+<tr><td>Livewire</td><td>Click once and the tool snaps to the strongest edge between clicks.</td></tr>
+<tr><td>Anchors</td><td>Place anchor points; the boundary is fitted smoothly through them.</td></tr>
+</tbody></table></div>
+<div class="doc-screens doc-screens--medium"><figure class="doc-figure"><a href="../assets/img/extensions/retinal-layer-segmentation/gif/corrector-modes.gif" target="_blank" rel="noopener"><img loading="lazy" src="../assets/img/extensions/retinal-layer-segmentation/gif/corrector-modes.gif" alt="Choosing a corrector tool: None, Liner, Livewire, Anchors."></a><figcaption>Choosing a <strong>corrector</strong> tool: None, Liner, Livewire, Anchors.</figcaption></figure></div>
+
+<h3 id="interp">Interpolation</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>Control</th><th>What it does</th></tr></thead>
+<tbody>
+<tr><td>Interpolation Step</td><td>How far apart the segmented key frames are (minimum 2). Used when filling a sparse volume.</td></tr>
+<tr><td>Interpolation</td><td>Turns interpolation on or off.</td></tr>
+<tr><td>Restart Interplation</td><td>Clears the interpolation and recomputes it from the current boundaries.</td></tr>
+</tbody></table></div>
+
+<h3 id="keep-fluid">Keep Fluid volume</h3>
+<p>Keeps the detected intraretinal fluid mask when recomputing, instead of discarding it.</p>
+
+<h3 id="save-btn">Save</h3>
+<p>Saves the current segmentation to a file (curves and, optionally, the fluid mask). To send the
+result to the MedICS workspace instead, use the <strong>Save to WS</strong> tab.</p>
+
+<h2 id="layers">Layer boundaries</h2>
+<p>The <strong>Layer boundaries</strong> group lists every boundary the model can detect. Tick a
+box to show and export that boundary; use the small dropdown next to it to choose how it is drawn
+(dashed or solid line). <strong>Select All</strong> toggles every boundary at once.</p>
+<div class="doc-screens doc-screens--medium"><figure class="doc-figure"><a href="../assets/img/extensions/retinal-layer-segmentation/layer-boundaries.png" target="_blank" rel="noopener"><img loading="lazy" src="../assets/img/extensions/retinal-layer-segmentation/layer-boundaries.png" alt="Layer boundaries. Each boundary has a visibility checkbox and a line-style dropdown; Select All is at the bottom."></a><figcaption><strong>Layer boundaries.</strong> Each boundary has a visibility checkbox and a line-style dropdown; Select All is at the bottom.</figcaption></figure></div>
+<div class="doc-screens doc-screens--medium"><figure class="doc-figure"><a href="../assets/img/extensions/retinal-layer-segmentation/gif/layer-visibility.gif" target="_blank" rel="noopener"><img loading="lazy" src="../assets/img/extensions/retinal-layer-segmentation/gif/layer-visibility.gif" alt="Showing and hiding individual boundaries, and Select All."></a><figcaption>Showing and hiding individual boundaries, and <strong>Select All</strong>.</figcaption></figure></div>
+<div class="table-wrap"><table>
+<thead><tr><th>#</th><th>Boundary</th><th>Default</th><th>Notes</th></tr></thead>
+<tbody><tr><td>0</td><td><strong>PVD</strong></td><td>Off</td><td>Listed for completeness; not produced by the current model.</td></tr><tr><td>1</td><td><strong>ILM</strong></td><td>On</td><td>Inner limiting membrane.</td></tr><tr><td>2</td><td><strong>NFL/GCL</strong></td><td>On</td><td>Nerve fibre layer / ganglion cell layer.</td></tr><tr><td>3</td><td><strong>GCL/IPL</strong></td><td>Off</td><td>Listed for completeness; not produced by the current model.</td></tr><tr><td>4</td><td><strong>IPL/INL</strong></td><td>On</td><td>Inner plexiform / inner nuclear layer.</td></tr><tr><td>5</td><td><strong>INL/OPL</strong></td><td>On</td><td>Inner nuclear / outer plexiform layer.</td></tr><tr><td>6</td><td><strong>OPL/ONL</strong></td><td>On</td><td>Outer plexiform / outer nuclear layer.</td></tr><tr><td>7</td><td><strong>ELM</strong></td><td>Off</td><td>Listed for completeness; not produced by the current model.</td></tr><tr><td>8</td><td><strong>EZ</strong></td><td>On</td><td>Ellipsoid zone.</td></tr><tr><td>9</td><td><strong>EZ/IZ</strong></td><td>On</td><td>Ellipsoid zone / interdigitation zone.</td></tr><tr><td>10</td><td><strong>IZ/RPE</strong></td><td>Off</td><td>Listed for completeness; not produced by the current model.</td></tr><tr><td>11</td><td><strong>RPE/BM</strong></td><td>On</td><td>Retinal pigment epithelium / Bruch's membrane.</td></tr><tr><td>12</td><td><strong>SAT/HAL</strong></td><td>Off</td><td>Listed for completeness; not produced by the current model.</td></tr><tr><td>13</td><td><strong>CHOROID</strong></td><td>On</td><td>Choroid.</td></tr></tbody>
+</table></div>
+<p class="anchor-note">A few boundaries are listed for completeness but are not produced by the
+current model; enabling them does not add a curve. The remaining boundaries are detected
+automatically.</p>
+
+<h2 id="views">The views</h2>
+<p>The right side is split into four linked views. Moving the frame — or picking a point — keeps
+them in sync.</p>
+<div class="doc-screens doc-screens--grid"><figure class="doc-figure"><a href="../assets/img/extensions/retinal-layer-segmentation/views_main.png" target="_blank" rel="noopener"><img loading="lazy" src="../assets/img/extensions/retinal-layer-segmentation/views_main.png" alt="Left B-Frame and Right B-Frame. The same B-scan shown with the layer curves overlaid; Right B-Frame is the editable one."></a><figcaption><strong>Left B-Frame and Right B-Frame.</strong> The same B-scan shown with the layer curves overlaid; Right B-Frame is the editable one.</figcaption></figure><figure class="doc-figure"><a href="../assets/img/extensions/retinal-layer-segmentation/views_oct.png" target="_blank" rel="noopener"><img loading="lazy" src="../assets/img/extensions/retinal-layer-segmentation/views_oct.png" alt="En-face and 3-D. An en-face projection of the layers, and an interactive 3-D surface of the segmented volume."></a><figcaption><strong>En-face and 3-D.</strong> An en-face projection of the layers, and an interactive 3-D surface of the segmented volume.</figcaption></figure></div>
+<div class="table-wrap"><table>
+<thead><tr><th>View</th><th>Shows</th></tr></thead>
+<tbody>
+<tr><td>Left B-Frame</td><td>A single B-scan with all visible layer curves drawn over it.</td></tr>
+<tr><td>Right B-Frame</td><td>The editable B-scan — the corrector tools work here.</td></tr>
+<tr><td>En-face</td><td>A top-down projection. The <strong>Layer / OCT / OCTA</strong> button cycles the projection, and the neighbouring dropdown picks the slab or layer to project.</td></tr>
+<tr><td>3-D</td><td>An interactive 3-D surface reconstruction of the layers. Rotate, zoom and pan; clicking the surface jumps the other views to that location.</td></tr>
+</tbody></table></div>
+
+<h3 id="view-toolbar">View toolbar</h3>
+<p>Each view has a small toolbar. Hover a button to see what it does.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Button</th><th>Action</th></tr></thead>
+<tbody>
+<tr><td>Hide Curves / Show Curves</td><td>Toggle the layer curves over the B-Frame image.</td></tr>
+<tr><td>Fast / Slow Scan View</td><td>Switch the interpretation of the second Left B-Framexis between fast-scan and slow-scan, which changes how the two B-frames and the en-face view relate.</td></tr>
+<tr><td>Transpose ON / OFF</td><td>Swap the horizontal and vertical axes of the image views.</td></tr>
+<tr><td>Layout</td><td>Stack the B-frames or place them side by side.</td></tr>
+<tr><td>Reset</td><td>Reset the camera / zoom of the view.</td></tr>
+<tr><td>Collapse</td><td>Hide the left or right side so a view can fill the window.</td></tr>
+</tbody></table></div>
+
+<h2 id="status-bar">Status bar</h2>
+<p>The bar along the bottom reports where the pointer is and what the data is.</p>
+<div class="doc-screens"><figure class="doc-figure"><a href="../assets/img/extensions/retinal-layer-segmentation/status-bar_oct.png" target="_blank" rel="noopener"><img loading="lazy" src="../assets/img/extensions/retinal-layer-segmentation/status-bar_oct.png" alt="Status bar. Pointer position, pixel value under the pointer, the volume shape, and its dtype."></a><figcaption><strong>Status bar.</strong> Pointer position, pixel value under the pointer, the volume shape, and its dtype.</figcaption></figure></div>
+<div class="table-wrap"><table>
+<thead><tr><th>Readout</th><th>Meaning</th></tr></thead>
+<tbody>
+<tr><td>Pointer position</td><td>Where the pointer is in the hovered image, in data coordinates.</td></tr>
+<tr><td>index</td><td>The pixel value under the pointer.</td></tr>
+<tr><td>Shape</td><td>The loaded volume's shape (frames × rows × columns); shows <em>No data loaded</em> before you load anything.</td></tr>
+<tr><td>Dtype</td><td>The volume's data type.</td></tr>
+</tbody></table></div>
+<p>One-off messages — loading, saving, warnings — also appear here.</p>
+
+<h2 id="keyboard">Keyboard shortcuts</h2>
+<p>The window has no menu bar; these are the keys you can use while working.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Keys</th><th>Action</th></tr></thead>
+<tbody>
+<tr><td><kbd>↑</kbd> / <kbd>↓</kbd></td><td>Previous / next B-scan.</td></tr>
+<tr><td><kbd>←</kbd> / <kbd>→</kbd></td><td>Jump ten frames back / forward in the main window; in the layer view, jump by the current Interpolation Step.</td></tr>
+<tr><td><kbd>Ctrl</kbd> (hold)</td><td>With the pointer over a view in Slow Scan view, moving the pointer scrubs through the volume (see below).</td></tr>
+</tbody></table></div>
+
+<h2 id="mouse">Mouse &amp; interaction</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>Action</th><th>Result</th></tr></thead>
+<tbody>
+<tr><td>Move over a B-frame or en-face view</td><td>Updates the pointer readouts in the status bar.</td></tr>
+<tr><td><kbd>Ctrl</kbd> + move in a B-frame (Slow Scan view)</td><td>Scrub through the volume: the horizontal position selects the corresponding slice/frame in the other views.</td></tr>
+<tr><td>Click in the 3-D view</td><td>Picks the surface point under the pointer and moves the B-frames and en-face indicator there.</td></tr>
+<tr><td>Drag in an image view</td><td>Pans the image (use the mouse wheel to zoom).</td></tr>
+<tr><td>Click a boundary in Right B-Frame</td><td>Selects that boundary for editing with the chosen <a href="#corrector">corrector</a>.</td></tr>
+<tr><td>Drag / rotate in the 3-D view</td><td>Orbit, zoom and pan the surface.</td></tr>
+<tr><td>Right-click on the image views</td><td>Open the plot's context menu. In MedICS the default entries are disabled, so the views are driven with the toolbar buttons and the mouse (see <a href="#menus">Menus</a>).</td></tr>
+</tbody></table></div>
+
+<h2 id="menus">Menus &amp; context menus</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>Menu</th><th>Where</th><th>Contains</th></tr></thead>
+<tbody>
+<tr><td>Extensions menu</td><td>In the MedICS main window</td><td>Opens the Retinal Layer Segmentation window.</td></tr>
+<tr><td>View context menu</td><td>Right-click over a B-frame or en-face view</td><td>The plot's own menu. MedICS disables its default entries, so it exposes no actions — use the view toolbar instead.</td></tr>
+<tr><td>Corrector editor menu</td><td>Right B-Frame, when a corrector tool is active</td><td>Editing options for the boundary under the pointer.</td></tr>
+<tr><td>Loader context menu</td><td>Right-click an entry in <em>Load Data Settings</em></td><td><strong>Delete</strong> — marks the loader function as deleted so it is no longer offered.</td></tr>
+</tbody></table></div>
+<p class="anchor-note">The window itself has no menu bar; every action lives on a control in the
+left panel or on a view toolbar.</p>
+
+<h2 id="save">Saving &amp; exporting</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>Goal</th><th>How</th></tr></thead>
+<tbody>
+<tr><td>Use the result in other MedICS tools</td><td><strong>Save to WS</strong> tab → send <code>oct_data</code>, <code>octa_data</code> and <code>seg_data</code>.</td></tr>
+<tr><td>Write the segmentation to disk</td><td><strong>Save</strong> in the control panel.</td></tr>
+<tr><td>Keep the fluid mask</td><td>Tick <strong>Keep Fluid volume</strong> before saving/recomputing.</td></tr>
+</tbody></table></div>
+
+<h2 id="gpu">GPU acceleration &amp; troubleshooting</h2>
+<p>Segmentation is far faster on a supported GPU. It uses an ONNX Runtime model with an optional
+NVIDIA CUDA provider. GPU acceleration needs the driver, the ONNX Runtime build and the
+CUDA/cuDNN libraries to match each other.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Symptom</th><th>What to do</th></tr></thead>
+<tbody>
+<tr><td>Log says CUDA is unavailable; runs on CPU</td><td>A CPU-only ONNX Runtime is installed. Install <code>onnxruntime-gpu</code> (and remove plain <code>onnxruntime</code>) on Linux/Windows with an NVIDIA GPU.</td></tr>
+<tr><td>Crashes on a Conv node (<code>CUDNN_*</code> errors)</td><td>The CUDA stack is loaded but the cuDNN kernels do not support this GPU, or the cuDNN version does not match the ONNX Runtime build. Match the versions, or let it fall back to CPU.</td></tr>
+<tr><td>Older GPU (e.g. GTX 10-series)</td><td>Recent cuDNN builds no longer support pre-Turing cards. The extension falls back to the CPU automatically; for GPU, install an older ONNX Runtime GPU build that still targets your architecture.</td></tr>
+<tr><td>Want to force CPU</td><td>Choose <strong>CPU</strong> in the device selector.</td></tr>
+<tr><td>Model missing after install</td><td>The model downloads on first use; an offline machine needs it fetched in advance.</td></tr>
+</tbody></table></div>
+<p>To check the installed build, run <code>python -c "import onnxruntime as ort; print(ort.get_available_providers())"</code> — you want <code>CUDAExecutionProvider</code> listed.</p>
+
+<h2 id="limits">Notes &amp; limitations</h2>
+<ul>
+<li>Only boundaries produced by the model are drawn; a few listed boundaries are placeholders.</li>
+<li>Automatic CPU fallback means a too-old GPU still yields a result, just more slowly.</li>
+<li>Sparse volumes must be interpolated to obtain a dense segmentation.</li>
+<li>The segmentation is computed locally; no image data is uploaded.</li>
+</ul>
+
+      </article>
+      <nav class="docs-pager"><a class="prev" href="ai-assistant.html"><span>← Previous</span>AI assistant</a></nav>
+    </main>
+    <aside class="docs-toc">
+      <div class="docs-toc__title">On this page</div>
+      <nav><ul><li><a class="lvl-2" href="#overview">Overview</a></li><li><a class="lvl-2" href="#requirements">Requirements</a></li><li><a class="lvl-2" href="#install">Install</a></li><li><a class="lvl-2" href="#quick-start">Quick start</a></li><li><a class="lvl-2" href="#window">The Retinal Layer Segmentation window</a></li><li><a class="lvl-2" href="#data-source">Data source</a></li><li><a class="lvl-2" href="#frame">Frame &amp; resolution</a></li><li><a class="lvl-2" href="#roi">Region of interest</a></li><li><a class="lvl-2" href="#segmentation">Segmentation controls</a></li><li><a class="lvl-2" href="#layers">Layer boundaries</a></li><li><a class="lvl-2" href="#views">The views</a></li><li><a class="lvl-2" href="#status-bar">Status bar</a></li><li><a class="lvl-2" href="#keyboard">Keyboard shortcuts</a></li><li><a class="lvl-2" href="#mouse">Mouse &amp; interaction</a></li><li><a class="lvl-2" href="#menus">Menus &amp; context menus</a></li><li><a class="lvl-2" href="#save">Saving &amp; exporting</a></li><li><a class="lvl-2" href="#gpu">GPU acceleration &amp; troubleshooting</a></li><li><a class="lvl-2" href="#limits">Notes &amp; limitations</a></li></ul></nav>
+    </aside>
+  </div>
+  <footer class="footer">
+    <div class="container footer__inner">
+      <span class="footer__brand"><img src="../icon/icon.png" alt="" width="22" height="22" />© 2024–2026 MedICS. All rights reserved.</span>
+      <a href="../document.html">Documentation</a>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,5 +1,5 @@
 {
- "generatedFrom": 9,
+ "generatedFrom": 10,
  "entries": [
   {
    "page": "index.html",
@@ -416,6 +416,326 @@
    "id": "configuration",
    "url": "docs/ai-assistant.html#configuration",
    "text": "Configuration Choose the provider and model and enter your API key in Edit → Preferences → Chat . The assistant is optional — MedICS works fully without it. Chat settings. Pick the provider and model, enter your API key, and set the temperature and maximum tokens the assistant may use."
+  },
+  {
+   "page": "docs/retinal-layer-segmentation.html",
+   "pageTitle": "Retinal Layer Segmentation",
+   "section": "Overview",
+   "id": "overview",
+   "url": "docs/retinal-layer-segmentation.html#overview",
+   "text": "Overview Retinal Layer Segmentation turns an OCT/OCTA volume into a segmented retina. It runs a deep-learning model on every B-scan, detects the retinal layer boundaries, reconstructs them into smooth curves, detects intraretinal fluid, and builds a 3-D view of the layers across the volume. Everything runs locally — your images never leave the machine. The extension opens its own window, titled OCT Analyzer . Retinal Layer Segmentation. A data source and control panel on the left, and four linked views on the right."
+  },
+  {
+   "page": "docs/retinal-layer-segmentation.html",
+   "pageTitle": "Retinal Layer Segmentation",
+   "section": "What you can do",
+   "id": "what-you-can-do",
+   "url": "docs/retinal-layer-segmentation.html#what-you-can-do",
+   "text": "What you can do Load OCT and OCTA volumes, and any previously saved segmentation. Segment the retina with one click, on the GPU if available. Review the detected boundaries, show or hide individual layers, and correct any boundary by hand. Interpolate the segmentation across sparse B-scans to fill the whole volume. Inspect the result as B-scans, en-face projections and a 3-D surface. Send the curves and masks back to the MedICS workspace, or save them to files."
+  },
+  {
+   "page": "docs/retinal-layer-segmentation.html",
+   "pageTitle": "Retinal Layer Segmentation",
+   "section": "Requirements",
+   "id": "requirements",
+   "url": "docs/retinal-layer-segmentation.html#requirements",
+   "text": "Requirements MedICS, installed and running. A MedICS license that includes this extension — it is a paid, non-free extension. Opening it without an entitlement shows a warning dialog with a link to enter a token or request one. Enough memory for the volume you open. Large volumes can be processed in sparse mode ."
+  },
+  {
+   "page": "docs/retinal-layer-segmentation.html",
+   "pageTitle": "Retinal Layer Segmentation",
+   "section": "Install",
+   "id": "install",
+   "url": "docs/retinal-layer-segmentation.html#install",
+   "text": "Install Install the extension from inside MedICS with the Extension Manager — no command line needed."
+  },
+  {
+   "page": "docs/retinal-layer-segmentation.html",
+   "pageTitle": "Retinal Layer Segmentation",
+   "section": "Open the Extension Manager",
+   "id": "install-open-manager",
+   "url": "docs/retinal-layer-segmentation.html#install-open-manager",
+   "text": "Open the Extension Manager In MedICS, open Extensions → Manager… from the menu bar."
+  },
+  {
+   "page": "docs/retinal-layer-segmentation.html",
+   "pageTitle": "Retinal Layer Segmentation",
+   "section": "Find the extension",
+   "id": "install-find",
+   "url": "docs/retinal-layer-segmentation.html#install-find",
+   "text": "Find the extension Type Retinal in the search box, or scroll the list to Retinal Layer Segmentation ."
+  },
+  {
+   "page": "docs/retinal-layer-segmentation.html",
+   "pageTitle": "Retinal Layer Segmentation",
+   "section": "Install it",
+   "id": "install-click",
+   "url": "docs/retinal-layer-segmentation.html#install-click",
+   "text": "Install it Select the extension and click Install , then wait for the download to finish."
+  },
+  {
+   "page": "docs/retinal-layer-segmentation.html",
+   "pageTitle": "Retinal Layer Segmentation",
+   "section": "Enable it",
+   "id": "install-enable",
+   "url": "docs/retinal-layer-segmentation.html#install-enable",
+   "text": "Enable it If it is not already enabled, click Enable . The extension then appears under the Extensions menu."
+  },
+  {
+   "page": "docs/retinal-layer-segmentation.html",
+   "pageTitle": "Retinal Layer Segmentation",
+   "section": "First run",
+   "id": "install-first-run",
+   "url": "docs/retinal-layer-segmentation.html#install-first-run",
+   "text": "First run Open Retinal Layer Segmentation — the AI model is downloaded on first use."
+  },
+  {
+   "page": "docs/retinal-layer-segmentation.html",
+   "pageTitle": "Retinal Layer Segmentation",
+   "section": "Quick start",
+   "id": "quick-start",
+   "url": "docs/retinal-layer-segmentation.html#quick-start",
+   "text": "Quick start"
+  },
+  {
+   "page": "docs/retinal-layer-segmentation.html",
+   "pageTitle": "Retinal Layer Segmentation",
+   "section": "Open the extension",
+   "id": "step-open-the-extension",
+   "url": "docs/retinal-layer-segmentation.html#step-open-the-extension",
+   "text": "Open the extension From the Extensions menu, open Retinal Layer Segmentation . The OCT Analyzer window opens."
+  },
+  {
+   "page": "docs/retinal-layer-segmentation.html",
+   "pageTitle": "Retinal Layer Segmentation",
+   "section": "Load data",
+   "id": "step-load-data",
+   "url": "docs/retinal-layer-segmentation.html#step-load-data",
+   "text": "Load data On the File tab pick your OCT volume (and optionally OCTA), then click Load Data — or drag files onto the window."
+  },
+  {
+   "page": "docs/retinal-layer-segmentation.html",
+   "pageTitle": "Retinal Layer Segmentation",
+   "section": "Segment",
+   "id": "step-segment",
+   "url": "docs/retinal-layer-segmentation.html#step-segment",
+   "text": "Segment Click Run AI Segmentation and, if asked, choose the compute device."
+  },
+  {
+   "page": "docs/retinal-layer-segmentation.html",
+   "pageTitle": "Retinal Layer Segmentation",
+   "section": "Review & refine",
+   "id": "step-review-and-refine",
+   "url": "docs/retinal-layer-segmentation.html#step-review-and-refine",
+   "text": "Review & refine Hide or show layers, and use the corrector to fix any boundary. Interpolate if your scan is sparse."
+  },
+  {
+   "page": "docs/retinal-layer-segmentation.html",
+   "pageTitle": "Retinal Layer Segmentation",
+   "section": "Save",
+   "id": "step-save",
+   "url": "docs/retinal-layer-segmentation.html#step-save",
+   "text": "Save Use Save to WS to send results to the MedICS workspace, or Save to write files."
+  },
+  {
+   "page": "docs/retinal-layer-segmentation.html",
+   "pageTitle": "Retinal Layer Segmentation",
+   "section": "The Retinal Layer Segmentation window",
+   "id": "window",
+   "url": "docs/retinal-layer-segmentation.html#window",
+   "text": "The Retinal Layer Segmentation window The window has two areas. The left panel holds everything you operate; the right side shows four linked views of the data. Loaded volume. An OCT volume loaded and segmented; the four views show the corresponding frames."
+  },
+  {
+   "page": "docs/retinal-layer-segmentation.html",
+   "pageTitle": "Retinal Layer Segmentation",
+   "section": "Data source",
+   "id": "data-source",
+   "url": "docs/retinal-layer-segmentation.html#data-source",
+   "text": "Data source The top of the left panel loads input data. It has two tabs. Data source. The File and Save to WS tabs at the top of the left panel. Switching tabs between File (load) and Save to WS (transfer)."
+  },
+  {
+   "page": "docs/retinal-layer-segmentation.html",
+   "pageTitle": "Retinal Layer Segmentation",
+   "section": "File tab",
+   "id": "file-tab",
+   "url": "docs/retinal-layer-segmentation.html#file-tab",
+   "text": "File tab Choose a file for each input with its folder button, or type the path, then click Load Data to read them together. Field What it loads Formats OCT The OCT volume (B-scans) .foct , .oct , .dcm , .mat , .tif / .tiff OCTA An optional OCTA (angiography) volume, co-registered with the OCT .ssada , .octa , .dcm , .mat , .tif / .tiff Segment A previous segmentation (layer curves) .json , .dcm , .mat , .med OCTA checkbox — uncheck it to load an OCT-only dataset. setting… — opens Load Data Settings , where you can review, assign and manage the loader functions used for each data type. Load Dat"
+  },
+  {
+   "page": "docs/retinal-layer-segmentation.html",
+   "pageTitle": "Retinal Layer Segmentation",
+   "section": "Save to WS tab",
+   "id": "save-to-ws-tab",
+   "url": "docs/retinal-layer-segmentation.html#save-to-ws-tab",
+   "text": "Save to WS tab Transfer what is currently loaded back into the MedICS workspace under the names shown. Edit a name if you want a different one, then click the >> button in that row. Row Transfers Default name OCT The loaded OCT volume oct_data OCTA The loaded OCTA volume octa_data Segment The segmentation (curves and fluid mask) seg_data"
+  },
+  {
+   "page": "docs/retinal-layer-segmentation.html",
+   "pageTitle": "Retinal Layer Segmentation",
+   "section": "Drag and drop",
+   "id": "dragdrop",
+   "url": "docs/retinal-layer-segmentation.html#dragdrop",
+   "text": "Drag and drop Drop OCT, OCTA or segmentation files anywhere on the window. Files are matched by their name and routed to the right input automatically; you can also drag a variable out of the MedICS Variables panel and drop it on the window to load it."
+  },
+  {
+   "page": "docs/retinal-layer-segmentation.html",
+   "pageTitle": "Retinal Layer Segmentation",
+   "section": "Frame & resolution",
+   "id": "frame",
+   "url": "docs/retinal-layer-segmentation.html#frame",
+   "text": "Frame & resolution Control What it does Frame The B-scan currently shown. Type a number or use the arrows to move through the volume; every view follows. / total Read-only total number of frames in the loaded volume. Upate data resolution Opens a helper to set or correct the physical resolution (pixel size, scan width/height/depth) so measurements and the 3-D view are to scale. Useful when combining volumes acquired at different scales."
+  },
+  {
+   "page": "docs/retinal-layer-segmentation.html",
+   "pageTitle": "Retinal Layer Segmentation",
+   "section": "Region of interest",
+   "id": "roi",
+   "url": "docs/retinal-layer-segmentation.html#roi",
+   "text": "Region of interest Restrict processing to a vertical band of each B-scan — this speeds segmentation up and avoids the empty space above and below the retina. Control What it does ROI top / bottom The first and last row (in pixels) that the segmentation will use. Auto Estimates the retinal band automatically from the loaded OCT and fills in the values."
+  },
+  {
+   "page": "docs/retinal-layer-segmentation.html",
+   "pageTitle": "Retinal Layer Segmentation",
+   "section": "Segmentation controls",
+   "id": "segmentation",
+   "url": "docs/retinal-layer-segmentation.html#segmentation",
+   "text": "Segmentation controls These controls drive the AI model and the manual refinement. They sit below the data and preprocessing groups. Segmentation controls. Run AI Segmentation, sparse mode, device, corrector, interpolation and save."
+  },
+  {
+   "page": "docs/retinal-layer-segmentation.html",
+   "pageTitle": "Retinal Layer Segmentation",
+   "section": "Run AI Segmentation",
+   "id": "run-ai",
+   "url": "docs/retinal-layer-segmentation.html#run-ai",
+   "text": "Run AI Segmentation Runs the deep-learning model on every B-scan and fills in the layer boundaries. If a GPU device is available you are asked which one to use; otherwise it runs on the CPU. Progress and any errors are reported in the status bar ."
+  },
+  {
+   "page": "docs/retinal-layer-segmentation.html",
+   "pageTitle": "Retinal Layer Segmentation",
+   "section": "Sparse data mode",
+   "id": "sparse",
+   "url": "docs/retinal-layer-segmentation.html#sparse",
+   "text": "Sparse data mode Turn this on for sparse OCT data — scans where only some B-scans were acquired. The model segments only the acquired frames, and you fill the gaps with interpolation . It also keeps memory use down on large volumes."
+  },
+  {
+   "page": "docs/retinal-layer-segmentation.html",
+   "pageTitle": "Retinal Layer Segmentation",
+   "section": "Device",
+   "id": "device",
+   "url": "docs/retinal-layer-segmentation.html#device",
+   "text": "Device Chooses how the model runs. AUTO picks the best available device; named entries are the GPUs found on the machine; CPU always works. If a GPU fails, the extension falls back to the CPU automatically."
+  },
+  {
+   "page": "docs/retinal-layer-segmentation.html",
+   "pageTitle": "Retinal Layer Segmentation",
+   "section": "Corrector",
+   "id": "corrector",
+   "url": "docs/retinal-layer-segmentation.html#corrector",
+   "text": "Corrector Selects the manual editing tool for a boundary. Pick the boundary by clicking it in the B-Frame B view, then edit it with the chosen tool. Mode How you edit None No manual editing — review only. Liner Draw straight segments by clicking along the boundary. Livewire Click once and the tool snaps to the strongest edge between clicks. Anchors Place anchor points; the boundary is fitted smoothly through them. Choosing a corrector tool: None, Liner, Livewire, Anchors."
+  },
+  {
+   "page": "docs/retinal-layer-segmentation.html",
+   "pageTitle": "Retinal Layer Segmentation",
+   "section": "Interpolation",
+   "id": "interp",
+   "url": "docs/retinal-layer-segmentation.html#interp",
+   "text": "Interpolation Control What it does Interpolation Step How far apart the segmented key frames are (minimum 2). Used when filling a sparse volume. Interpolation Turns interpolation on or off. Restart Interplation Clears the interpolation and recomputes it from the current boundaries."
+  },
+  {
+   "page": "docs/retinal-layer-segmentation.html",
+   "pageTitle": "Retinal Layer Segmentation",
+   "section": "Keep Fluid volume",
+   "id": "keep-fluid",
+   "url": "docs/retinal-layer-segmentation.html#keep-fluid",
+   "text": "Keep Fluid volume Keeps the detected intraretinal fluid mask when recomputing, instead of discarding it."
+  },
+  {
+   "page": "docs/retinal-layer-segmentation.html",
+   "pageTitle": "Retinal Layer Segmentation",
+   "section": "Save",
+   "id": "save-btn",
+   "url": "docs/retinal-layer-segmentation.html#save-btn",
+   "text": "Save Saves the current segmentation to a file (curves and, optionally, the fluid mask). To send the result to the MedICS workspace instead, use the Save to WS tab."
+  },
+  {
+   "page": "docs/retinal-layer-segmentation.html",
+   "pageTitle": "Retinal Layer Segmentation",
+   "section": "Layer boundaries",
+   "id": "layers",
+   "url": "docs/retinal-layer-segmentation.html#layers",
+   "text": "Layer boundaries The Layer boundaries group lists every boundary the model can detect. Tick a box to show and export that boundary; use the small dropdown next to it to choose how it is drawn (dashed or solid line). Select All toggles every boundary at once. Layer boundaries. Each boundary has a visibility checkbox and a line-style dropdown; Select All is at the bottom. Showing and hiding individual boundaries, and Select All . # Boundary Default Notes 0 PVD Off Listed for completeness; not produced by the current model. 1 ILM On Inner limiting membrane. 2 NFL/GCL On Nerve fibre layer / gangli"
+  },
+  {
+   "page": "docs/retinal-layer-segmentation.html",
+   "pageTitle": "Retinal Layer Segmentation",
+   "section": "The views",
+   "id": "views",
+   "url": "docs/retinal-layer-segmentation.html#views",
+   "text": "The views The right side is split into four linked views. Moving the frame — or picking a point — keeps them in sync. Left B-Frame and Right B-Frame. The same B-scan shown with the layer curves overlaid; Right B-Frame is the editable one. En-face and 3-D. An en-face projection of the layers, and an interactive 3-D surface of the segmented volume. View Shows Left B-Frame A single B-scan with all visible layer curves drawn over it. Right B-Frame The editable B-scan — the corrector tools work here. En-face A top-down projection. The Layer / OCT / OCTA button cycles the projection, and the neighbo"
+  },
+  {
+   "page": "docs/retinal-layer-segmentation.html",
+   "pageTitle": "Retinal Layer Segmentation",
+   "section": "View toolbar",
+   "id": "view-toolbar",
+   "url": "docs/retinal-layer-segmentation.html#view-toolbar",
+   "text": "View toolbar Each view has a small toolbar. Hover a button to see what it does. Button Action Hide Curves / Show Curves Toggle the layer curves over the B-Frame image. Fast / Slow Scan View Switch the interpretation of the second Left B-Framexis between fast-scan and slow-scan, which changes how the two B-frames and the en-face view relate. Transpose ON / OFF Swap the horizontal and vertical axes of the image views. Layout Stack the B-frames or place them side by side. Reset Reset the camera / zoom of the view. Collapse Hide the left or right side so a view can fill the window."
+  },
+  {
+   "page": "docs/retinal-layer-segmentation.html",
+   "pageTitle": "Retinal Layer Segmentation",
+   "section": "Status bar",
+   "id": "status-bar",
+   "url": "docs/retinal-layer-segmentation.html#status-bar",
+   "text": "Status bar The bar along the bottom reports where the pointer is and what the data is. Status bar. Pointer position, pixel value under the pointer, the volume shape, and its dtype. Readout Meaning Pointer position Where the pointer is in the hovered image, in data coordinates. index The pixel value under the pointer. Shape The loaded volume's shape (frames × rows × columns); shows No data loaded before you load anything. Dtype The volume's data type. One-off messages — loading, saving, warnings — also appear here."
+  },
+  {
+   "page": "docs/retinal-layer-segmentation.html",
+   "pageTitle": "Retinal Layer Segmentation",
+   "section": "Keyboard shortcuts",
+   "id": "keyboard",
+   "url": "docs/retinal-layer-segmentation.html#keyboard",
+   "text": "Keyboard shortcuts The window has no menu bar; these are the keys you can use while working. Keys Action ↑ / ↓ Previous / next B-scan. ← / → Jump ten frames back / forward in the main window; in the layer view, jump by the current Interpolation Step. Ctrl (hold) With the pointer over a view in Slow Scan view, moving the pointer scrubs through the volume (see below)."
+  },
+  {
+   "page": "docs/retinal-layer-segmentation.html",
+   "pageTitle": "Retinal Layer Segmentation",
+   "section": "Mouse & interaction",
+   "id": "mouse",
+   "url": "docs/retinal-layer-segmentation.html#mouse",
+   "text": "Mouse & interaction Action Result Move over a B-frame or en-face view Updates the pointer readouts in the status bar. Ctrl + move in a B-frame (Slow Scan view) Scrub through the volume: the horizontal position selects the corresponding slice/frame in the other views. Click in the 3-D view Picks the surface point under the pointer and moves the B-frames and en-face indicator there. Drag in an image view Pans the image (use the mouse wheel to zoom). Click a boundary in Right B-Frame Selects that boundary for editing with the chosen corrector . Drag / rotate in the 3-D view Orbit, zoom and pan th"
+  },
+  {
+   "page": "docs/retinal-layer-segmentation.html",
+   "pageTitle": "Retinal Layer Segmentation",
+   "section": "Menus & context menus",
+   "id": "menus",
+   "url": "docs/retinal-layer-segmentation.html#menus",
+   "text": "Menus & context menus Menu Where Contains Extensions menu In the MedICS main window Opens the Retinal Layer Segmentation window. View context menu Right-click over a B-frame or en-face view The plot's own menu. MedICS disables its default entries, so it exposes no actions — use the view toolbar instead. Corrector editor menu Right B-Frame, when a corrector tool is active Editing options for the boundary under the pointer. Loader context menu Right-click an entry in Load Data Settings Delete — marks the loader function as deleted so it is no longer offered. The window itself has no menu bar; ev"
+  },
+  {
+   "page": "docs/retinal-layer-segmentation.html",
+   "pageTitle": "Retinal Layer Segmentation",
+   "section": "Saving & exporting",
+   "id": "save",
+   "url": "docs/retinal-layer-segmentation.html#save",
+   "text": "Saving & exporting Goal How Use the result in other MedICS tools Save to WS tab → send oct_data , octa_data and seg_data . Write the segmentation to disk Save in the control panel. Keep the fluid mask Tick Keep Fluid volume before saving/recomputing."
+  },
+  {
+   "page": "docs/retinal-layer-segmentation.html",
+   "pageTitle": "Retinal Layer Segmentation",
+   "section": "GPU acceleration & troubleshooting",
+   "id": "gpu",
+   "url": "docs/retinal-layer-segmentation.html#gpu",
+   "text": "GPU acceleration & troubleshooting Segmentation is far faster on a supported GPU. It uses an ONNX Runtime model with an optional NVIDIA CUDA provider. GPU acceleration needs the driver, the ONNX Runtime build and the CUDA/cuDNN libraries to match each other. Symptom What to do Log says CUDA is unavailable; runs on CPU A CPU-only ONNX Runtime is installed. Install onnxruntime-gpu (and remove plain onnxruntime ) on Linux/Windows with an NVIDIA GPU. Crashes on a Conv node ( CUDNN_* errors) The CUDA stack is loaded but the cuDNN kernels do not support this GPU, or the cuDNN version does not match "
+  },
+  {
+   "page": "docs/retinal-layer-segmentation.html",
+   "pageTitle": "Retinal Layer Segmentation",
+   "section": "Notes & limitations",
+   "id": "limits",
+   "url": "docs/retinal-layer-segmentation.html#limits",
+   "text": "Notes & limitations Only boundaries produced by the model are drawn; a few listed boundaries are placeholders. Automatic CPU fallback means a too-old GPU still yields a result, just more slowly. Sparse volumes must be interpolated to obtain a dense segmentation. The segmentation is computed locally; no image data is uploaded."
   }
  ]
 }

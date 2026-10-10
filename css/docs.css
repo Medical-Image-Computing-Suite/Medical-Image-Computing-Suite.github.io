@@ -189,6 +189,40 @@
 }
 .doc-figure figcaption strong { color: var(--text); }
 
+/* ---------- numbered steps (Quick start) ---------- */
+/* The number is an absolutely-positioned marker rather than a grid column: the
+   card holds three children (::before, h4, p), which a two-column grid would
+   wrap onto a second row with a mis-sized first track. Scoping every rule to
+   .docs-content also outranks the generic `.docs-content h4`/`p` spacing. */
+.docs-content .steps {
+  counter-reset: step;
+  display: grid;
+  gap: 0.7rem;
+  margin: 1rem 0 1.5rem;
+}
+.docs-content .step {
+  position: relative;
+  display: block;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.85rem 1.1rem 0.85rem 3.2rem;
+}
+.docs-content .step::before {
+  counter-increment: step;
+  content: counter(step, decimal-leading-zero);
+  position: absolute;
+  left: 1.1rem;
+  top: 0.9rem;
+  padding: 0;
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  line-height: 1.45;
+  color: var(--accent-3);
+}
+.docs-content .step h4 { margin: 0 0 0.25rem; font-size: 1rem; }
+.docs-content .step p { margin: 0; font-size: 0.92rem; }
+
 /* ---------- pager ---------- */
 .docs-pager {
   display: flex;

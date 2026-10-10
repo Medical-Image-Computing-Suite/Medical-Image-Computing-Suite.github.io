@@ -36,6 +36,7 @@ PAGES = [
     ("docs/toolboxes.html", "Toolboxes"),
     ("docs/python-workspace.html", "Python console & workspace"),
     ("docs/ai-assistant.html", "AI assistant"),
+    ("docs/retinal-layer-segmentation.html", "Retinal Layer Segmentation"),
 ]
 
 # Elements whose text is navigation or chrome, not documentation.
