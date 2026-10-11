@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Interface &amp; components — MedICS Documentation</title>
-  <meta name="description" content="The MedICS window and its panels: File Explorer, Variables, Logging, Terminal, Jupyter console and Agent chat." />
+  <meta name="description" content="The MedICS window and its panels: File Explorer, Variables, Logging, Terminal, Jupyter console, Results and Agent chat." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../css/style.css" />
@@ -44,13 +44,13 @@
   <div class="docs-shell container">
     <aside class="docs-side">
       <div class="docs-side__title">Documentation</div>
-      <nav><div class="docs-side__group">Getting started</div><ul><li><a href="../document.html">Overview</a></li></ul><div class="docs-side__group">Basics</div><ul><li><a class="is-current" href="interface.html">Interface &amp; components</a></li><li><a href="settings.html">Settings &amp; preferences</a></li></ul><div class="docs-side__group">Features</div><ul><li><a href="toolboxes.html">Toolboxes</a></li><li><a href="python-workspace.html">Python console &amp; workspace</a></li><li><a href="ai-assistant.html">AI assistant</a></li></ul><div class="docs-side__group">Official Extensions</div><ul><li><a href="retinal-layer-segmentation.html">Retinal Layer Segmentation</a></li></ul></nav>
+      <nav><div class="docs-side__group">Getting started</div><ul><li><a href="../document.html">Overview</a></li></ul><div class="docs-side__group">Basics</div><ul><li><a class="is-current" href="interface.html">Interface &amp; components</a></li><li><a href="settings.html">Settings &amp; preferences</a></li></ul><div class="docs-side__group">Features</div><ul><li><a href="toolboxes.html">Toolboxes</a></li><li><a href="ai-assistant.html">AI assistant</a></li></ul><div class="docs-side__group">Official Extensions</div><ul><li><a href="retinal-layer-segmentation.html">Retinal Layer Segmentation</a></li></ul></nav>
     </aside>
     <main class="docs-main">
       <header class="docs-hero">
         <div class="tag">Documents · Basics</div>
         <h1>Interface &amp; components</h1>
-        <p>The MedICS window and its panels: File Explorer, Variables, Logging, Terminal, Jupyter console and Agent chat.</p>
+        <p>The MedICS window and its panels: File Explorer, Variables, Logging, Terminal, Jupyter console, Results and Agent chat.</p>
       </header>
       <article class="docs-content">
 <h2 id="the-medics-window">The MedICS window</h2>
@@ -59,10 +59,49 @@ around them give you the file tree, your variables, the log, a terminal and the 
 console. Panels can be shown or hidden, resized and re-arranged.</p>
 <p>Show or hide panels from the <strong>View</strong> menu, or <strong>double-click a tab title</strong> to collapse the
 surrounding panels and focus on your work.</p>
+<div class="doc-screens"><figure class="doc-figure"><a href="../assets/img/overview/main_window.png" target="_blank" rel="noopener"><img loading="lazy" src="../assets/img/overview/main_window.png" width="1560" height="980" alt="The MedICS main window." /></a><figcaption><strong>The MedICS window.</strong> Tools open as tabs, with the File Explorer, workspace variables and the bottom panel (Logging · Terminal · Jupyter · Results) around them.</figcaption></figure></div>
+<p>The window is built from six regions:</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Region</th><th>What it holds</th></tr></thead>
+<tbody>
+<tr><td><strong>Menu bar</strong></td><td>The <em>File</em>, <em>View</em>, <em>Toolboxes</em>, <em>Extensions</em> and <em>Help</em> menus, plus the <em>Agents Window</em> button at the right.</td></tr>
+<tr><td><strong>Activity Bar</strong></td><td>The icon strip on the left — Explorer, your toolboxes and extensions, and Settings.</td></tr>
+<tr><td><strong>Left panels</strong></td><td>The <strong>File Explorer</strong> on top, and <strong>Workspace Variables</strong> below it.</td></tr>
+<tr><td><strong>Central tabs</strong></td><td>Every file, toolbox and extension opens here.</td></tr>
+<tr><td><strong>Right panel</strong></td><td>The <strong>Chat</strong> panel — the AI assistant — when it is enabled.</td></tr>
+<tr><td><strong>Bottom panel</strong></td><td>One dock shared by the <strong>Logging</strong>, <strong>Terminal</strong>, <strong>Jupyter</strong> and <strong>Results</strong> tabs.</td></tr>
+</tbody></table></div>
+<p>When no tab is open, the centre shows a welcome screen — <em>Welcome to MedICS</em>. Drop files onto it to
+load them into the workspace, or open a tool from the Activity Bar.</p>
+
+<h3 id="menu-bar">Menu bar</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>Menu</th><th>What is in it</th></tr></thead>
+<tbody>
+<tr><td><strong>File</strong></td><td><strong>Open Folder…</strong> (<kbd>Ctrl</kbd>+<kbd>O</kbd>), <strong>Open Workspace…</strong>, <strong>New Window</strong> (<kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>N</kbd>), <strong>Save</strong>, <strong>Save As…</strong>, <strong>Exit</strong> (<kbd>Ctrl</kbd>+<kbd>Q</kbd>).</td></tr>
+<tr><td><strong>View</strong></td><td><strong>Focus Mode</strong> (<kbd>F11</kbd>), <strong>Theme</strong> (Dark / Light), the panel toggles — <strong>Show Explorer</strong>, <strong>Show Terminal</strong>, <strong>Show Logging</strong>, <strong>Show Variables</strong>, <strong>Results</strong> — and <strong>Agents Window</strong> (<kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>A</kbd>).</td></tr>
+<tr><td><strong>Toolboxes</strong></td><td>A checkbox for each toolbox; ticking it shows or hides that toolbox's Activity Bar icon.</td></tr>
+<tr><td><strong>Extensions</strong></td><td>A checkbox for each installed extension, then <strong>Open Extension Manager…</strong>.</td></tr>
+<tr><td><strong>Image</strong></td><td>Image-processing operations — type conversion, thresholding, transforms, Z-projection. Appears only when a processing extension is installed.</td></tr>
+<tr><td><strong>Process</strong></td><td>Filters, binary morphology, math, enhancement, noise and batch operations. Appears with a processing extension.</td></tr>
+<tr><td><strong>Help</strong></td><td><strong>Documentation</strong> (<kbd>F1</kbd>), <strong>Keyboard Shortcuts</strong> (<kbd>Shift</kbd>+<kbd>F1</kbd>), <strong>MedICS Community Wiki</strong>, <strong>Report a Bug / Send Feedback…</strong>, <strong>Check for Updates…</strong>, <strong>Open Log Folder</strong>, <strong>About MedICS</strong>.</td></tr>
+</tbody></table></div>
+<p class="anchor-note">At the right end of the menu bar sits the <strong>Agents Window ➚</strong> button, which
+opens the assistant in its own window (<a href="ai-assistant.html#the-agents-window">AI assistant</a>).</p>
+
+<h3 id="activity-bar">Activity Bar</h3>
+<p>The vertical strip on the far left. From top to bottom: the <strong>Explorer</strong> (tooltip
+<em>File Explorer</em>), one icon for each loaded <strong>toolbox</strong> (tooltip <em>Open &lt;name&gt;</em>), one icon for
+each loaded <strong>extension</strong>, and the <strong>Settings</strong> gear at the bottom.</p>
+<ul class="plain">
+<li>Click an icon to open its tab; click it again to bring the tab back to the front.</li>
+<li><strong>Drag</strong> toolbox and extension icons to reorder them. The core icons (Explorer, Settings) stay in place.</li>
+<li><strong>Right-click</strong> the strip for a menu that shows or hides each toolbox and extension icon.</li>
+</ul>
+
 <h3 id="file-explorer">File Explorer</h3>
 <p>Browse the folder you are working in. Double-click a file to preview it in a tab, drag files
-or folders into the window to import them, and right-click for <strong>Open</strong>, <strong>Preview</strong>,
-<strong>Copy path</strong> and <strong>Reveal in Explorer</strong>. Use the folder button to switch folders.</p>
+or folders into the window to import them, and right-click for the full set of file actions.</p>
 <div class="doc-screens doc-screens--pair">
   <figure class="doc-figure">
     <a href="../assets/img/components/file_explorer_start.png" target="_blank" rel="noopener">
@@ -79,38 +118,94 @@ or folders into the window to import them, and right-click for <strong>Open</str
     for <strong>Open</strong>, <strong>Copy path</strong> and <strong>Reveal in Explorer</strong>.</figcaption>
   </figure>
 </div>
-<h3 id="variables">Variables</h3>
+<p>At the top, <strong>Open Editors</strong> lists the files you currently have open — click one to bring its tab
+to the front. Below it is the folder tree. When no folder is open the panel shows
+<em>No Folder Opened</em>, with buttons to <strong>Open Folder</strong> or <strong>Clone Repository</strong>.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Button</th><th>Where</th><th>What it does</th></tr></thead>
+<tbody>
+<tr><td><strong>Save All</strong></td><td>Open Editors</td><td>Saves every modified editor tab.</td></tr>
+<tr><td><strong>Close All</strong></td><td>Open Editors</td><td>Closes every open editor tab.</td></tr>
+<tr><td><strong>New File…</strong></td><td>Folder row</td><td>Creates a file in the selected folder.</td></tr>
+<tr><td><strong>New Folder…</strong></td><td>Folder row</td><td>Creates a sub-folder.</td></tr>
+<tr><td><strong>Refresh</strong></td><td>Folder row</td><td>Re-reads the folder from disk.</td></tr>
+<tr><td><strong>Collapse Folders in Explorer</strong></td><td>Folder row</td><td>Closes every expanded folder.</td></tr>
+<tr><td><strong>Open Folder</strong></td><td>Empty state</td><td>Chooses the folder to browse.</td></tr>
+<tr><td><strong>Clone Repository</strong></td><td>Empty state</td><td>Asks for a repository URL and a parent folder, clones it and opens the result.</td></tr>
+</tbody></table></div>
+<p>Right-click a file or folder for these actions:</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Item</th><th>What it does</th></tr></thead>
+<tbody>
+<tr><td><strong>Open</strong> / <strong>Open in PyEditor</strong> / <strong>Open in FilePreview</strong></td><td>Opens the file in a tab. Text and source files offer the editor and the previewer; other files offer <strong>Open</strong>.</td></tr>
+<tr><td><strong>Open with System Default App</strong></td><td>Hands the file to your operating system.</td></tr>
+<tr><td><strong>Open in Terminal</strong></td><td>Opens a terminal already in that folder.</td></tr>
+<tr><td><strong>Open Folder Here</strong></td><td>Makes the folder the Explorer root.</td></tr>
+<tr><td><strong>Cut</strong> / <strong>Copy</strong> / <strong>Paste</strong></td><td>Move or copy files within the Explorer.</td></tr>
+<tr><td><strong>Copy Path</strong> / <strong>Copy File Name</strong></td><td>Copies the full path or just the name.</td></tr>
+<tr><td><strong>Rename…</strong> / <strong>Delete</strong></td><td>Renames or deletes the selection (deleting several items asks once).</td></tr>
+<tr><td><strong>Reveal in File Explorer</strong></td><td>Shows the file in your operating system's file manager.</td></tr>
+<tr><td><strong>New File…</strong> / <strong>New Folder…</strong> / <strong>Refresh</strong></td><td>Available on a folder row and on empty space.</td></tr>
+</tbody></table></div>
+<p class="anchor-note"><kbd>Ctrl</kbd>+<kbd>C</kbd> copies the selected path(s) from the tree.</p>
+
+<h3 id="variables">Workspace Variables</h3>
 <p>Every value you create in Python — arrays, images, tables and other objects — is kept in the
-<strong>workspace</strong> and listed here with its name, type and size. Double-click a variable to
-inspect or preview it.</p>
+<strong>workspace</strong> and listed here. Double-click a variable to inspect or preview it.</p>
 <div class="doc-screens doc-screens--narrow">
   <figure class="doc-figure">
     <a href="../assets/img/components/workspace_variables.png" target="_blank" rel="noopener">
       <img loading="lazy" src="../assets/img/components/workspace_variables.png" alt="Variables — the workspace contents" width="369" height="496" />
     </a>
-    <figcaption><strong>Variables.</strong> Everything in the workspace, with its name, type and
-    size. Double-click an entry to inspect or preview it.</figcaption>
+    <figcaption><strong>Variables.</strong> Everything in the workspace, with its name, value and
+    type. Double-click an entry to inspect or preview it.</figcaption>
   </figure>
 </div>
-<h3 id="logging">Logging</h3>
-<p>The in-app <strong>output</strong> panel shows messages from every part of MedICS. Filter by level
-(ALL / DEBUG / INFO / WARNING / ERROR / CRITICAL), clear the view, or export the entries to a
-text file.</p>
+<p>Each row shows the variable's <strong>name / index</strong>, its <strong>value</strong> and its <strong>type</strong>. The list is
+live: a variable created in the console, in PyEditor or in a notebook appears here straight away.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Action</th><th>How</th></tr></thead>
+<tbody>
+<tr><td>Inspect or preview</td><td>Double-click a row — images and volumes open in a preview.</td></tr>
+<tr><td>Use a variable elsewhere</td><td><strong>Drag a row</strong> onto another toolbox.</td></tr>
+<tr><td>Load a file</td><td><strong>Drop a file</strong> onto the tree — it is imported into the workspace.</td></tr>
+<tr><td>Save a variable</td><td>Right-click → <strong>Save Variable</strong>, then pick a format such as <code>.med</code>, <code>.mat</code>, <code>.npy</code>, TIFF or JSON. Select several to save them together.</td></tr>
+<tr><td>Copy the name or value</td><td>Right-click → <strong>Copy Variable Name</strong> / <strong>Copy Variable Value</strong>.</td></tr>
+<tr><td>Delete</td><td>Right-click → <strong>Delete Variable</strong>; you are asked to confirm.</td></tr>
+</tbody></table></div>
+<p>A very large value shows a <em>(truncated)</em> row instead of expanding node by node, so the tree stays
+responsive.</p>
+<p class="anchor-note">To keep the whole workspace, use <strong>File → Save</strong> / <strong>Save As…</strong> to write a
+<code>.med</code> file, and <strong>File → Open Workspace…</strong> to load it back.</p>
+
+<h3 id="bottom-panel">The bottom panel</h3>
+<p>The bottom of the window is one dock shared by four tabs — <strong>Logging</strong>, <strong>Terminal</strong>,
+<strong>Jupyter</strong> and <strong>Results</strong>. Click a tab to switch, and drag the splitter to resize. Each tab is
+shown or hidden from the <strong>View</strong> menu.</p>
+
+<h4 id="logging">Logging</h4>
+<p>The in-app <strong>output</strong> panel shows messages from every part of MedICS.</p>
 <div class="doc-screens">
   <figure class="doc-figure">
     <a href="../assets/img/components/logging.png" target="_blank" rel="noopener">
       <img loading="lazy" src="../assets/img/components/logging.png" alt="Logging — the in-app log" width="963" height="240" />
     </a>
-    <figcaption><strong>Logging.</strong> Messages from every part of MedICS, filtered by level
-    (ALL / DEBUG / INFO / WARNING / ERROR / CRITICAL), with buttons to clear the view or export
-    the entries to a text file.</figcaption>
+    <figcaption><strong>Logging.</strong> Messages from every part of MedICS, filtered by level, with buttons
+    to clear the view or export the entries to a text file.</figcaption>
   </figure>
 </div>
-<h3 id="terminal">Terminal</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>Control</th><th>What it does</th></tr></thead>
+<tbody>
+<tr><td>Level selector</td><td>Filters the view by severity: <em>ALL</em>, <em>DEBUG</em>, <em>INFO</em>, <em>WARNING</em>, <em>ERROR</em>, <em>CRITICAL</em>.</td></tr>
+<tr><td><strong>CLEAR</strong></td><td>Empties the visible log and the buffer behind it.</td></tr>
+<tr><td><strong>EXPORT…</strong></td><td>Writes the log to a text file (default name <code>exported_log.txt</code>).</td></tr>
+</tbody></table></div>
+<p>Entries read <code>time [LEVEL] message</code> and are colour-coded by level.</p>
+
+<h4 id="terminal">Terminal</h4>
 <p>A real shell embedded in the window. It runs in its own process, separate from the
-application, so it is the place for command-line tools and scripts. <strong>+ New Terminal</strong> lets
-you open additional shells (PowerShell, Command Prompt, Git Bash, …); the list on the right
-switches, renames, clears or closes them.</p>
+application, so it is the place for command-line tools and scripts.</p>
 <div class="doc-screens">
   <figure class="doc-figure">
     <a href="../assets/img/components/terminal.png" target="_blank" rel="noopener">
@@ -120,10 +215,21 @@ switches, renames, clears or closes them.</p>
     right to switch, rename, clear or close them.</figcaption>
   </figure>
 </div>
-<h3 id="jupyter-console">Jupyter console</h3>
-<p>An interactive Python console that runs <strong>inside</strong> MedICS, so it shares your workspace. Use
-it for quick calculations, to inspect data, and to script an analysis without leaving the
-application. See <a href="python-workspace.html">Python console &amp; workspace</a>.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Control</th><th>What it does</th></tr></thead>
+<tbody>
+<tr><td>Terminal list</td><td>One row per open shell, named after the shell. The active row is highlighted.</td></tr>
+<tr><td>Clear (⊘)</td><td>Clears that terminal's scrollback.</td></tr>
+<tr><td>Kill (✕)</td><td>Ends that shell.</td></tr>
+<tr><td><strong>+ New Terminal</strong></td><td>Opens another shell; a picker offers <em>Command Prompt</em>, <em>PowerShell</em>, <em>Windows PowerShell</em> or <em>Git Bash</em> on Windows, and the login shells on macOS/Linux.</td></tr>
+<tr><td>Right-click a row</td><td><strong>Rename</strong>, <strong>Kill Terminal</strong>, <strong>Clear</strong>.</td></tr>
+</tbody></table></div>
+<p class="anchor-note">The terminal is a plain shell, isolated from the running application. Use the
+<strong>Jupyter</strong> console when you want your workspace variables.</p>
+
+<h4 id="jupyter-console">Jupyter console</h4>
+<p>An interactive Python console that runs <strong>inside</strong> MedICS, so it shares your workspace — NumPy,
+Matplotlib and the scientific stack are ready to use, and <code>ws</code> is a handle to your variables.</p>
 <div class="doc-screens">
   <figure class="doc-figure">
     <a href="../assets/img/components/jupyter_console.png" target="_blank" rel="noopener">
@@ -133,10 +239,40 @@ application. See <a href="python-workspace.html">Python console &amp; workspace<
     workspace, so anything you create here appears in <strong>Variables</strong> straight away.</figcaption>
   </figure>
 </div>
+<p>Type in the input area — the prompt reads <code>In [N]:</code> — and use:</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Key</th><th>Action</th></tr></thead>
+<tbody>
+<tr><td><kbd>Enter</kbd></td><td>Run the current cell.</td></tr>
+<tr><td><kbd>Ctrl</kbd>+<kbd>Enter</kbd></td><td>Edit in multiple lines.</td></tr>
+<tr><td><kbd>Shift</kbd>+<kbd>Enter</kbd></td><td>Force-run a multi-line cell.</td></tr>
+<tr><td><kbd>Tab</kbd></td><td>Complete the name you are typing (variables, functions, attributes, dictionary keys).</td></tr>
+<tr><td><kbd>Shift</kbd>+<kbd>Tab</kbd></td><td>Show the signature and documentation of the call under the cursor.</td></tr>
+<tr><td><kbd>Esc</kbd></td><td>Dismiss the completion list.</td></tr>
+</tbody></table></div>
+<p>Output — and plots — render inline under the cell, so <code>plt.show()</code> draws in the console rather
+than opening a window. The console keeps an input history you can recall with the arrow keys, and
+<code>whos</code> lists every name in the namespace. A small spinner on the <strong>Jupyter</strong> tab shows while a
+cell is still running.</p>
+<p>The same environment is available as a full notebook in the <strong>JupyterLab</strong> toolbox — see
+<a href="toolboxes.html#jupyterlab">Toolboxes</a>.</p>
+
+<h4 id="results">Results</h4>
+<p>When a measurement or results extension is installed, the <strong>Results</strong> tab lists its table. The
+toolbar has <strong>Export…</strong> (writes the table to a CSV file) and a status line showing the row and
+column count. Click a column header to sort; right-click for <strong>Copy</strong>, <strong>Recalculate selected</strong>
+and <strong>Check calibration</strong>.</p>
+
+<h3 id="status-bar">Status bar</h3>
+<p>The strip along the bottom of the window reports what is happening — short messages such as
+<em>Loading…</em>, <em>Settings applied successfully</em> or an error. On the right sits the <strong>calibration
+badge</strong>: it reads <em>no image</em> when nothing is calibrated, otherwise a short summary of the current
+image's pixel spacing, slice thickness, frame time and units. Click it to set the scale.</p>
+
 <h3 id="agent-chat">Agent chat</h3>
-<p>The AI assistant. Ask questions about your data, or ask it to carry out a task and it will
-use the tools it needs. Actions that create or change data ask for your <strong>approval</strong> first.
-See <a href="ai-assistant.html">AI assistant</a>.</p>
+<p>The AI assistant docks on the right as the <strong>Chat</strong> panel, and also opens in its own window. Ask
+questions about your data, or hand off a task and it will use the tools it needs — actions that
+change data ask for your <strong>approval</strong> first.</p>
 <div class="doc-screens doc-screens--narrow">
   <figure class="doc-figure">
     <a href="../assets/img/components/agent_chat.png" target="_blank" rel="noopener">
@@ -146,12 +282,13 @@ See <a href="ai-assistant.html">AI assistant</a>.</p>
     or hand off a task and watch each step.</figcaption>
   </figure>
 </div>
+<p>See <a href="ai-assistant.html">AI assistant</a> for the full guide.</p>
       </article>
       <nav class="docs-pager"><a class="next" href="settings.html"><span>Next &#8594;</span>Settings &amp; preferences</a></nav>
     </main>
     <aside class="docs-toc">
       <div class="docs-toc__title">On this page</div>
-      <nav><ul><li><a class="lvl-2" href="#the-medics-window">The MedICS window</a></li><li><a class="lvl-3" href="#file-explorer">File Explorer</a></li><li><a class="lvl-3" href="#variables">Variables</a></li><li><a class="lvl-3" href="#logging">Logging</a></li><li><a class="lvl-3" href="#terminal">Terminal</a></li><li><a class="lvl-3" href="#jupyter-console">Jupyter console</a></li><li><a class="lvl-3" href="#agent-chat">Agent chat</a></li></ul></nav>
+      <nav><ul><li><a class="lvl-2" href="#the-medics-window">The MedICS window</a></li><li><a class="lvl-3" href="#menu-bar">Menu bar</a></li><li><a class="lvl-3" href="#activity-bar">Activity Bar</a></li><li><a class="lvl-3" href="#file-explorer">File Explorer</a></li><li><a class="lvl-3" href="#variables">Workspace Variables</a></li><li><a class="lvl-3" href="#bottom-panel">The bottom panel</a></li><li><a class="lvl-4" href="#logging">Logging</a></li><li><a class="lvl-4" href="#terminal">Terminal</a></li><li><a class="lvl-4" href="#jupyter-console">Jupyter console</a></li><li><a class="lvl-4" href="#results">Results</a></li><li><a class="lvl-3" href="#status-bar">Status bar</a></li><li><a class="lvl-3" href="#agent-chat">Agent chat</a></li></ul></nav>
     </aside>
   </div>
   <footer class="footer">

@@ -47,18 +47,18 @@
   <div class="docs-shell container">
     <aside class="docs-side">
       <div class="docs-side__title">Documentation</div>
-      <nav><div class="docs-side__group">Getting started</div><ul><li><a href="../document.html">Overview</a></li></ul><div class="docs-side__group">Basics</div><ul><li><a href="interface.html">Interface &amp; components</a></li><li><a href="settings.html">Settings &amp; preferences</a></li></ul><div class="docs-side__group">Features</div><ul><li><a href="toolboxes.html">Toolboxes</a></li><li><a href="python-workspace.html">Python console &amp; workspace</a></li><li><a href="ai-assistant.html">AI assistant</a></li></ul><div class="docs-side__group">Official Extensions</div><ul><li><a class="is-current" href="retinal-layer-segmentation.html">Retinal Layer Segmentation</a></li></ul></nav>
+      <nav><div class="docs-side__group">Getting started</div><ul><li><a href="../document.html">Overview</a></li></ul><div class="docs-side__group">Basics</div><ul><li><a href="interface.html">Interface &amp; components</a></li><li><a href="settings.html">Settings &amp; preferences</a></li></ul><div class="docs-side__group">Features</div><ul><li><a href="toolboxes.html">Toolboxes</a></li><li><a href="ai-assistant.html">AI assistant</a></li></ul><div class="docs-side__group">Official Extensions</div><ul><li><a class="is-current" href="retinal-layer-segmentation.html">Retinal Layer Segmentation</a></li></ul></nav>
     </aside>
     <main class="docs-main">
       <header class="docs-hero">
         <div class="tag">Documents · Official Extensions</div>
         <h1>Retinal Layer Segmentation</h1>
-        <p>AI segmentation of retinal layers in OCT/OCTA volumes, detect the layer boundaries,
-        review and correct them, interpolate across sparse B-scans, and export the result.</p>
+        <p>AI segmentation of retinal layers in OCT volumes, detect the layer boundaries,
+        review and correct them, interpolate boundaries across corrected B-scans, and export the result.</p>
       </header>
       <article class="docs-content">
 <h2 id="overview">Overview</h2>
-<p><strong>Retinal Layer Segmentation</strong> runs on OCT/OCTA volume for segmenting
+<p><strong>Retinal Layer Segmentation</strong> runs on OCT volume for segmenting
 retina. It runs a deep-learning model on every B-scan, detects the retinal layer boundaries,
 reconstructs them into smooth curves, and builds a 3-D view of the
 layers across the volume. Everything runs locally. Your data never leave the machine.</p>
@@ -99,9 +99,9 @@ layers across the volume. Everything runs locally. Your data never leave the mac
   <div class="step"><h4 id="step-open-the-extension">Open the extension</h4><p>From the <strong>Extensions</strong> menu or&nbsp;<strong>Activity Bar</strong>&nbsp;, open
   <strong>Retinal Layer Segmentation</strong>. The RetinalLayerSegmentation opens.</p></div>
   <div class="step"><h4 id="step-load-data">Load data</h4><p>Option 1: On the <strong>File</strong> tab pick your OCT volume (and
-  optionally OCTA), then click <strong>Load Data</strong> — or drag files onto the window.<div>Option 2: Drag the file from System File Explorer to extension window.</div><div>Option 3: Drag the loaded variable in&nbsp;<strong style="color: rgb(226, 232, 240); font-size: 14.72px;">Workspace (ws)&nbsp;</strong>to extension window</div></p></div>
-  <div class="step"><h4 id="step-segment">Segment</h4><p>Click <strong>Run AI Segmentation</strong>. Adjust <strong style="color: rgb(226, 232, 240); font-size: 14.72px;">ROI</strong>&nbsp;to make sure retinal tissue included inside of&nbsp;<strong style="color: rgb(226, 232, 240); font-size: 14.72px;">ROI</strong><span style="font-size: 14.72px;"></span>. Choose the compute device if you want to run other divice.</p></div>
-  <div class="step" style="position: absolute; left: 362px; width: 928px; height: 83.8594px;"><h4 id="step-review-and-refine">Review &amp; refine</h4><p>Hide or show layers, and use the corrector to fix
+  optionally OCTA), then click <strong>Load Data</strong> — or drag files onto the window.<div>Option 2: Drag the file from System File Explorer to extension window.</div><div>Option 3: Drag the loaded variable in&nbsp;<strong>Workspace (ws)</strong>&nbsp;to extension window</div></p></div>
+  <div class="step"><h4 id="step-segment">Segment</h4><p>Click <strong>Run AI Segmentation</strong>. Adjust <strong>ROI</strong>&nbsp;to make sure retinal tissue is included inside the <strong>ROI</strong>. Choose the compute device if you want to run on a different device.</p></div>
+  <div class="step"><h4 id="step-review-and-refine">Review &amp; correction</h4><p>Hide or show layers, and use the corrector to fix
   any boundary.</p></div>
   <div class="step"><h4 id="step-save">Save</h4><p>Use <strong>Save to WS</strong> to send results to the MedICS
   workspace, or <strong>Save</strong> to write files.</p></div>
@@ -114,8 +114,7 @@ layers across the volume. Everything runs locally. Your data never leave the mac
 
 <h2 id="data-source">Data source</h2>
 <p>The top of the left panel loads input data. It has two tabs.</p>
-<div class="doc-screens doc-screens--medium"><figure class="doc-figure"><a href="../assets/img/extensions/retinal-layer-segmentation/data-source.png" target="_blank" rel="noopener"><img loading="lazy" src="../assets/img/extensions/retinal-layer-segmentation/data-source.png" alt="Data source. The File and Save to WS tabs at the top of the left panel."></a><figcaption><strong>Data source.</strong> The File and Save to WS tabs at the top of the left panel.</figcaption></figure></div>
-<div class="doc-screens doc-screens--medium"><figure class="doc-figure"><a href="../assets/img/extensions/retinal-layer-segmentation/gif/data-source-tabs.gif" target="_blank" rel="noopener"><img loading="lazy" src="../assets/img/extensions/retinal-layer-segmentation/gif/data-source-tabs.gif" alt="Switching tabs between File (load) and Save to WS (transfer)."></a><figcaption><strong>Switching tabs</strong> between <em>File</em> (load) and <em>Save to WS</em> (transfer).</figcaption></figure></div>
+<div class="doc-screens doc-screens--duo"><figure class="doc-figure"><a href="../assets/img/extensions/retinal-layer-segmentation/data-source.png" target="_blank" rel="noopener"><img loading="lazy" src="../assets/img/extensions/retinal-layer-segmentation/data-source.png" alt="Data source. The File and Save to WS tabs at the top of the left panel."></a><figcaption><strong>Data source.</strong> The File and Save to WS tabs at the top of the left panel.</figcaption></figure><figure class="doc-figure"><a href="../assets/img/extensions/retinal-layer-segmentation/gif/data-source-tabs.gif" target="_blank" rel="noopener"><img loading="lazy" src="../assets/img/extensions/retinal-layer-segmentation/gif/data-source-tabs.gif" alt="Switching tabs between File (load) and Save to WS (transfer)."></a><figcaption><strong>Switching tabs</strong> between <em>File</em> (load) and <em>Save to WS</em> (transfer).</figcaption></figure></div>
 
 <h3 id="file-tab">File tab</h3>
 <p>Choose a file for each input with its folder button, or type the path, then click
@@ -127,13 +126,47 @@ layers across the volume. Everything runs locally. Your data never leave the mac
 <tr><td>OCTA</td><td>An optional OCTA (angiography) volume, co-registered with the OCT</td><td><code>.ssada</code>, <code>.octa</code>, <code>.dcm</code>, <code>.mat</code>, <code>.tif</code>/<code>.tiff</code></td></tr>
 <tr><td>Segment</td><td>A previous segmentation (layer curves)</td><td><code>.json</code>, <code>.dcm</code>, <code>.mat</code>, <code>.med</code></td></tr>
 </tbody></table></div>
+<p class="callout"><strong>Array orientation matters.</strong> When a <code>.mat</code> file is loaded, its volume must be stored as <strong>nframe × nrow × ncol</strong> — B-frames along the first axis, rows (depth) second, and A-scans (columns) last. Transpose the array before loading if the axes are in another order, or the frames will be interpreted incorrectly.</p>
 <ul>
-<li><strong>OCTA checkbox</strong> — uncheck it to load an OCT-only dataset.</li>
+<li><strong>OCTA checkbox</strong> — uncheck it to load an OCT-only dataset. Also will hide loaded OCTA data from the Left B-frame Panel</li>
 <li><strong>setting…</strong> — opens <em>Load Data Settings</em>, where you can review, assign and
 manage the loader functions used for each data type.</li>
 <li><strong>Load Data</strong> — reads everything selected at once.</li>
 </ul>
-<div class="doc-screens doc-screens--medium"><figure class="doc-figure"><a href="../assets/img/extensions/retinal-layer-segmentation/gif/octa-load-toggle.gif" target="_blank" rel="noopener"><img loading="lazy" src="../assets/img/extensions/retinal-layer-segmentation/gif/octa-load-toggle.gif" alt="Toggling the OCTA checkbox decides whether OCTA data is loaded with the OCT."></a><figcaption>Toggling the <strong>OCTA</strong> checkbox decides whether OCTA data is loaded with the OCT.</figcaption></figure></div>
+<div class="doc-screens doc-screens--medium"></div>
+
+<h3 id="load-data-settings">Load Data Settings</h3>
+<p>The <strong>setting…</strong> button on the File tab opens <strong>Load Data Settings</strong>. This is where you
+choose which loader function reads each kind of file. Open it when a file is not recognised, or to
+teach the extension a custom format.</p>
+<div class="doc-screens doc-screens--wide"><figure class="doc-figure"><a href="../assets/img/extensions/retinal-layer-segmentation/load-data-settings.png" target="_blank" rel="noopener"><img loading="lazy" src="../assets/img/extensions/retinal-layer-segmentation/load-data-settings.png" alt="Load Data Settings dialog: a list of loader functions on the left, OCT, OCTA and Seg assignment rows, and a code preview."></a><figcaption><strong>Load Data Settings.</strong> Pick a loader function on the left, assign it to OCT, OCTA or Seg, and set the file patterns it should handle.</figcaption></figure></div>
+
+<p>How to use it:</p>
+<ol class="plain">
+<li>Select a loader function in the list on the left — its source appears in the preview below.</li>
+<li>Click <strong>OCT &gt;&gt;</strong>, <strong>OCTA &gt;&gt;</strong> or <strong>Seg &gt;&gt;</strong> to assign the selected function to that input.</li>
+
+<li>Type the file patterns the loader should handle in its <strong>Filters</strong> box.</li>
+</ol>
+
+<div class="table-wrap"><table>
+<thead><tr><th>Element</th><th>What it does</th></tr></thead>
+<tbody>
+<tr><td>Loader list</td><td>Every loader function found in the custom-loader folder, shown as <code>module.function</code>. Select one to assign it or to preview its code.</td></tr>
+<tr><td>Remove</td><td>Marks the selected function as deleted (a <code>#deleted</code> marker is written into its file) so it is no longer offered.</td></tr>
+<tr><td>Add from file</td><td>Copies a loader <code>.py</code> file into the custom-loader folder and rescans the list.</td></tr>
+<tr><td>Add from code</td><td>Opens a small editor to write or edit a loader function, then saves it to the list.</td></tr>
+<tr><td>OCT &gt;&gt;</td><td>Assigns the selected function as the loader for OCT files.</td></tr>
+<tr><td>OCTA &gt;&gt;</td><td>Assigns the selected function as the loader for OCTA files.</td></tr>
+<tr><td>Seg &gt;&gt;</td><td>Assigns the selected function as the loader for segmentation files.</td></tr>
+<tr><td>Loader box (read-only)</td><td>Shows the function currently assigned to that input. <em>default</em> means the built-in loader is used.</td></tr>
+<tr><td>Filters</td><td>Space-separated file patterns (for example <code>*.mat *.tif</code>). Files matching them are read by this loader.</td></tr>
+<tr><td>Clear (×)</td><td>Clears the assignment and filter for that row, returning the input to the built-in loader.</td></tr>
+<tr><td>Code preview</td><td>Read-only, syntax-highlighted source of the function selected in the list.</td></tr>
+<tr><td>OK / Cancel</td><td>Apply the assignments, or close the dialog without changing them.</td></tr>
+</tbody></table></div>
+<p class="anchor-note">Right-clicking a function in the list offers <strong>Delete</strong>, which does the same as
+<strong>Remove</strong>.</p>
 
 <h3 id="save-to-ws-tab">Save to WS tab</h3>
 <p>Transfer what is currently loaded back into the MedICS workspace under the names shown. Edit a
@@ -143,22 +176,41 @@ name if you want a different one, then click the <strong>&gt;&gt;</strong> butto
 <tbody>
 <tr><td>OCT</td><td>The loaded OCT volume</td><td><code>oct_data</code></td></tr>
 <tr><td>OCTA</td><td>The loaded OCTA volume</td><td><code>octa_data</code></td></tr>
-<tr><td>Segment</td><td>The segmentation (curves and fluid mask)</td><td><code>seg_data</code></td></tr>
+<tr><td>Segment</td><td>The segmentation (curves/retinal layer boundries)</td><td><code>seg_data</code></td></tr>
 </tbody></table></div>
 
 <h3 id="dragdrop">Drag and drop</h3>
-<p>Drop OCT, OCTA or segmentation files anywhere on the window. Files are matched by their name
+<p>Drop supported OCT, OCTA or segmentation files anywhere on the window. Files are matched by their name
 and routed to the right input automatically; you can also drag a variable out of the MedICS
-<strong>Variables</strong> panel and drop it on the window to load it.</p>
+<strong>&nbsp;Workspace Variables</strong> panel and drop it on the window to load it. This extension also support drop a image sequence (same image type) as OCT / OCTA volume data.</p>
 
 <h2 id="frame">Frame &amp; resolution</h2>
 <div class="table-wrap"><table>
 <thead><tr><th>Control</th><th>What it does</th></tr></thead>
 <tbody>
-<tr><td>Frame</td><td>The B-scan currently shown. Type a number or use the arrows to move through the volume; every view follows.</td></tr>
-<tr><td>/ total</td><td>Read-only total number of frames in the loaded volume.</td></tr>
+<tr><td>Frame</td><td>The B-scan currently shown. Use mouse wheel or use the arrows to move through the volume; every view follows.</td></tr>
+<tr><td>total</td><td>Read-only total number of frames in the loaded volume.</td></tr>
 <tr><td>Upate data resolution</td><td>Opens a helper to set or correct the physical resolution (pixel size, scan width/height/depth) so measurements and the 3-D view are to scale. Useful when combining volumes acquired at different scales.</td></tr>
 </tbody></table></div>
+
+<h3 id="scan-resolution">Scan Resolution</h3>
+<p><strong>Upate data resolution</strong> opens the <strong>Scan Resolution</strong> dialog. It converts the physical
+size of the scan into a per-pixel resolution so that measurements and the 3-D view are to scale.</p>
+<div class="doc-screens doc-screens--medium"><figure class="doc-figure"><a href="../assets/img/extensions/retinal-layer-segmentation/scan-resolution.png" target="_blank" rel="noopener"><img loading="lazy" src="../assets/img/extensions/retinal-layer-segmentation/scan-resolution.png" alt="Scan Resolution dialog: scan size in mm, axial resolution, and the calculated lateral resolution in width and height."></a><figcaption><strong>Scan Resolution.</strong> Enter the physical scan size and the axial resolution; the lateral resolution is calculated as you type.</figcaption></figure></div>
+<p>Enter the two required values and the lateral resolution updates live. Click <strong>OK</strong> to write the
+new resolution to the loaded data.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Element</th><th>What it does</th></tr></thead>
+<tbody>
+<tr><td>Scan size in mm (width, height)</td><td>The physical width and height of the scan in millimetres. Required.</td></tr>
+<tr><td>Axel resolution</td><td>The axial (depth) resolution in <code>mm/pixel</code>, taken from the OCT device specification. Required. Click the <strong>?</strong> button for guidance on finding it.</td></tr>
+<tr><td>Calculated lateral resolution</td><td>Heading for the read-only results below; these are computed from the values above.</td></tr>
+<tr><td>Lateral resolution (width)</td><td>Scan width ÷ image width, in <code>mm/pixel</code>. Read-only.</td></tr>
+<tr><td>Lateral resolution (height)</td><td>Scan height ÷ image height, in <code>mm/pixel</code>. Read-only.</td></tr>
+<tr><td>OK / Cancel</td><td>Apply the new resolution to the data, or close the dialog without changing it.</td></tr>
+</tbody></table></div>
+<p class="anchor-note">The axial resolution cannot be derived from the image — it is fixed by the OCT
+device. The help button opens a reminder to consult the device specifications.</p>
 
 <h2 id="roi">Region of interest</h2>
 <p>Restrict processing to a vertical band of each B-scan — this speeds segmentation up and avoids
@@ -180,10 +232,8 @@ preprocessing groups.</p>
 is available you are asked which one to use; otherwise it runs on the CPU. Progress and any
 errors are reported in the <a href="#status-bar">status bar</a>.</p>
 
-<h3 id="sparse">Sparse data mode</h3>
-<p>Turn this on for <em>sparse</em> OCT data — scans where only some B-scans were acquired. The
-model segments only the acquired frames, and you fill the gaps with
-<a href="#interp">interpolation</a>. It also keeps memory use down on large volumes.</p>
+
+
 
 <h3 id="device">Device</h3>
 <p>Chooses how the model runs. <strong>AUTO</strong> picks the best available device; named
@@ -191,15 +241,53 @@ entries are the GPUs found on the machine; <strong>CPU</strong> always works. If
 extension falls back to the CPU automatically.</p>
 
 <h3 id="corrector">Corrector</h3>
-<p>Selects the manual editing tool for a boundary. Pick the boundary by clicking it in the
-B-Frame&nbsp;B view, then edit it with the chosen tool.</p>
+<p>Selects the manual editing tool. All correcting happens in the <strong>Right B-Frame</strong> (the
+OCT panel). Choose a tool from the <strong>Corrector</strong> dropdown — <em>None</em> for review only,
+or one of the three editing tools below.</p>
+<p>First decide how the target boundary is chosen:</p>
 <div class="table-wrap"><table>
-<thead><tr><th>Mode</th><th>How you edit</th></tr></thead>
+<thead><tr><th>Selection mode</th><th>How the boundary you edit is chosen</th></tr></thead>
 <tbody>
-<tr><td>None</td><td>No manual editing — review only.</td></tr>
-<tr><td>Liner</td><td>Draw straight segments by clicking along the boundary.</td></tr>
-<tr><td>Livewire</td><td>Click once and the tool snaps to the strongest edge between clicks.</td></tr>
-<tr><td>Anchors</td><td>Place anchor points; the boundary is fitted smoothly through them.</td></tr>
+<tr><td>correction: auto</td><td>The boundary nearest the pointer is edited.</td></tr>
+<tr><td>correction: select</td><td>The layer chosen in the en-face dropdown is always edited, wherever the pointer is.</td></tr>
+</tbody></table></div>
+<p class="anchor-note">The selection mode is set from the Right B-Frame context menu (see
+<a href="#panel-context-menus">B-Frame context menus</a>). The correctors are available in the
+<em>Fast</em> scan view; in <em>Slow</em> scan view they are hidden.</p>
+
+<h4 id="corrector-liner">Liner</h4>
+<p>Draws a straight segment over the boundary — the quickest way to correct a short span.</p>
+<ol class="plain">
+<li>Hover over the boundary to focus it; it thickens while the other boundaries dim.</li>
+<li>Click the <strong>left mouse button</strong> at the start of the segment, then <strong>drag</strong> to the end point. A straight line follows the pointer and replaces the curve between the two points.&nbsp;During correction, click&nbsp;<strong style="color: rgb(226, 232, 240);">left mouse button&nbsp;</strong>to reset the start point of the segment.</li>
+<li><strong style="">Double click left mouse botton</strong> to stop and apply correction.</li>
+</ol>
+<p class="anchor-note">Only the dragged span changes; the rest of the boundary stays as it was.</p>
+
+<h4 id="corrector-livewire">LiveWire</h4>
+<p>Traces the strongest image edge between two points — best when the boundary is clearly visible in the image but awkward to draw by hand.</p>
+<ol class="plain">
+<li>Hover over the boundary to focus it.</li>
+<li>Click the <strong>left mouse button</strong> at the start point, then <strong>move</strong> the pointer along the boundary. The tool keeps computing the lowest-cost path along the image edges and redraws the curve as you move. During correction, click <strong style="color: rgb(226, 232, 240);">left mouse button </strong>to reset the start point.</li>
+<li><strong style="color: rgb(226, 232, 240);">Double click left mouse botton</strong> to stop and apply correction.</li>
+</ol>
+<p class="anchor-note">Because it follows image edges, LiveWire can be pulled off-course by speckle or fluid; re-trace a shorter span if that happens.</p>
+
+<h4 id="corrector-anchors">Anchors</h4>
+<p>Edits the boundary point by point, by dragging its control points (the small square markers). Use it for precise, local adjustments.</p>
+<ol class="plain">
+<li>Hover over the boundary to focus it — its control points appear.</li>
+<li><strong>Move mouse&nbsp;</strong>&nbsp;to a control point<strong style="color: rgb(226, 232, 240);">&nbsp;</strong>to select it; the cursor marker snaps to it.</li>
+<li>Hold the <strong style="">left button</strong> and <strong>drag</strong> to move the point. The curve refits through the anchors as you drag.</li>
+<li>While dragging, <strong>scroll the mouse wheel up</strong> to add the neighbouring points on each side to the selection (they move together), and <strong>scroll down</strong> to drop them again.</li>
+
+</ol>
+<p><strong>Right-click</strong> the panel while <em>Anchors</em> is active for these entries:</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Item</th><th>Action</th></tr></thead>
+<tbody>
+<tr><td>addPoint</td><td>Adds an anchor at the pointer. Shown when the pointer is near the focused boundary and no point is selected.</td></tr>
+<tr><td>removePoint</td><td>Removes the selected anchor (together with any neighbours added by the wheel). Shown when a point is selected.</td></tr>
 </tbody></table></div>
 <div class="doc-screens doc-screens--medium"><figure class="doc-figure"><a href="../assets/img/extensions/retinal-layer-segmentation/gif/corrector-modes.gif" target="_blank" rel="noopener"><img loading="lazy" src="../assets/img/extensions/retinal-layer-segmentation/gif/corrector-modes.gif" alt="Choosing a corrector tool: None, Liner, Livewire, Anchors."></a><figcaption>Choosing a <strong>corrector</strong> tool: None, Liner, Livewire, Anchors.</figcaption></figure></div>
 
@@ -212,8 +300,7 @@ B-Frame&nbsp;B view, then edit it with the chosen tool.</p>
 <tr><td>Restart Interplation</td><td>Clears the interpolation and recomputes it from the current boundaries.</td></tr>
 </tbody></table></div>
 
-<h3 id="keep-fluid">Keep Fluid volume</h3>
-<p>Keeps the detected intraretinal fluid mask when recomputing, instead of discarding it.</p>
+ mask when recomputing, instead of discarding it.</p>
 
 <h3 id="save-btn">Save</h3>
 <p>Saves the current segmentation to a file (curves and, optionally, the fluid mask). To send the
@@ -224,7 +311,7 @@ result to the MedICS workspace instead, use the <strong>Save to WS</strong> tab.
 box to show and export that boundary; use the small dropdown next to it to choose how it is drawn
 (dashed or solid line). <strong>Select All</strong> toggles every boundary at once.</p>
 <div class="doc-screens doc-screens--medium"><figure class="doc-figure"><a href="../assets/img/extensions/retinal-layer-segmentation/layer-boundaries.png" target="_blank" rel="noopener"><img loading="lazy" src="../assets/img/extensions/retinal-layer-segmentation/layer-boundaries.png" alt="Layer boundaries. Each boundary has a visibility checkbox and a line-style dropdown; Select All is at the bottom."></a><figcaption><strong>Layer boundaries.</strong> Each boundary has a visibility checkbox and a line-style dropdown; Select All is at the bottom.</figcaption></figure></div>
-<div class="doc-screens doc-screens--medium"><figure class="doc-figure"><a href="../assets/img/extensions/retinal-layer-segmentation/gif/layer-visibility.gif" target="_blank" rel="noopener"><img loading="lazy" src="../assets/img/extensions/retinal-layer-segmentation/gif/layer-visibility.gif" alt="Showing and hiding individual boundaries, and Select All."></a><figcaption>Showing and hiding individual boundaries, and <strong>Select All</strong>.</figcaption></figure></div>
+<p class="callout"><strong>Only the boundaries that default to <em>On</em> are produced by the AI model.</strong> The entries that default to <em>Off</em> — PVD, GCL/IPL, ELM, IZ/RPE and SAT/HAL — are listed for completeness but are <strong>not implemented in the auto-segmentation model</strong>. Ticking one of them does not detect or create a curve; leave them off unless you plan to draw that boundary by hand with the <a href="#corrector">corrector</a>.</p>
 <div class="table-wrap"><table>
 <thead><tr><th>#</th><th>Boundary</th><th>Default</th><th>Notes</th></tr></thead>
 <tbody><tr><td>0</td><td><strong>PVD</strong></td><td>Off</td><td>Listed for completeness; not produced by the current model.</td></tr><tr><td>1</td><td><strong>ILM</strong></td><td>On</td><td>Inner limiting membrane.</td></tr><tr><td>2</td><td><strong>NFL/GCL</strong></td><td>On</td><td>Nerve fibre layer / ganglion cell layer.</td></tr><tr><td>3</td><td><strong>GCL/IPL</strong></td><td>Off</td><td>Listed for completeness; not produced by the current model.</td></tr><tr><td>4</td><td><strong>IPL/INL</strong></td><td>On</td><td>Inner plexiform / inner nuclear layer.</td></tr><tr><td>5</td><td><strong>INL/OPL</strong></td><td>On</td><td>Inner nuclear / outer plexiform layer.</td></tr><tr><td>6</td><td><strong>OPL/ONL</strong></td><td>On</td><td>Outer plexiform / outer nuclear layer.</td></tr><tr><td>7</td><td><strong>ELM</strong></td><td>Off</td><td>Listed for completeness; not produced by the current model.</td></tr><tr><td>8</td><td><strong>EZ</strong></td><td>On</td><td>Ellipsoid zone.</td></tr><tr><td>9</td><td><strong>EZ/IZ</strong></td><td>On</td><td>Ellipsoid zone / interdigitation zone.</td></tr><tr><td>10</td><td><strong>IZ/RPE</strong></td><td>Off</td><td>Listed for completeness; not produced by the current model.</td></tr><tr><td>11</td><td><strong>RPE/BM</strong></td><td>On</td><td>Retinal pigment epithelium / Bruch's membrane.</td></tr><tr><td>12</td><td><strong>SAT/HAL</strong></td><td>Off</td><td>Listed for completeness; not produced by the current model.</td></tr><tr><td>13</td><td><strong>CHOROID</strong></td><td>On</td><td>Choroid.</td></tr></tbody>
@@ -258,6 +345,44 @@ them in sync.</p>
 <tr><td>Reset</td><td>Reset the camera / zoom of the view.</td></tr>
 <tr><td>Collapse</td><td>Hide the left or right side so a view can fill the window.</td></tr>
 </tbody></table></div>
+
+<h3 id="panel-context-menus">B-Frame context menus</h3>
+<p>Right-click inside a B-Frame panel to open its context menu. The two panels differ: the
+<strong>Left B-Frame</strong> (OCT / OCTA overlay) focuses on display and export, while the
+<strong>Right B-Frame</strong> (the editable OCT panel) also offers the corrector tools.</p>
+<div class="doc-screens doc-screens--pair"><figure class="doc-figure"><a href="../assets/img/extensions/retinal-layer-segmentation/context-menu-left-bframe.png" target="_blank" rel="noopener"><img loading="lazy" src="../assets/img/extensions/retinal-layer-segmentation/context-menu-left-bframe.png" alt="Left B-Frame context menu: View All, Line weight, the Save image / stack / video entries, and Save to ws."></a><figcaption><strong>Left B-Frame (OCT / OCTA overlay).</strong> Display, export and workspace actions.</figcaption></figure><figure class="doc-figure"><a href="../assets/img/extensions/retinal-layer-segmentation/context-menu-right-bframe.png" target="_blank" rel="noopener"><img loading="lazy" src="../assets/img/extensions/retinal-layer-segmentation/context-menu-right-bframe.png" alt="Right B-Frame context menu: View All, the three corrector tools, the correction modes, Line weight, and Save to ws."></a><figcaption><strong>Right B-Frame (OCT).</strong> Adds the corrector tools and correction modes.</figcaption></figure></div>
+
+<p><strong>Left B-Frame (OCT / OCTA overlay)</strong></p>
+<div class="table-wrap"><table>
+<thead><tr><th>Item</th><th>Action</th></tr></thead>
+<tbody>
+<tr><td>View All</td><td>Fits the image back into the panel — resets any pan and zoom.</td></tr>
+<tr><td>Line weight ▸</td><td>Curve thickness submenu — pick <strong>1 px</strong> to <strong>8 px</strong>.</td></tr>
+<tr><td>Save image...</td><td>Saves the current frame as an image file.</td></tr>
+<tr><td>Save stack image...</td><td>Saves the whole B-scan stack as an image.</td></tr>
+<tr><td>Save image with curve...</td><td>Saves the current frame with the layer curves drawn on it.</td></tr>
+<tr><td>Save stack image with curve...</td><td>Saves the whole stack with the curves drawn on every frame.</td></tr>
+<tr><td>Save video...</td><td>Exports the stack as a video.</td></tr>
+<tr><td>Save video advanced...</td><td>Opens the advanced video export options.</td></tr>
+<tr><td>Save to ws... ▸</td><td>Sends the panel's data to the MedICS workspace — choose <strong>OCT</strong> or <strong>OCTA overlay</strong>.</td></tr>
+</tbody></table></div>
+
+<p><strong>Right B-Frame (OCT)</strong></p>
+<div class="table-wrap"><table>
+<thead><tr><th>Item</th><th>Action</th></tr></thead>
+<tbody>
+<tr><td>View All</td><td>Fits the image back into the panel — resets any pan and zoom.</td></tr>
+<tr><td>Corrector:Liner</td><td>Turns the <a href="#corrector">Liner</a> corrector on or off. Tick-marked while active.</td></tr>
+<tr><td>Corrector:LiveWire</td><td>Turns the <a href="#corrector">LiveWire</a> corrector on or off.</td></tr>
+<tr><td>Corrector:Anchors</td><td>Turns the <a href="#corrector">Anchors</a> corrector on or off.</td></tr>
+<tr><td>correction: auto</td><td>Automatic correction mode — the corrector snaps to the strongest edge.</td></tr>
+<tr><td>correction: select</td><td>Select-based correction mode — you pick where the correction starts.</td></tr>
+<tr><td>Line weight ▸</td><td>Curve thickness submenu — pick <strong>1 px</strong> to <strong>8 px</strong>.</td></tr>
+<tr><td>Save to ws...</td><td>Sends the panel's data to the MedICS workspace.</td></tr>
+</tbody></table></div>
+<p class="anchor-note">The image-export entries (<em>Save image</em>, <em>Save stack</em>,
+<em>Save video</em>) are available on the Left B-Frame; on the Right B-Frame the menu is dedicated to
+editing and workspace transfer.</p>
 
 <h2 id="status-bar">Status bar</h2>
 <p>The bar along the bottom reports where the pointer is and what the data is.</p>
@@ -300,8 +425,8 @@ them in sync.</p>
 <thead><tr><th>Menu</th><th>Where</th><th>Contains</th></tr></thead>
 <tbody>
 <tr><td>Extensions menu</td><td>In the MedICS main window</td><td>Opens the Retinal Layer Segmentation window.</td></tr>
-<tr><td>View context menu</td><td>Right-click over a B-frame or en-face view</td><td>The plot's own menu. MedICS disables its default entries, so it exposes no actions — use the view toolbar instead.</td></tr>
-<tr><td>Corrector editor menu</td><td>Right B-Frame, when a corrector tool is active</td><td>Editing options for the boundary under the pointer.</td></tr>
+<tr><td>B-Frame context menu</td><td>Right-click inside a B-Frame panel</td><td>Display, export, corrector and workspace actions — see <a href="#panel-context-menus">B-Frame context menus</a>.</td></tr>
+<tr><td>En-face context menu</td><td>Right-click over the en-face view</td><td>The plot's own menu; MedICS hides its default entries, so it exposes no actions — use the view toolbar instead.</td></tr>
 <tr><td>Loader context menu</td><td>Right-click an entry in <em>Load Data Settings</em></td><td><strong>Delete</strong> — marks the loader function as deleted so it is no longer offered.</td></tr>
 </tbody></table></div>
 <p class="anchor-note">The window itself has no menu bar; every action lives on a control in the
@@ -344,7 +469,7 @@ CUDA/cuDNN libraries to match each other.</p>
     </main>
     <aside class="docs-toc">
       <div class="docs-toc__title">On this page</div>
-      <nav><ul><li><a class="lvl-2" href="#overview">Overview</a></li><li><a class="lvl-2" href="#requirements">Requirements</a></li><li><a class="lvl-2" href="#install">Install</a></li><li><a class="lvl-2" href="#quick-start">Quick start</a></li><li><a class="lvl-2" href="#window">The Retinal Layer Segmentation window</a></li><li><a class="lvl-2" href="#data-source">Data source</a></li><li><a class="lvl-2" href="#frame">Frame &amp; resolution</a></li><li><a class="lvl-2" href="#roi">Region of interest</a></li><li><a class="lvl-2" href="#segmentation">Segmentation controls</a></li><li><a class="lvl-2" href="#layers">Layer boundaries</a></li><li><a class="lvl-2" href="#views">The views</a></li><li><a class="lvl-2" href="#status-bar">Status bar</a></li><li><a class="lvl-2" href="#keyboard">Keyboard shortcuts</a></li><li><a class="lvl-2" href="#mouse">Mouse &amp; interaction</a></li><li><a class="lvl-2" href="#menus">Menus &amp; context menus</a></li><li><a class="lvl-2" href="#save">Saving &amp; exporting</a></li><li><a class="lvl-2" href="#gpu">GPU acceleration &amp; troubleshooting</a></li><li><a class="lvl-2" href="#limits">Notes &amp; limitations</a></li></ul></nav>
+      <nav><ul><li><a class="lvl-2" href="#overview">Overview</a></li><li><a class="lvl-2" href="#requirements">Requirements</a></li><li><a class="lvl-2" href="#install">Install</a></li><li><a class="lvl-2" href="#quick-start">Quick start</a></li><li><a class="lvl-2" href="#window">The Retinal Layer Segmentation window</a></li><li><a class="lvl-2" href="#data-source">Data source</a></li><li><a class="lvl-3" href="#load-data-settings">Load Data Settings</a></li><li><a class="lvl-2" href="#frame">Frame &amp; resolution</a></li><li><a class="lvl-3" href="#scan-resolution">Scan Resolution</a></li><li><a class="lvl-2" href="#roi">Region of interest</a></li><li><a class="lvl-2" href="#segmentation">Segmentation controls</a></li><li><a class="lvl-2" href="#layers">Layer boundaries</a></li><li><a class="lvl-2" href="#views">The views</a></li><li><a class="lvl-3" href="#panel-context-menus">B-Frame context menus</a></li><li><a class="lvl-2" href="#status-bar">Status bar</a></li><li><a class="lvl-2" href="#keyboard">Keyboard shortcuts</a></li><li><a class="lvl-2" href="#mouse">Mouse &amp; interaction</a></li><li><a class="lvl-2" href="#menus">Menus &amp; context menus</a></li><li><a class="lvl-2" href="#save">Saving &amp; exporting</a></li><li><a class="lvl-2" href="#gpu">GPU acceleration &amp; troubleshooting</a></li><li><a class="lvl-2" href="#limits">Notes &amp; limitations</a></li></ul></nav>
     </aside>
   </div>
   <footer class="footer">

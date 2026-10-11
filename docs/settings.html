@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Settings &amp; preferences — MedICS Documentation</title>
-  <meta name="description" content="Configure appearance, logging, the AI provider and workspace auto-save." />
+  <meta name="description" content="The Settings dialog: appearance, logging, window behaviour, extensions, the AI provider and the MedICS token." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../css/style.css" />
@@ -44,82 +44,183 @@
   <div class="docs-shell container">
     <aside class="docs-side">
       <div class="docs-side__title">Documentation</div>
-      <nav><div class="docs-side__group">Getting started</div><ul><li><a href="../document.html">Overview</a></li></ul><div class="docs-side__group">Basics</div><ul><li><a href="interface.html">Interface &amp; components</a></li><li><a class="is-current" href="settings.html">Settings &amp; preferences</a></li></ul><div class="docs-side__group">Features</div><ul><li><a href="toolboxes.html">Toolboxes</a></li><li><a href="python-workspace.html">Python console &amp; workspace</a></li><li><a href="ai-assistant.html">AI assistant</a></li></ul><div class="docs-side__group">Official Extensions</div><ul><li><a href="retinal-layer-segmentation.html">Retinal Layer Segmentation</a></li></ul></nav>
+      <nav><div class="docs-side__group">Getting started</div><ul><li><a href="../document.html">Overview</a></li></ul><div class="docs-side__group">Basics</div><ul><li><a href="interface.html">Interface &amp; components</a></li><li><a class="is-current" href="settings.html">Settings &amp; preferences</a></li></ul><div class="docs-side__group">Features</div><ul><li><a href="toolboxes.html">Toolboxes</a></li><li><a href="ai-assistant.html">AI assistant</a></li></ul><div class="docs-side__group">Official Extensions</div><ul><li><a href="retinal-layer-segmentation.html">Retinal Layer Segmentation</a></li></ul></nav>
     </aside>
     <main class="docs-main">
       <header class="docs-hero">
         <div class="tag">Documents · Basics</div>
         <h1>Settings &amp; preferences</h1>
-        <p>Configure appearance, logging, the AI provider and workspace auto-save.</p>
+        <p>Appearance, logging, window behaviour, extensions, the AI provider and the MedICS token.</p>
       </header>
       <article class="docs-content">
 <h2 id="settings-preferences">Settings &amp; preferences</h2>
-<p>Open preferences from <strong>Edit → Preferences</strong>. Every group lives in one dialog, so you can
-move between appearance, logging, chat and workspace options without leaving it.</p>
+<p>Open preferences from the <strong>Settings</strong> gear at the bottom of the Activity Bar. On macOS it is
+also in the application menu as <strong>Preferences…</strong>, and the <strong>Extensions</strong> menu has <strong>Open
+Extension Manager…</strong>, which opens this dialog on its <em>Extensions</em> tab. The chat settings open the
+same dialog on its <em>Chat / Agent</em> tab.</p>
 <div class="doc-screens doc-screens--medium">
   <figure class="doc-figure">
     <a href="../assets/img/components/general_settings.png" target="_blank" rel="noopener">
       <img loading="lazy" src="../assets/img/components/general_settings.png" alt="Preferences — the general settings" width="1050" height="1012" />
     </a>
-    <figcaption><strong>Preferences.</strong> Appearance, window geometry, logging, chat and
-    workspace options, grouped in a single dialog.</figcaption>
+    <figcaption><strong>Preferences.</strong> Appearance, window behaviour, logging, chat and the MedICS
+    token, grouped in a single dialog.</figcaption>
   </figure>
 </div>
-<table>
-<thead>
-<tr>
-<th>Group</th>
-<th>What you can set</th>
-</tr>
-</thead>
+<p>The dialog is split into four tabs:</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Tab</th><th>What you set there</th></tr></thead>
 <tbody>
-<tr>
-<td>Appearance</td>
-<td>Dark or light theme</td>
-</tr>
-<tr>
-<td>Window</td>
-<td>Window size and starting geometry</td>
-</tr>
-<tr>
-<td>Logging</td>
-<td>Log level and log file location</td>
-</tr>
-<tr>
-<td>Chat</td>
-<td>AI provider, model, API keys, temperature and maximum tokens</td>
-</tr>
-<tr>
-<td>Workspace</td>
-<td>Auto-save for the workspace</td>
-</tr>
-<tr>
-<td>Extensions</td>
-<td>Whether extensions load automatically at startup</td>
-</tr>
-</tbody>
-</table>
-<h3 id="extension-manager">Extension manager</h3>
-<p>Extensions you install are managed from <strong>Extensions → Extension Manager</strong>. Browse what is
-installed, turn each one on or off, and reload an extension after an update without restarting
-MedICS. New packages are installed with <code>pip</code> — see
-<a href="../extensions.html">Extensions</a>.</p>
+<tr><td><strong>General</strong></td><td>Theme, logging and window behaviour.</td></tr>
+<tr><td><strong>Extensions</strong></td><td>Install, update, enable and remove extensions.</td></tr>
+<tr><td><strong>Chat / Agent</strong></td><td>The AI provider, model, keys and the agent harness.</td></tr>
+<tr><td><strong>MedICS Token</strong></td><td>Your license token and its status.</td></tr>
+</tbody></table></div>
+<p>Three buttons sit along the bottom of every tab:</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Button</th><th>What it does</th></tr></thead>
+<tbody>
+<tr><td><strong>OK</strong></td><td>Applies the changes and closes the dialog.</td></tr>
+<tr><td><strong>Apply</strong></td><td>Applies and saves without closing; a short message confirms it.</td></tr>
+<tr><td><strong>Cancel</strong></td><td>Closes the dialog without applying anything.</td></tr>
+</tbody></table></div>
+
+<h3 id="general-tab">General</h3>
+
+<h4 id="appearance">Appearance</h4>
+<p>Two mutually exclusive choices — <strong>Dark Theme</strong> and <strong>Light Theme</strong>. Choosing one applies it
+immediately so you can preview it, and the choice is saved with the rest of your preferences.</p>
+
+<h4 id="logging-settings">Logging</h4>
+<div class="table-wrap"><table>
+<thead><tr><th>Control</th><th>What it does</th></tr></thead>
+<tbody>
+<tr><td><strong>Log level</strong></td><td>How much detail is written: <em>DEBUG</em>, <em>INFO</em>, <em>WARNING</em>, <em>ERROR</em> or <em>CRITICAL</em>. Default: <em>INFO</em>.</td></tr>
+<tr><td><strong>Log file</strong></td><td>The full path to the log file. Use <strong>Browse…</strong> to pick one; the platform default is shown as a hint.</td></tr>
+</tbody></table></div>
+<p>Changing the log level takes effect straight away.</p>
+
+<h4 id="window-settings">Window</h4>
+<div class="table-wrap"><table>
+<thead><tr><th>Control</th><th>What it does</th></tr></thead>
+<tbody>
+<tr><td><strong>Use native menu bar (macOS/Linux)</strong></td><td>Draws the menus in the operating system's own menu bar where the platform supports it.</td></tr>
+<tr><td><strong>On window close</strong></td><td>What happens when you close the main window: <em>Ask me when I close the window</em>, <em>Quit MedICS completely</em>, or <em>Keep running in the system tray</em>.</td></tr>
+</tbody></table></div>
+<p>The first time you close the window, MedICS asks you to choose; the answer is saved here. Quitting
+from the tray menu always exits completely.</p>
+
+<h3 id="chat-agent-tab">Chat / Agent</h3>
+<p>Everything the <a href="ai-assistant.html">AI assistant</a> needs: which model provider to use, your key, and
+how the assistant is hosted. Your API keys are stored separately from the other settings and are
+never committed anywhere.</p>
+
+<h4 id="agent-ui">Agent UI</h4>
+<div class="table-wrap"><table>
+<thead><tr><th>Control</th><th>What it does</th></tr></thead>
+<tbody>
+<tr><td><strong>Show agent window button and Chat panel</strong></td><td>Shows or hides the whole assistant chrome — the <em>Agents Window</em> menu item and shortcut, the menu-bar button, and the right-hand Chat panel. Applied immediately.</td></tr>
+<tr><td><strong>Agent Harness</strong></td><td>Which assistant runtime to host: <em>MedICS Harness</em> (the built-in chat), <em>DeepSeek Harness</em> (a local WebUI), or <em>OpenCode</em> (a local WebUI).</td></tr>
+<tr><td><strong>WebUI URL</strong></td><td>Read-only. Shows the address of the embedded harness, or that the MedICS harness has no embed URL.</td></tr>
+<tr><td><strong>Restart</strong> / <strong>Reset status</strong></td><td>Recycle the harness host, or just clear the current run's status without remounting the chat surfaces.</td></tr>
+<tr><td><strong>Install</strong> / <strong>Refresh</strong></td><td>For the DeepSeek and OpenCode harnesses: install the runtime, or refresh its status.</td></tr>
+</tbody></table></div>
+<p class="anchor-note">Switching harness, or showing/hiding the assistant chrome, refreshes the main
+window immediately — no restart is needed.</p>
+
+<h4 id="provider-model">Provider &amp; model</h4>
+<p><strong>Active provider</strong> selects which service the assistant uses. Pick one, then fill in its card:</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Provider</th><th>You provide</th></tr></thead>
+<tbody>
+<tr><td>ChatGPT (OpenAI)</td><td>API key, model.</td></tr>
+<tr><td>Gemini (Google)</td><td>API key, model.</td></tr>
+<tr><td>Claude (Anthropic)</td><td>API key, model.</td></tr>
+<tr><td>Grok (xAI)</td><td>API key, model.</td></tr>
+<tr><td>GitHub Copilot</td><td>Sign in with GitHub (no key to paste), model.</td></tr>
+<tr><td>Ollama (Local)</td><td>Base URL and model; <strong>Discover</strong> lists the models your local server offers.</td></tr>
+<tr><td>DeepSeek</td><td>API key, model.</td></tr>
+<tr><td>Custom (OpenAI-compatible)</td><td>Base URL, optional key, model.</td></tr>
+</tbody></table></div>
+<p>In each card:</p>
+<ul class="plain">
+<li><strong>API key</strong> — enter the key; use the eye button to show or hide it. If a key is already saved, its
+last digits are shown as a hint.</li>
+<li><strong>Model</strong> — pick one of the offered models or type any model name. The <strong>↻</strong> button
+refreshes the list from the provider, and <strong>+</strong> adds a custom name to the list.</li>
+<li><strong>Base URL</strong> — only for <em>Ollama</em> and <em>Custom</em> providers.</li>
+<li><strong>Sign in with GitHub</strong> / <strong>Sign out</strong> — only for GitHub Copilot; a status line shows the
+sign-in state.</li>
+</ul>
+
+<h4 id="conversation-settings">Conversation Settings</h4>
+<div class="table-wrap"><table>
+<thead><tr><th>Control</th><th>What it does</th></tr></thead>
+<tbody>
+<tr><td><strong>Temperature</strong></td><td>How creative the replies are, from <code>0.00</code> to <code>2.00</code>. Lower is more focused.</td></tr>
+<tr><td><strong>Max tokens</strong></td><td>The longest reply the assistant may produce.</td></tr>
+</tbody></table></div>
+
+<h4 id="system-prompt">System Prompt</h4>
+<p>The instructions prepended to every assistant prompt. Edit them to change the assistant's behaviour,
+or use <strong>Reset to default</strong> to restore the built-in text.</p>
+<p class="anchor-note">Keys are saved to your MedICS home folder in <code>.secrets.ini</code>, separate from the
+other settings. The <strong>Open .secrets.ini</strong> button opens that file in your text editor.</p>
+
+<h3 id="extension-manager">Extensions</h3>
+<p>Extensions are installed and managed from this tab — the same place the <strong>Extensions → Open
+Extension Manager…</strong> menu item opens.</p>
 <div class="doc-screens doc-screens--medium">
   <figure class="doc-figure">
     <a href="../assets/img/components/Extension_manager.png" target="_blank" rel="noopener">
       <img loading="lazy" src="../assets/img/components/Extension_manager.png" alt="The Extensions manager" width="1050" height="1057" />
     </a>
-    <figcaption><strong>The Extensions manager.</strong> Every installed extension with its status, so
-    you can enable or disable one, reload it, or see what it contributes to MedICS.</figcaption>
+    <figcaption><strong>The Extensions tab.</strong> Every installed extension with its status, plus the
+    packages available to install.</figcaption>
   </figure>
 </div>
-<p>Changes are saved and applied the next time the relevant part of the application starts.</p>
+<p>The list has two parts:</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Section</th><th>What it shows</th></tr></thead>
+<tbody>
+<tr><td><strong>Installed</strong></td><td>Each extension with its version, its package name and a status: <em>Shown</em> (loaded and visible in the menu and toolbar), <em>Hidden</em> (loaded but not shown), or <em>Not loaded</em>.</td></tr>
+<tr><td><strong>Available on PyPI</strong></td><td>Packages you can add, with a short description and an <strong>Install</strong> button.</td></tr>
+</tbody></table></div>
+<p>For each installed extension:</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Button</th><th>What it does</th></tr></thead>
+<tbody>
+<tr><td><strong>Load</strong> / <strong>Unload</strong></td><td>Shows or hides the extension in the <em>Extensions</em> menu and the Activity Bar. Unloading frees it without removing it.</td></tr>
+<tr><td><strong>Update</strong></td><td>Updates the extension and restarts MedICS to finish.</td></tr>
+<tr><td><strong>Uninstall</strong></td><td>Removes the extension; the removal completes after a restart.</td></tr>
+</tbody></table></div>
+<p>Install, update and uninstall all ask you to confirm first, and offer to restart MedICS when the
+change needs it. A <strong>Refresh</strong> button re-checks what is installed and what is available.</p>
+<p>At the bottom, the <strong>Command</strong> panel shows the exact command for the action under the pointer and
+has a copy button — useful if an operation fails and you want to run the command yourself in a
+terminal. The panel also shows the command's output if something goes wrong.</p>
+<p class="anchor-note">Extensions install into MedICS's own Python environment, so no separate setup is
+required. See <a href="../extensions.html">Extensions</a> for how extensions add tools and panels.</p>
+
+<h3 id="medics-token-tab">MedICS Token</h3>
+<p>Where you check and enter your MedICS license token.</p>
+<h4 id="license-information">License Information</h4>
+<p>Read-only fields describing the current license — <strong>Token ID</strong>, <strong>Email</strong>, <strong>Plan Type</strong>,
+<strong>Start Date</strong>, <strong>Expire Date</strong>, <strong>Last Checked</strong> and <strong>Status</strong>. The status reads
+<em>Free mode — no token configured</em> before a token is entered, and <em>✓ Valid</em> once one is validated.</p>
+<h4 id="validate-token">Validate Token</h4>
+<p>Paste a token — the format is <code>XXXX-XXXX-XXXX-XXXX</code> — and click <strong>Validate</strong> to check it with
+the license server; a valid token is saved automatically and the License Information above is
+refreshed. The section also links to how to request a token.</p>
+<h4 id="remove-token">Remove Token</h4>
+<p><strong>Remove Token</strong> returns MedICS to Free mode: free-tier extensions stay available, while paid
+features are disabled until a valid token is entered again.</p>
       </article>
       <nav class="docs-pager"><a class="prev" href="interface.html"><span>&#8592; Previous</span>Interface &amp; components</a><a class="next" href="toolboxes.html"><span>Next &#8594;</span>Toolboxes</a></nav>
     </main>
     <aside class="docs-toc">
       <div class="docs-toc__title">On this page</div>
-      <nav><ul><li><a class="lvl-2" href="#settings-preferences">Settings &amp; preferences</a></li><li><a class="lvl-3" href="#extension-manager">Extension manager</a></li></ul></nav>
+      <nav><ul><li><a class="lvl-2" href="#settings-preferences">Settings &amp; preferences</a></li><li><a class="lvl-3" href="#general-tab">General</a></li><li><a class="lvl-3" href="#chat-agent-tab">Chat / Agent</a></li><li><a class="lvl-3" href="#extension-manager">Extensions</a></li><li><a class="lvl-3" href="#medics-token-tab">MedICS Token</a></li></ul></nav>
     </aside>
   </div>
   <footer class="footer">

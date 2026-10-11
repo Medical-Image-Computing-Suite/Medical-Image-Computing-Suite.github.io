@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>AI assistant — MedICS Documentation</title>
-  <meta name="description" content="Ask questions and let the assistant perform tasks in MedICS, with your approval." />
+  <meta name="description" content="The Chat panel and Agents Window: ask questions, hand off tasks, approve actions, and configure the provider." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../css/style.css" />
@@ -44,7 +44,7 @@
   <div class="docs-shell container">
     <aside class="docs-side">
       <div class="docs-side__title">Documentation</div>
-      <nav><div class="docs-side__group">Getting started</div><ul><li><a href="../document.html">Overview</a></li></ul><div class="docs-side__group">Basics</div><ul><li><a href="interface.html">Interface &amp; components</a></li><li><a href="settings.html">Settings &amp; preferences</a></li></ul><div class="docs-side__group">Features</div><ul><li><a href="toolboxes.html">Toolboxes</a></li><li><a href="python-workspace.html">Python console &amp; workspace</a></li><li><a class="is-current" href="ai-assistant.html">AI assistant</a></li></ul><div class="docs-side__group">Official Extensions</div><ul><li><a href="retinal-layer-segmentation.html">Retinal Layer Segmentation</a></li></ul></nav>
+      <nav><div class="docs-side__group">Getting started</div><ul><li><a href="../document.html">Overview</a></li></ul><div class="docs-side__group">Basics</div><ul><li><a href="interface.html">Interface &amp; components</a></li><li><a href="settings.html">Settings &amp; preferences</a></li></ul><div class="docs-side__group">Features</div><ul><li><a href="toolboxes.html">Toolboxes</a></li><li><a class="is-current" href="ai-assistant.html">AI assistant</a></li></ul><div class="docs-side__group">Official Extensions</div><ul><li><a href="retinal-layer-segmentation.html">Retinal Layer Segmentation</a></li></ul></nav>
     </aside>
     <main class="docs-main">
       <header class="docs-hero">
@@ -54,19 +54,74 @@
       </header>
       <article class="docs-content">
 <h2 id="ai-assistant">AI assistant</h2>
-<p>The <strong>Agent chat</strong> panel is an assistant that can answer questions and carry out tasks in
-MedICS. You can ask it about the data you have open, or ask it to do something and it will use
-the tools it needs — reading files, running Python, working with the toolboxes — and report
-back.</p>
+<p>MedICS includes an AI assistant that can answer questions and carry out tasks. You can ask it about
+the data you have open, or ask it to do something and it will use the tools it needs — reading
+files, running Python, driving the toolboxes — and report back. Actions that create or change data
+ask for your <strong>approval</strong> first.</p>
+<p>The assistant appears in two places, and both share the same conversations:</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Surface</th><th>What it is</th></tr></thead>
+<tbody>
+<tr><td><strong>Chat panel</strong></td><td>Docked on the right of the main window. Toggle it from <strong>View → Show Chat</strong>.</td></tr>
+<tr><td><strong>Agents Window</strong></td><td>A separate window (<kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>A</kbd>, or <strong>View → Agents Window</strong>). Use it for a full-size conversation, or across several screens.</td></tr>
+</tbody></table></div>
+
 <h3 id="using-the-chat">Using the chat</h3>
-<p>Open the <strong>Agent chat</strong> panel from the <strong>View</strong> menu, type a request and send it. While the
-assistant works you can watch each step it takes. Actions that create or change data ask for
-your <strong>approval</strong> before they run.</p>
+<p>Type your request in the composer at the bottom and send it with <kbd>Enter</kbd>. While the assistant
+works, each step it takes appears in the conversation.</p>
+<p>The composer:</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Control</th><th>What it does</th></tr></thead>
+<tbody>
+<tr><td><strong>@ Add context</strong></td><td>Attaches files or folders as context. Attachments appear as chips — click a chip to remove it.</td></tr>
+<tr><td><strong>Mode</strong></td><td>How the assistant behaves this turn — see the table below.</td></tr>
+<tr><td><strong>Model</strong></td><td>Which model answers. The menu also has <strong>Refresh model lists</strong> and <strong>Configure providers and API keys…</strong>.</td></tr>
+<tr><td><strong>Send / Stop</strong></td><td>Sends the prompt; while the assistant is running, the same button stops it.</td></tr>
+<tr><td>Prompt box</td><td>Where you type. Its border is tinted by the current mode.</td></tr>
+</tbody></table></div>
+<div class="table-wrap"><table>
+<thead><tr><th>Mode</th><th>What the assistant does</th></tr></thead>
+<tbody>
+<tr><td><strong>Agent</strong></td><td>Full agent — calls tools and edits your workspace.</td></tr>
+<tr><td><strong>Plan</strong></td><td>Researches and drafts a plan; it only runs the plan after you confirm.</td></tr>
+<tr><td><strong>Ask</strong></td><td>Answers questions only — no tool calls and no file changes.</td></tr>
+</tbody></table></div>
+<p>If you send a message while the assistant is busy, it is <strong>queued</strong>; a strip above the composer
+lists the queued prompts, where you can edit or remove them before they run.</p>
+<p>In the conversation:</p>
+<ul class="plain">
+<li>Each turn shows the assistant's <strong>work</strong> — the tools it used, with their arguments and results —
+followed by its answer. Tool calls that repeat are grouped with a count.</li>
+<li>The assistant's reasoning is available in small expandable notes labelled with its name.</li>
+<li>Every finished turn has <strong>Copy</strong> (copies the whole turn) and <strong>Fork</strong> (starts a new
+conversation from that point) buttons, and a duration.</li>
+<li>When the latest prompt scrolls out of view, a small <strong>You</strong> bar pins to the top; click it to jump
+back to that turn.</li>
+<li>Click one of your own messages to <strong>edit and resend</strong> it.</li>
+</ul>
+
+<h3 id="approvals">Approvals &amp; permissions</h3>
+<p>When the assistant wants to run something that could change your data, it stops and shows an
+<strong>ACTION REQUIRED</strong> card with the tool, the reason and its arguments, and buttons to decide:</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Button</th><th>What it allows</th></tr></thead>
+<tbody>
+<tr><td><strong>Allow once</strong></td><td>Runs this one action only.</td></tr>
+<tr><td><strong>Allow for run</strong></td><td>Allows this tool for the rest of the current run.</td></tr>
+<tr><td><strong>Always allow</strong></td><td>Remembers the choice for this tool in future runs.</td></tr>
+<tr><td><strong>Allow all this session</strong></td><td>Allows every tool until you restart MedICS.</td></tr>
+<tr><td><strong>Deny</strong></td><td>Refuses the action.</td></tr>
+</tbody></table></div>
+<p>If you do not answer within a few minutes the request is denied automatically. A mode-switch request
+instead offers <strong>Switch to Plan</strong> or <strong>Stay in Agent</strong>.</p>
+<p>The <strong>Tools &amp; permissions</strong> dialog (the tools icon in the header) lists every tool with two
+settings: whether it is <strong>available</strong> to the model, and whether it <strong>auto-runs</strong> — <em>Allow</em> runs it
+without asking, <em>Ask</em> confirms each time, and <em>Deny</em> blocks it. There are bulk buttons to enable or
+disable all tools, allow all to auto-run, or ask for all.</p>
+
 <h3 id="the-agents-window">The Agents Window</h3>
-<p>The same assistant also opens in its own window (<strong>Ctrl+Shift+A</strong>, or
-<strong>View → Agents Window</strong>). Use it when you want a full-size conversation next to the main
-window instead of a docked panel, or when you are working across more than one screen. Each
-conversation is listed on the left, so you can keep several going and switch between them.</p>
+<p>The assistant in a window of its own, with the conversation beside a session list and a workspace
+panel.</p>
 <div class="doc-screens">
   <figure class="doc-figure">
     <a href="../assets/img/components/agent_window.png" target="_blank" rel="noopener">
@@ -76,16 +131,48 @@ conversation is listed on the left, so you can keep several going and switch bet
     conversation list on the left and the transcript beside it.</figcaption>
   </figure>
 </div>
+<p>Its header, left to right:</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Button</th><th>What it does</th></tr></thead>
+<tbody>
+<tr><td>History</td><td>Shows or hides the session list (<kbd>Ctrl</kbd>+<kbd>B</kbd>).</td></tr>
+<tr><td>Workspace folder</td><td>Shows the folder the chat is attached to; click to change it.</td></tr>
+<tr><td>Tools</td><td>Opens <strong>Tools &amp; permissions</strong>.</td></tr>
+<tr><td>Calendar</td><td>Opens <strong>Scheduled tasks</strong>.</td></tr>
+<tr><td>Graph</td><td>Opens the <strong>Token usage</strong> dashboard.</td></tr>
+<tr><td>Add</td><td>Starts a new session (<kbd>Ctrl</kbd>+<kbd>N</kbd>).</td></tr>
+<tr><td>Refresh</td><td>Reloads the chat surface.</td></tr>
+<tr><td>Gear</td><td>Opens the assistant settings.</td></tr>
+<tr><td>Ellipsis</td><td>More actions — rename or clear the chat, scheduled tasks, customize the agent, export the chat as Markdown, open the agent config folder, refresh model lists, and settings.</td></tr>
+<tr><td>Right panel</td><td>Shows or hides the workspace panel with the chat's file changes (<kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>B</kbd>).</td></tr>
+</tbody></table></div>
+
+<h3 id="sessions">Sessions &amp; history</h3>
+<p>Every chat belongs to a <strong>repository</strong> — a folder you opened in MedICS — so the list in the
+Agents Window is grouped by folder. Use the <strong>Search</strong> box to filter by title or content, and the
+right-click menu on any chat to <strong>Open</strong>, <strong>Rename…</strong>, <strong>Duplicate</strong> or <strong>Delete</strong> it.
+Several chats can be deleted at once. A folder's menu lets you start a chat there, pin it to the top,
+or remove it from the list.</p>
+<p>Two extras use the same assistant:</p>
+<ul class="plain">
+<li><strong>Scheduled tasks</strong> (the calendar in the Agents Window) run a prompt in the background on a
+schedule — you give each task a name and a prompt, and choose how often it repeats. <strong>Run now</strong>
+starts one immediately.</li>
+<li>The <strong>Token usage</strong> dashboard (the graph) shows how much the assistant has used, per model, and
+lets you set limits.</li>
+</ul>
+
 <h3 id="what-it-is-good-at">What it is good at</h3>
-<ul>
+<ul class="plain">
 <li>Answering questions about your images, tables and variables.</li>
 <li>Running Python against your live workspace.</li>
 <li>Driving the toolboxes for you — opening a tool, importing, previewing.</li>
 <li>Multi-step tasks that combine the above.</li>
 </ul>
+
 <h3 id="configuration">Configuration</h3>
-<p>Choose the provider and model and enter your API key in <strong>Edit → Preferences → Chat</strong>. The
-assistant is optional — MedICS works fully without it.</p>
+<p>Choose the provider and model and enter your API key in <strong>Settings → Chat / Agent</strong>. The assistant
+is optional — MedICS works fully without it.</p>
 <div class="doc-screens doc-screens--medium">
   <figure class="doc-figure">
     <a href="../assets/img/components/chat_agent_setting.png" target="_blank" rel="noopener">
@@ -95,12 +182,19 @@ assistant is optional — MedICS works fully without it.</p>
     set the temperature and maximum tokens the assistant may use.</figcaption>
   </figure>
 </div>
+<p>The <strong>Chat / Agent</strong> tab holds the <strong>Active provider</strong> and its key and model, the
+<strong>Temperature</strong> and <strong>Max tokens</strong>, and the <strong>System Prompt</strong> — the instructions sent with every
+request. The same tab also chooses the <strong>Agent Harness</strong> and shows or hides the assistant chrome.
+See <a href="settings.html#chat-agent-tab">Settings &amp; preferences</a> for each control.</p>
+<p class="anchor-note">The assistant's <strong>Customize agent</strong> action (in the Agents Window's ⋯ menu, or the
+<b>Customize</b> item in the session list) opens a dialog of instruction files that are prepended to every
+prompt — instructions, personality, notes about you, long-term memory and more.</p>
       </article>
-      <nav class="docs-pager"><a class="prev" href="python-workspace.html"><span>&#8592; Previous</span>Python console &amp; workspace</a></nav>
+      <nav class="docs-pager"><a class="prev" href="toolboxes.html"><span>&#8592; Previous</span>Toolboxes</a></nav>
     </main>
     <aside class="docs-toc">
       <div class="docs-toc__title">On this page</div>
-      <nav><ul><li><a class="lvl-2" href="#ai-assistant">AI assistant</a></li><li><a class="lvl-3" href="#using-the-chat">Using the chat</a></li><li><a class="lvl-3" href="#the-agents-window">The Agents Window</a></li><li><a class="lvl-3" href="#what-it-is-good-at">What it is good at</a></li><li><a class="lvl-3" href="#configuration">Configuration</a></li></ul></nav>
+      <nav><ul><li><a class="lvl-2" href="#ai-assistant">AI assistant</a></li><li><a class="lvl-3" href="#using-the-chat">Using the chat</a></li><li><a class="lvl-3" href="#approvals">Approvals &amp; permissions</a></li><li><a class="lvl-3" href="#the-agents-window">The Agents Window</a></li><li><a class="lvl-3" href="#sessions">Sessions &amp; history</a></li><li><a class="lvl-3" href="#what-it-is-good-at">What it is good at</a></li><li><a class="lvl-3" href="#configuration">Configuration</a></li></ul></nav>
     </aside>
   </div>
   <footer class="footer">

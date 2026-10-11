@@ -44,7 +44,7 @@
   <div class="docs-shell container">
     <aside class="docs-side">
       <div class="docs-side__title">Documentation</div>
-      <nav><div class="docs-side__group">Getting started</div><ul><li><a href="../document.html">Overview</a></li></ul><div class="docs-side__group">Basics</div><ul><li><a href="interface.html">Interface &amp; components</a></li><li><a href="settings.html">Settings &amp; preferences</a></li></ul><div class="docs-side__group">Features</div><ul><li><a class="is-current" href="toolboxes.html">Toolboxes</a></li><li><a href="python-workspace.html">Python console &amp; workspace</a></li><li><a href="ai-assistant.html">AI assistant</a></li></ul><div class="docs-side__group">Official Extensions</div><ul><li><a href="retinal-layer-segmentation.html">Retinal Layer Segmentation</a></li></ul></nav>
+      <nav><div class="docs-side__group">Getting started</div><ul><li><a href="../document.html">Overview</a></li></ul><div class="docs-side__group">Basics</div><ul><li><a href="interface.html">Interface &amp; components</a></li><li><a href="settings.html">Settings &amp; preferences</a></li></ul><div class="docs-side__group">Features</div><ul><li><a class="is-current" href="toolboxes.html">Toolboxes</a></li><li><a href="ai-assistant.html">AI assistant</a></li></ul><div class="docs-side__group">Official Extensions</div><ul><li><a href="retinal-layer-segmentation.html">Retinal Layer Segmentation</a></li></ul></nav>
     </aside>
     <main class="docs-main">
       <header class="docs-hero">
@@ -57,29 +57,290 @@
 <p>Toolboxes are the built-in tools that ship with MedICS. Each opens as a <strong>tab</strong> in the central
 area — from the <strong>Toolboxes</strong> menu, from the activity bar, or by double-clicking a supported
 file in File Explorer.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Toolbox</th><th>What it is for</th></tr></thead>
+<tbody>
+<tr><td><strong>FilePreview</strong></td><td>Read-only preview of images, volumes, tables, Markdown and code.</td></tr>
+<tr><td><strong>ImportData</strong></td><td>Load raw stacks, image sequences, DICOM, NIfTI, MAT/NumPy and video into the workspace.</td></tr>
+<tr><td><strong>PyEditor</strong></td><td>A Python editor and terminal that run against the live workspace.</td></tr>
+<tr><td><strong>JupyterLab</strong></td><td>The full JupyterLab UI in a tab, running MedICS's own Python environment.</td></tr>
+</tbody></table></div>
+
 <h3 id="filepreview">FilePreview</h3>
 <p>Preview any file without changing it: 2-D images, DICOM and NIfTI volumes, TIFF stacks, tables
 (CSV, TSV, Excel, Parquet), Markdown, and source code. For image and volume views you can move
 through slices, adjust <strong>window/level</strong>, zoom and pan, and apply flips, rotations and
 transposes.</p>
-<p><img alt="FilePreview — previewing an image" src="../assets/img/toolbox/filepreview.png" width="961" height="650" /></p>
+<div class="doc-screens"><figure class="doc-figure"><a href="../assets/img/toolbox/filepreview.png" target="_blank" rel="noopener"><img loading="lazy" src="../assets/img/toolbox/filepreview.png" width="961" height="650" alt="FilePreview — previewing a volume, with its toolbar and slice controls." /></a><figcaption><strong>FilePreview.</strong> A volume open in a tab, with the toolbar on top and the slice / window-level controls above the image.</figcaption></figure></div>
+
+<h4 id="filepreview-open">Opening a file</h4>
+<ul class="plain">
+<li><strong>Double-click</strong> a file in the File Explorer — non-text files open here.</li>
+<li><strong>Right-click</strong> a file and choose <strong>Open</strong> (or <strong>Open in FilePreview</strong> for a text file).</li>
+<li><strong>Drag &amp; drop</strong> one or more files onto the window from the operating system or the Explorer.</li>
+<li>Click <strong>Open…</strong> (<kbd>Ctrl</kbd>+<kbd>O</kbd>) on the toolbar and pick one or more files.</li>
+<li>Drop a <strong>variable</strong> from the Variables panel to preview data that is only in memory.</li>
+</ul>
+<p>Each file opens in its own inner tab. Re-opening a file just activates its tab; the
+<strong>Welcome</strong> tab comes back when every file tab is closed.</p>
+
+<h4 id="filepreview-toolbar">Toolbar</h4>
+<div class="table-wrap"><table>
+<thead><tr><th>Button</th><th>Shortcut</th><th>What it does</th></tr></thead>
+<tbody>
+<tr><td><strong>Open…</strong></td><td><kbd>Ctrl</kbd>+<kbd>O</kbd></td><td>Choose one or more files to preview; each opens in its own tab.</td></tr>
+<tr><td><strong>Zoom In</strong></td><td>—</td><td>Magnify the view.</td></tr>
+<tr><td><strong>Zoom Out</strong></td><td>—</td><td>Shrink the view.</td></tr>
+<tr><td><strong>Reset View</strong></td><td>—</td><td>Fit the image or volume back into the window and clear any pan and zoom.</td></tr>
+<tr><td><strong>Flip Vertical</strong></td><td>—</td><td>Checkable. Mirrors the image top-to-bottom.</td></tr>
+<tr><td><strong>Flip Horizontal</strong></td><td>—</td><td>Checkable. Mirrors the image left-to-right.</td></tr>
+<tr><td><strong>Transpose</strong></td><td>—</td><td>Checkable. Reflects the image across the main diagonal (swaps the axes).</td></tr>
+<tr><td><strong>Rotate 90° clockwise</strong></td><td>—</td><td>Cycles 0° → 90° → 180° → 270°; the current angle is shown on the button.</td></tr>
+<tr><td><strong>Plane:</strong></td><td>—</td><td>For volumes, which plane is displayed. A calibrated image offers <em>axial</em> / <em>sagittal</em> / <em>coronal</em>; a plain array offers <em>YZ</em> / <em>XZ</em> / <em>XY</em>.</td></tr>
+</tbody></table></div>
+<p class="anchor-note">Zoom, flip, transpose and rotate are available for images and volumes; they are
+disabled for text, tables and Markdown. The transform buttons stay pressed while they are active.</p>
+
+<h4 id="filepreview-formats">What you can preview</h4>
+<div class="table-wrap"><table>
+<thead><tr><th>Kind</th><th>Formats</th></tr></thead>
+<tbody>
+<tr><td>Images</td><td><code>.png</code>, <code>.jpg</code>, <code>.jpeg</code>, <code>.bmp</code>, <code>.gif</code>, <code>.webp</code>, <code>.ico</code>, <code>.ppm</code>, <code>.pgm</code>, <code>.pbm</code>, <code>.svg</code>, and single-frame <code>.tif</code>/<code>.tiff</code></td></tr>
+<tr><td>Raw OCT volumes</td><td><code>.oct</code>, <code>.octa</code>, <code>.foct</code>, <code>.ssada</code></td></tr>
+<tr><td>Data containers</td><td><code>.mat</code>, <code>.med</code>, <code>.h5</code>, <code>.hdf5</code>, <code>.npy</code>, <code>.npz</code></td></tr>
+<tr><td>Volumes</td><td><code>.dcm</code>/<code>.dicom</code>, <code>.nii</code>/<code>.nii.gz</code>, multi-page <code>.tif</code>/<code>.tiff</code></td></tr>
+<tr><td>Video</td><td><code>.mp4</code>, <code>.avi</code>, <code>.mkv</code>, <code>.mov</code>, <code>.webm</code>, <code>.wmv</code>, <code>.m4v</code>, <code>.mpg</code>, <code>.mpeg</code>, <code>.ogv</code>, <code>.3gp</code></td></tr>
+<tr><td>Tables</td><td><code>.csv</code>, <code>.tsv</code>, <code>.tab</code>, <code>.xlsx</code>, <code>.parquet</code></td></tr>
+<tr><td>Markdown</td><td><code>.md</code>, <code>.markdown</code>, <code>.mdown</code>, <code>.mkd</code></td></tr>
+<tr><td>Text / code</td><td><code>.txt</code>, <code>.log</code>, <code>.json</code>, <code>.xml</code>, <code>.yaml</code>, <code>.yml</code>, <code>.py</code>, <code>.c</code>, <code>.cpp</code>, <code>.java</code>, <code>.js</code>, <code>.ts</code>, <code>.m</code>, <code>.r</code>, <code>.sh</code>, <code>.jl</code>, <code>.tex</code>, <code>.css</code>, <code>.html</code>, <code>.sql</code> and more</td></tr>
+</tbody></table></div>
+<p>A <code>.mat</code>, <code>.h5</code>, <code>.npz</code> or similar container opens a small <strong>field tree</strong> on the left listing
+every array it holds; select a field to display it. A single array is shown straight away. Anything
+not listed above reports <em>"Preview is not supported for this file type."</em></p>
+
+<h4 id="filepreview-viewer">The image &amp; volume viewer</h4>
+<div class="table-wrap"><table>
+<thead><tr><th>Control</th><th>What it does</th></tr></thead>
+<tbody>
+<tr><td>◀ / ▶ and the slice slider</td><td>Page through the volume; the counter reads <em>current / total</em>.</td></tr>
+<tr><td>Play / Pause</td><td>Run the frames as a cine loop (disabled when there is only one slice).</td></tr>
+<tr><td><em>fps</em> spin box</td><td>Playback speed, in frames per second.</td></tr>
+<tr><td><strong>W:</strong> and <strong>L:</strong></td><td>Window and level — the brightness and contrast of the display. These are display-only and are not saved into the data.</td></tr>
+<tr><td>Histogram</td><td>A grayscale bar on the right; drag its handles for the same effect as the W/L spin boxes.</td></tr>
+<tr><td><strong>Auto Levels</strong></td><td>Reset the window and level to the automatic range.</td></tr>
+<tr><td><strong>Properties</strong></td><td>Open the <em>File Properties</em> dialog — file and data details. For DICOM, the important tags are shown under friendly labels.</td></tr>
+<tr><td><strong>Send to WS</strong></td><td>Available for container and volume previews: send the data, as displayed, to the workspace (the plane and any flip/rotate are applied).</td></tr>
+<tr><td>Scale bar</td><td>A length bar in the lower-left corner, drawn automatically when the file carries a physical calibration.</td></tr>
+</tbody></table></div>
+
+<h4 id="filepreview-tables">Tables &amp; Markdown</h4>
+<ul class="plain">
+<li><strong>Tables</strong> show a row-count label (<em>N rows × M columns</em>), sort when you click a column header, and filter as you type in the <strong>Filter rows…</strong> box.</li>
+<li><strong>Markdown</strong> opens rendered, with <strong>Rendered</strong> / <strong>Source</strong> buttons to switch between the formatted view and the raw text.</li>
+</ul>
+
+<h4 id="filepreview-mouse">Mouse &amp; keyboard</h4>
+<div class="table-wrap"><table>
+<thead><tr><th>Action</th><th>Effect</th></tr></thead>
+<tbody>
+<tr><td>Mouse wheel over the image</td><td>Previous / next slice.</td></tr>
+<tr><td><kbd>Ctrl</kbd> + wheel</td><td>Zoom.</td></tr>
+<tr><td>Left-drag</td><td>Pan.</td></tr>
+<tr><td>Right-drag</td><td>Zoom.</td></tr>
+<tr><td>Right-click the view</td><td>The view's own menu (fit, reset).</td></tr>
+<tr><td>Hover</td><td>Live pixel readout in the status bar.</td></tr>
+<tr><td><kbd>PageUp</kbd> / <kbd>PageDown</kbd></td><td>Jump ten slices back / forward.</td></tr>
+<tr><td><kbd>Home</kbd> / <kbd>End</kbd></td><td>First / last slice.</td></tr>
+<tr><td><kbd>←</kbd> <kbd>→</kbd> <kbd>↑</kbd> <kbd>↓</kbd></td><td>One slice back / forward.</td></tr>
+<tr><td><kbd>+</kbd> / <kbd>-</kbd></td><td>Zoom in / out.</td></tr>
+<tr><td><kbd>0</kbd></td><td>Fit to window.</td></tr>
+</tbody></table></div>
+<p class="anchor-note">The status bar shows the preview kind and file name on the left, and the
+pointer readout (for example <code>(col, row) = value</code>) on the right.</p>
+
 <h3 id="importdata">ImportData</h3>
-<p>Load images and volumes into the workspace. Choose <strong>Image Sequence</strong>, <strong>Single File</strong> or
-<strong>DICOM Folder</strong>, drag files or folders onto the window, and let the importer load them in the
-background with a progress bar. Video files load as frame stacks. Imported data appears in the
+<p>Load images and volumes into the workspace. Choose how the source is structured, let the importer
+read and preview it, then send the result to the workspace. Imported data appears in the
 <strong>Variables</strong> panel.</p>
-<p><img alt="ImportData — the data importer" src="../assets/img/toolbox/importdata.png" width="961" height="650" /></p>
+<div class="doc-screens"><figure class="doc-figure"><a href="../assets/img/toolbox/importdata.png" target="_blank" rel="noopener"><img loading="lazy" src="../assets/img/toolbox/importdata.png" width="961" height="650" alt="ImportData — the data importer, with the parameter form, preview and workspace list." /></a><figcaption><strong>ImportData.</strong> Choose the <em>Data Type</em>, set the parameters, preview the frames, then <em>Send to ws</em>.</figcaption></figure></div>
+
+<h4 id="importdata-modes">Data type</h4>
+<div class="table-wrap"><table>
+<thead><tr><th>Mode</th><th>Use it for</th></tr></thead>
+<tbody>
+<tr><td><strong>Volume Data</strong></td><td>A single volume read from a raw/binary stack file or a container (<code>.mat</code>, <code>.npy</code>, <code>.npz</code>, NIfTI, DICOM, video).</td></tr>
+<tr><td><strong>Image Sequence</strong></td><td>A folder or a set of image files stacked into one volume, in file-name order.</td></tr>
+</tbody></table></div>
+<p>The parameters below the selector change with the mode.</p>
+
+<h4 id="importdata-volume">Volume Data parameters</h4>
+<div class="table-wrap"><table>
+<thead><tr><th>Field</th><th>What it sets</th></tr></thead>
+<tbody>
+<tr><td>Image type</td><td>The pixel type of the raw file — <em>8-bit</em>, <em>16-bit Signed</em>, <em>16-bit Unsigned</em>, <em>32-bit Signed/Unsigned</em>, <em>16/32/64-bit Real</em>, <em>24-bit RGB/BGR</em>, <em>32-bit ARGB/ABGR</em> or <em>1-bit Bitmap</em>.</td></tr>
+<tr><td>Width / Height</td><td>The size of one frame, in pixels.</td></tr>
+<tr><td>Frame</td><td>The number of frames in the stack.</td></tr>
+<tr><td>Offset to first Image</td><td>Bytes to skip at the start of the file before the first frame (for a header).</td></tr>
+<tr><td>Gap Between Images</td><td>Bytes to skip between consecutive frames.</td></tr>
+<tr><td>permutation</td><td>How the three axes are ordered in the file (for example <code>0,1,2</code>).</td></tr>
+<tr><td>Read Order</td><td><em>F</em> (Fortran), <em>C</em> or <em>A</em> — how the file's bytes fill the array.</td></tr>
+<tr><td>Color Order</td><td><em>AABBCC</em> (planar) or <em>ABCABC</em> (interleaved) for colour data.</td></tr>
+<tr><td>Little-endian byte order</td><td>Tick when the file's bytes are little-endian.</td></tr>
+<tr><td>Import format</td><td>The dimension order written to the workspace — <em>DHWC</em> (Depth, Height, Width, Channel) or <em>HWCD</em>.</td></tr>
+<tr><td>Keep C for gray image</td><td>Keep the channel axis even for a grayscale image.</td></tr>
+<tr><td>Horizontal / Vertical Flip</td><td>Mirror the volume as it is read.</td></tr>
+</tbody></table></div>
+<p>NIfTI, DICOM, MAT, NumPy and video files are read automatically; the raw parameters above apply to
+undecorated binary stacks.</p>
+
+<h4 id="importdata-sequence">Image Sequence parameters</h4>
+<div class="table-wrap"><table>
+<thead><tr><th>Control</th><th>What it does</th></tr></thead>
+<tbody>
+<tr><td><strong>Folder</strong></td><td>Shows the folder being read. Type a path or use the buttons below.</td></tr>
+<tr><td><strong>Open Files</strong></td><td>Pick individual image files to stack.</td></tr>
+<tr><td><strong>Open Folder</strong></td><td>Load every file in a folder (natural-sorted, so <em>2</em> comes before <em>10</em>).</td></tr>
+<tr><td><strong>Filter</strong> / <strong>Regex</strong></td><td>Choose how the pattern is matched, then type it in the box (for example <code>*.*</code> or <code>*.tif</code>).</td></tr>
+<tr><td><strong>Select All</strong></td><td>Tick every file in the list.</td></tr>
+<tr><td><strong>Range</strong> — <em>from</em> : <em>to</em></td><td>Select a contiguous range of frames by index.</td></tr>
+<tr><td>File list</td><td>The matched images, with check-boxes; only ticked files are stacked.</td></tr>
+</tbody></table></div>
+
+<h4 id="importdata-preview">Preview &amp; transfer</h4>
+<div class="table-wrap"><table>
+<thead><tr><th>Control</th><th>What it does</th></tr></thead>
+<tbody>
+<tr><td>Frame slider + spin box</td><td>Scrub through the frames of the loaded volume; the label reads <em>current / total</em>.</td></tr>
+<tr><td>Image area</td><td>Shows the frame under the pointer; move the pointer to read the pixel value (<em>X:… Y:… ▶ value</em>).</td></tr>
+<tr><td><strong>Send to ws</strong></td><td>Send the loaded volume to the MedICS workspace.</td></tr>
+<tr><td><strong>Generate Function</strong></td><td>Write a Python loader for the current file — a ready-made function you can reuse. It opens a <em>Generated Load Function</em> dialog you can save.</td></tr>
+</tbody></table></div>
+
+<h4 id="importdata-formats">What you can import</h4>
+<ul class="plain">
+<li><strong>Image sequences</strong> — folders or sets of TIFF, PNG, JPEG and similar frames.</li>
+<li><strong>Volume files</strong> — DICOM (<code>.dcm</code>/<code>.dicom</code>), NIfTI (<code>.nii</code>/<code>.nii.gz</code>).</li>
+<li><strong>Containers</strong> — MATLAB <code>.mat</code>, NumPy <code>.npy</code>/<code>.npz</code> and MedICS <code>.med</code> files.</li>
+<li><strong>Video</strong> — <code>.mp4</code>, <code>.avi</code> and similar load as a stack of frames.</li>
+<li><strong>Raw/binary stacks</strong> — any file read with the <em>Volume Data</em> parameters above.</li>
+</ul>
+
+<h4 id="importdata-drop">Drag &amp; drop</h4>
+<p>Drop files or a folder anywhere on the window. Several image files (or a folder) are treated as an
+image sequence; a single volume file is opened as <em>Volume Data</em>.</p>
+
+<h4 id="importdata-status">Status bar</h4>
+<p>The green status bar along the bottom reports progress and messages (<em>"File loaded successfully!"</em>,
+<em>"N files found in the folder"</em>), the pointer pixel readout, and — for a raw stack — a byte-match
+badge that confirms the header/offset settings add up (<em>"✔ All bytes matched"</em>).</p>
+
 <h3 id="pyeditor">PyEditor</h3>
-<p>A Python editor in a tab, with syntax highlighting, code completion, an outline and an
-integrated terminal. <strong>Run (F5)</strong> executes your script against the live console, so it can use
-the variables already in your workspace.</p>
-<p><img alt="PyEditor — the Python editor" src="../assets/img/toolbox/pyeditor.png" width="961" height="650" /></p>
+<p>A Python editor in a tab, with syntax highlighting, code completion, an integrated terminal and a
+set of code-navigation tools. <strong>Run (F5)</strong> executes your script against the live console, so it
+can use the variables already in your workspace.</p>
+<div class="doc-screens"><figure class="doc-figure"><a href="../assets/img/toolbox/pyeditor.png" target="_blank" rel="noopener"><img loading="lazy" src="../assets/img/toolbox/pyeditor.png" width="961" height="650" alt="PyEditor — the Python editor with its toolbar, editor tabs and status bar." /></a><figcaption><strong>PyEditor.</strong> The editor with its toolbar, a breadcrumb bar, and the <em>Ln / Col</em> readout in the status bar.</figcaption></figure></div>
+
+<h4 id="pyeditor-toolbar">Toolbar &amp; tabs</h4>
+<div class="table-wrap"><table>
+<thead><tr><th>Button</th><th>Shortcut</th><th>What it does</th></tr></thead>
+<tbody>
+<tr><td><strong>New</strong></td><td><kbd>Ctrl</kbd>+<kbd>N</kbd></td><td>Open a new, untitled editor tab.</td></tr>
+<tr><td><strong>Open</strong></td><td>—</td><td>Open a file in a new tab (<code>.py</code> is offered, but any file can be opened).</td></tr>
+<tr><td><strong>Save</strong></td><td><kbd>Ctrl</kbd>+<kbd>S</kbd></td><td>Save the active tab; an untitled tab asks for a path first.</td></tr>
+<tr><td><strong>Run in Jupyter</strong></td><td><kbd>F5</kbd></td><td>Run the selection — or the whole file when nothing is selected — in the Jupyter console.</td></tr>
+</tbody></table></div>
+<p>Each file is a tab; a modified tab shows a <code>*</code>. <strong>Save As…</strong>
+(<kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>S</kbd>) writes to a new path. Right-click a tab for <strong>Close
+Tab</strong>, <strong>Close Other Tabs</strong>, <strong>Close All Tabs</strong> and <strong>New Tab</strong>;
+a breadcrumb bar above the editor shows the file's folder path, and <kbd>Ctrl</kbd>+<kbd>`</kbd> toggles the
+terminal.</p>
+
+<h4 id="pyeditor-editing">Editing features</h4>
+<div class="table-wrap"><table>
+<thead><tr><th>Feature</th><th>What it gives you</th></tr></thead>
+<tbody>
+<tr><td>Syntax highlighting</td><td>Python and many other languages (C/C++, Java, JavaScript/TypeScript, JSON, YAML, XML, HTML, CSS, SQL, R, Shell and more).</td></tr>
+<tr><td>Code completion</td><td>Python-aware suggestions as you type, with parameter hints for functions.</td></tr>
+<tr><td>Hover documentation</td><td>Hover a name to see its documentation.</td></tr>
+<tr><td>AI ghost text</td><td>Inline code suggestions; press <kbd>Alt</kbd>+<kbd>\</kbd> to ask for one and <kbd>Tab</kbd> to accept it.</td></tr>
+<tr><td>Find &amp; replace</td><td><kbd>Ctrl</kbd>+<kbd>F</kbd> to find, <kbd>Ctrl</kbd>+<kbd>H</kbd> to replace.</td></tr>
+<tr><td>Brackets &amp; folding</td><td>Auto-closing brackets and quotes, matching-bracket highlighting, and collapsible code blocks.</td></tr>
+<tr><td>Minimap &amp; line numbers</td><td>A code minimap on the right and a number gutter on the left.</td></tr>
+<tr><td>Multiple cursors</td><td>Hold <kbd>Alt</kbd> and click or drag to add cursors.</td></tr>
+<tr><td>Error markers</td><td>Python syntax errors are underlined in the editor.</td></tr>
+</tbody></table></div>
+
+<h4 id="pyeditor-navigation">Code navigation</h4>
+<div class="table-wrap"><table>
+<thead><tr><th>Action</th><th>Shortcut</th><th>What it does</th></tr></thead>
+<tbody>
+<tr><td>Go to Definition</td><td><kbd>F12</kbd> / <kbd>Ctrl</kbd>+click</td><td>Jump to where the symbol is defined.</td></tr>
+<tr><td>Peek Definition</td><td><kbd>Alt</kbd>+<kbd>F12</kbd></td><td>Show the definition inline, without leaving the file.</td></tr>
+<tr><td>Find All References</td><td><kbd>Shift</kbd>+<kbd>F12</kbd></td><td>List every use of the symbol in the <strong>References</strong> panel.</td></tr>
+<tr><td>Rename Symbol</td><td><kbd>F2</kbd></td><td>Rename the symbol under the cursor.</td></tr>
+<tr><td>Go to Symbol</td><td><kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>O</kbd></td><td>Jump to a class, function or variable by name.</td></tr>
+<tr><td>Go to Line</td><td><kbd>Ctrl</kbd>+<kbd>G</kbd></td><td>Jump to a line number.</td></tr>
+</tbody></table></div>
+<p>The <strong>References</strong> panel opens when you run <em>Find All References</em>. It lists the symbol,
+line and file; double-click a row to open that file at that line. Breadcrumbs above the editor also
+let you walk up and down the file's structure.</p>
+
+<h4 id="pyeditor-run">Running code</h4>
+<p>Press <strong>F5</strong> (or click <strong>Run in Jupyter</strong>) to run the selected text, or the whole file when
+nothing is selected. The code runs in the <strong>Jupyter</strong> console at the bottom of the window, so it
+sees the same workspace variables you do; the output appears in that console. A per-selection run is
+also bound to <kbd>F9</kbd>.</p>
+
+<h4 id="pyeditor-terminal">Integrated terminal</h4>
+<p><kbd>Ctrl</kbd>+<kbd>`</kbd> shows or hides the terminal — a real shell inside a tab. The
+<strong>+ New Terminal</strong> button starts another one; a shell picker offers <em>Command Prompt</em>,
+<em>PowerShell</em>, <em>Windows PowerShell</em> and <em>Git Bash</em>. Each terminal row in the list has buttons to
+<strong>Clear</strong> or <strong>Kill</strong> it, and right-clicking the list gives <strong>Rename</strong>, <strong>Kill
+Terminal</strong> and <strong>Clear</strong>. The terminal is a shell for convenience — use the <strong>Jupyter</strong> console
+when you want your workspace variables.</p>
+
+<h4 id="pyeditor-agent">Reviewing agent edits</h4>
+<p>When the AI assistant changes a file you have open, PyEditor shows the changes inline with a small
+toolbar — <strong>↑</strong> / <strong>↓</strong> move between changes, and <strong>Accept</strong>, <strong>Reject</strong>,
+<strong>Accept All</strong> and <strong>Reject All</strong> keep or undo them.</p>
+
+<h4 id="pyeditor-keys">Keyboard shortcuts</h4>
+<div class="table-wrap"><table>
+<thead><tr><th>Shortcut</th><th>Action</th></tr></thead>
+<tbody>
+<tr><td><kbd>Ctrl</kbd>+<kbd>N</kbd></td><td>New tab</td></tr>
+<tr><td><kbd>Ctrl</kbd>+<kbd>S</kbd> / <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>S</kbd></td><td>Save / Save As</td></tr>
+<tr><td><kbd>F5</kbd> / <kbd>Shift</kbd>+<kbd>F5</kbd> / <kbd>F9</kbd></td><td>Run in Jupyter (file or selection)</td></tr>
+<tr><td><kbd>Ctrl</kbd>+<kbd>`</kbd></td><td>Toggle the terminal</td></tr>
+<tr><td><kbd>Ctrl</kbd>+<kbd>F</kbd> / <kbd>Ctrl</kbd>+<kbd>H</kbd></td><td>Find / Replace</td></tr>
+<tr><td><kbd>Ctrl</kbd>+<kbd>/</kbd></td><td>Toggle line comment</td></tr>
+<tr><td><kbd>F12</kbd> · <kbd>Alt</kbd>+<kbd>F12</kbd> · <kbd>Shift</kbd>+<kbd>F12</kbd> · <kbd>F2</kbd></td><td>Definition · Peek definition · References · Rename</td></tr>
+<tr><td><kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>O</kbd> · <kbd>Ctrl</kbd>+<kbd>G</kbd></td><td>Go to symbol · Go to line</td></tr>
+<tr><td><kbd>Alt</kbd>+<kbd>\</kbd> · <kbd>Tab</kbd></td><td>Trigger / accept an AI inline suggestion</td></tr>
+</tbody></table></div>
+
 <h3 id="jupyterlab">JupyterLab</h3>
 <p>The full <strong>JupyterLab</strong> interface, embedded in a tab. It runs on MedICS's own Python
-environment, and your workspace is available inside notebooks.</p>
-<p><img alt="JupyterLab — notebooks in a tab" src="../assets/img/toolbox/jupyterlab.png" width="1315" height="824" /></p>
+environment, your workspace is available inside notebooks as <code>ws</code>, and it needs no setup —
+notebooks, completions and the debugger work out of the box. Install it into MedICS's environment to
+enable the tab (see <a href="../get-started.html">Get started</a>).</p>
+<div class="doc-screens"><figure class="doc-figure"><a href="../assets/img/toolbox/jupyterlab.png" target="_blank" rel="noopener"><img loading="lazy" src="../assets/img/toolbox/jupyterlab.png" width="1315" height="824" alt="JupyterLab — its Launcher open in a MedICS tab." /></a><figcaption><strong>JupyterLab.</strong> The JupyterLab interface in a MedICS tab; the <em>Launcher</em> shows the available notebook environments.</figcaption></figure></div>
+
+<h4 id="jupyterlab-environments">The two environments</h4>
+<p>When you start a new notebook or console from the <em>Launcher</em>, two environments are on offer:</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Environment</th><th>What it runs</th></tr></thead>
+<tbody>
+<tr><td><strong>MedICS (this environment)</strong></td><td>The default. The same Python interpreter as MedICS itself, so every package MedICS uses is already importable. It is wired into the live application: your workspace is available as <code>ws</code>, and the familiar scientific names (NumPy, Matplotlib and friends) are ready to use — the same starting point as the <strong>Jupyter</strong> console. Figures render inline. Variables you create here appear in the <strong>Variables</strong> panel.</td></tr>
+<tr><td><strong>Python 3 (ipykernel)</strong></td><td>A plain Python kernel, with none of the MedICS additions. Notebooks started here still run in the same interpreter, but there is no <code>ws</code> bridge and no pre-loaded MedICS namespace — use it when you want an untouched kernel, or as a fallback.</td></tr>
+</tbody></table></div>
+<p>Because the default is <em>MedICS (this environment)</em>, a notebook behaves like the rest of MedICS:
+a volume you load in MedICS is visible in the notebook, and a variable created in a notebook shows
+up in the Variables panel. To switch, open the notebook's <strong>Kernel → Change Kernel</strong> menu and
+pick the other environment. Your notebooks are saved under the MedICS home folder and reopen with
+the tab.</p>
       </article>
-      <nav class="docs-pager"><a class="prev" href="settings.html"><span>&#8592; Previous</span>Settings &amp; preferences</a><a class="next" href="python-workspace.html"><span>Next &#8594;</span>Python console &amp; workspace</a></nav>
+      <nav class="docs-pager"><a class="prev" href="settings.html"><span>&#8592; Previous</span>Settings &amp; preferences</a><a class="next" href="ai-assistant.html"><span>Next &#8594;</span>AI assistant</a></nav>
     </main>
     <aside class="docs-toc">
       <div class="docs-toc__title">On this page</div>

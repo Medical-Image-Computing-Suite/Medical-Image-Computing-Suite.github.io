@@ -61,6 +61,7 @@
 }
 .docs-side nav a { font-size: 0.84rem; }
 .docs-toc nav a.lvl-3 { padding-left: 1.15rem; }
+.docs-toc nav a.lvl-4 { padding-left: 1.9rem; }
 .docs-side nav a:hover,
 .docs-toc nav a:hover {
   color: var(--text);
@@ -172,6 +173,14 @@
 .doc-screens--narrow { max-width: 250px; }
 /* A single dialog screenshot: smaller than full width, still readable. */
 .doc-screens--medium { max-width: 460px; }
+/* A larger, detail-dense dialog: wider than --medium, still not full width. */
+.doc-screens--wide { max-width: 720px; }
+/* Two related panel screenshots that should still sit on a single row. */
+.doc-screens--duo {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  max-width: 760px;
+}
 .doc-figure {
   margin: 0;
   border: 1px solid var(--border);
@@ -315,6 +324,17 @@
 
 /* ---------- misc ---------- */
 .docs-content .anchor-note { font-size: 0.85rem; color: var(--muted); }
+/* Emphasis box for important notes (dimensions, behaviour caveats). */
+.docs-content .callout {
+  margin: 1rem 0 1.5rem;
+  padding: 0.8rem 1rem;
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent-3);
+  border-radius: var(--radius);
+  background: var(--surface);
+  font-size: 0.92rem;
+}
+.docs-content .callout strong { color: var(--text); }
 .diagram {
   background: var(--code-bg);
   border: 1px solid var(--border);

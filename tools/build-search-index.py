@@ -34,7 +34,6 @@ PAGES = [
     ("docs/interface.html", "Interface & components"),
     ("docs/settings.html", "Settings & preferences"),
     ("docs/toolboxes.html", "Toolboxes"),
-    ("docs/python-workspace.html", "Python console & workspace"),
     ("docs/ai-assistant.html", "AI assistant"),
     ("docs/retinal-layer-segmentation.html", "Retinal Layer Segmentation"),
 ]

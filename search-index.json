@@ -1,5 +1,5 @@
 {
- "generatedFrom": 10,
+ "generatedFrom": 9,
  "entries": [
   {
    "page": "index.html",
@@ -231,7 +231,23 @@
    "section": "The MedICS window",
    "id": "the-medics-window",
    "url": "docs/interface.html#the-medics-window",
-   "text": "The MedICS window MedICS opens as a single window. Your tools open as tabs in the middle, and the panels around them give you the file tree, your variables, the log, a terminal and the Python console. Panels can be shown or hidden, resized and re-arranged. Show or hide panels from the View menu, or double-click a tab title to collapse the surrounding panels and focus on your work."
+   "text": "The MedICS window MedICS opens as a single window. Your tools open as tabs in the middle, and the panels around them give you the file tree, your variables, the log, a terminal and the Python console. Panels can be shown or hidden, resized and re-arranged. Show or hide panels from the View menu, or double-click a tab title to collapse the surrounding panels and focus on your work. The MedICS window. Tools open as tabs, with the File Explorer, workspace variables and the bottom panel (Logging · Terminal · Jupyter · Results) around them. The window is built from six regions: Region What it holds"
+  },
+  {
+   "page": "docs/interface.html",
+   "pageTitle": "Interface & components",
+   "section": "Menu bar",
+   "id": "menu-bar",
+   "url": "docs/interface.html#menu-bar",
+   "text": "Menu bar Menu What is in it File Open Folder… ( Ctrl + O ), Open Workspace… , New Window ( Ctrl + Shift + N ), Save , Save As… , Exit ( Ctrl + Q ). View Focus Mode ( F11 ), Theme (Dark / Light), the panel toggles — Show Explorer , Show Terminal , Show Logging , Show Variables , Results — and Agents Window ( Ctrl + Shift + A ). Toolboxes A checkbox for each toolbox; ticking it shows or hides that toolbox's Activity Bar icon. Extensions A checkbox for each installed extension, then Open Extension Manager… . Image Image-processing operations — type conversion, thresholding, transforms, Z-projecti"
+  },
+  {
+   "page": "docs/interface.html",
+   "pageTitle": "Interface & components",
+   "section": "Activity Bar",
+   "id": "activity-bar",
+   "url": "docs/interface.html#activity-bar",
+   "text": "Activity Bar The vertical strip on the far left. From top to bottom: the Explorer (tooltip File Explorer ), one icon for each loaded toolbox (tooltip Open <name> ), one icon for each loaded extension , and the Settings gear at the bottom. Click an icon to open its tab; click it again to bring the tab back to the front. Drag toolbox and extension icons to reorder them. The core icons (Explorer, Settings) stay in place. Right-click the strip for a menu that shows or hides each toolbox and extension icon."
   },
   {
    "page": "docs/interface.html",
@@ -239,15 +255,23 @@
    "section": "File Explorer",
    "id": "file-explorer",
    "url": "docs/interface.html#file-explorer",
-   "text": "File Explorer Browse the folder you are working in. Double-click a file to preview it in a tab, drag files or folders into the window to import them, and right-click for Open , Preview , Copy path and Reveal in Explorer . Use the folder button to switch folders. On startup. It opens on the folder you were last working in; the toolbar switches folders. The current folder. Double-click a file to preview it, or right-click for Open , Copy path and Reveal in Explorer ."
+   "text": "File Explorer Browse the folder you are working in. Double-click a file to preview it in a tab, drag files or folders into the window to import them, and right-click for the full set of file actions. On startup. It opens on the folder you were last working in; the toolbar switches folders. The current folder. Double-click a file to preview it, or right-click for Open , Copy path and Reveal in Explorer . At the top, Open Editors lists the files you currently have open — click one to bring its tab to the front. Below it is the folder tree. When no folder is open the panel shows No Folder Opened "
   },
   {
    "page": "docs/interface.html",
    "pageTitle": "Interface & components",
-   "section": "Variables",
+   "section": "Workspace Variables",
    "id": "variables",
    "url": "docs/interface.html#variables",
-   "text": "Variables Every value you create in Python — arrays, images, tables and other objects — is kept in the workspace and listed here with its name, type and size. Double-click a variable to inspect or preview it. Variables. Everything in the workspace, with its name, type and size. Double-click an entry to inspect or preview it."
+   "text": "Workspace Variables Every value you create in Python — arrays, images, tables and other objects — is kept in the workspace and listed here. Double-click a variable to inspect or preview it. Variables. Everything in the workspace, with its name, value and type. Double-click an entry to inspect or preview it. Each row shows the variable's name / index , its value and its type . The list is live: a variable created in the console, in PyEditor or in a notebook appears here straight away. Action How Inspect or preview Double-click a row — images and volumes open in a preview. Use a variable elsewhe"
+  },
+  {
+   "page": "docs/interface.html",
+   "pageTitle": "Interface & components",
+   "section": "The bottom panel",
+   "id": "bottom-panel",
+   "url": "docs/interface.html#bottom-panel",
+   "text": "The bottom panel The bottom of the window is one dock shared by four tabs — Logging , Terminal , Jupyter and Results . Click a tab to switch, and drag the splitter to resize. Each tab is shown or hidden from the View menu."
   },
   {
    "page": "docs/interface.html",
@@ -255,7 +279,7 @@
    "section": "Logging",
    "id": "logging",
    "url": "docs/interface.html#logging",
-   "text": "Logging The in-app output panel shows messages from every part of MedICS. Filter by level (ALL / DEBUG / INFO / WARNING / ERROR / CRITICAL), clear the view, or export the entries to a text file. Logging. Messages from every part of MedICS, filtered by level (ALL / DEBUG / INFO / WARNING / ERROR / CRITICAL), with buttons to clear the view or export the entries to a text file."
+   "text": "Logging The in-app output panel shows messages from every part of MedICS. Logging. Messages from every part of MedICS, filtered by level, with buttons to clear the view or export the entries to a text file. Control What it does Level selector Filters the view by severity: ALL , DEBUG , INFO , WARNING , ERROR , CRITICAL . CLEAR Empties the visible log and the buffer behind it. EXPORT… Writes the log to a text file (default name exported_log.txt ). Entries read time [LEVEL] message and are colour-coded by level."
   },
   {
    "page": "docs/interface.html",
@@ -263,7 +287,7 @@
    "section": "Terminal",
    "id": "terminal",
    "url": "docs/interface.html#terminal",
-   "text": "Terminal A real shell embedded in the window. It runs in its own process, separate from the application, so it is the place for command-line tools and scripts. + New Terminal lets you open additional shells (PowerShell, Command Prompt, Git Bash, …); the list on the right switches, renames, clears or closes them. Terminal. A shell in its own process, with a list of open shells on the right to switch, rename, clear or close them."
+   "text": "Terminal A real shell embedded in the window. It runs in its own process, separate from the application, so it is the place for command-line tools and scripts. Terminal. A shell in its own process, with a list of open shells on the right to switch, rename, clear or close them. Control What it does Terminal list One row per open shell, named after the shell. The active row is highlighted. Clear (⊘) Clears that terminal's scrollback. Kill (✕) Ends that shell. + New Terminal Opens another shell; a picker offers Command Prompt , PowerShell , Windows PowerShell or Git Bash on Windows, and the login"
   },
   {
    "page": "docs/interface.html",
@@ -271,7 +295,23 @@
    "section": "Jupyter console",
    "id": "jupyter-console",
    "url": "docs/interface.html#jupyter-console",
-   "text": "Jupyter console An interactive Python console that runs inside MedICS, so it shares your workspace. Use it for quick calculations, to inspect data, and to script an analysis without leaving the application. See Python console & workspace . Jupyter console. An interactive Python console that shares your workspace, so anything you create here appears in Variables straight away."
+   "text": "Jupyter console An interactive Python console that runs inside MedICS, so it shares your workspace — NumPy, Matplotlib and the scientific stack are ready to use, and ws is a handle to your variables. Jupyter console. An interactive Python console that shares your workspace, so anything you create here appears in Variables straight away. Type in the input area — the prompt reads In [N]: — and use: Key Action Enter Run the current cell. Ctrl + Enter Edit in multiple lines. Shift + Enter Force-run a multi-line cell. Tab Complete the name you are typing (variables, functions, attributes, dictionar"
+  },
+  {
+   "page": "docs/interface.html",
+   "pageTitle": "Interface & components",
+   "section": "Results",
+   "id": "results",
+   "url": "docs/interface.html#results",
+   "text": "Results When a measurement or results extension is installed, the Results tab lists its table. The toolbar has Export… (writes the table to a CSV file) and a status line showing the row and column count. Click a column header to sort; right-click for Copy , Recalculate selected and Check calibration ."
+  },
+  {
+   "page": "docs/interface.html",
+   "pageTitle": "Interface & components",
+   "section": "Status bar",
+   "id": "status-bar",
+   "url": "docs/interface.html#status-bar",
+   "text": "Status bar The strip along the bottom of the window reports what is happening — short messages such as Loading… , Settings applied successfully or an error. On the right sits the calibration badge : it reads no image when nothing is calibrated, otherwise a short summary of the current image's pixel spacing, slice thickness, frame time and units. Click it to set the scale."
   },
   {
    "page": "docs/interface.html",
@@ -279,7 +319,7 @@
    "section": "Agent chat",
    "id": "agent-chat",
    "url": "docs/interface.html#agent-chat",
-   "text": "Agent chat The AI assistant. Ask questions about your data, or ask it to carry out a task and it will use the tools it needs. Actions that create or change data ask for your approval first. See AI assistant . Agent chat. The assistant docked beside your work — ask a question, or hand off a task and watch each step."
+   "text": "Agent chat The AI assistant docks on the right as the Chat panel, and also opens in its own window. Ask questions about your data, or hand off a task and it will use the tools it needs — actions that change data ask for your approval first. Agent chat. The assistant docked beside your work — ask a question, or hand off a task and watch each step. See AI assistant for the full guide."
   },
   {
    "page": "docs/settings.html",
@@ -287,15 +327,119 @@
    "section": "Settings & preferences",
    "id": "settings-preferences",
    "url": "docs/settings.html#settings-preferences",
-   "text": "Settings & preferences Open preferences from Edit → Preferences . Every group lives in one dialog, so you can move between appearance, logging, chat and workspace options without leaving it. Preferences. Appearance, window geometry, logging, chat and workspace options, grouped in a single dialog. Group What you can set Appearance Dark or light theme Window Window size and starting geometry Logging Log level and log file location Chat AI provider, model, API keys, temperature and maximum tokens Workspace Auto-save for the workspace Extensions Whether extensions load automatically at startup"
+   "text": "Settings & preferences Open preferences from the Settings gear at the bottom of the Activity Bar. On macOS it is also in the application menu as Preferences… , and the Extensions menu has Open Extension Manager… , which opens this dialog on its Extensions tab. The chat settings open the same dialog on its Chat / Agent tab. Preferences. Appearance, window behaviour, logging, chat and the MedICS token, grouped in a single dialog. The dialog is split into four tabs: Tab What you set there General Theme, logging and window behaviour. Extensions Install, update, enable and remove extensions. Chat /"
   },
   {
    "page": "docs/settings.html",
    "pageTitle": "Settings & preferences",
-   "section": "Extension manager",
+   "section": "General",
+   "id": "general-tab",
+   "url": "docs/settings.html#general-tab",
+   "text": "General"
+  },
+  {
+   "page": "docs/settings.html",
+   "pageTitle": "Settings & preferences",
+   "section": "Appearance",
+   "id": "appearance",
+   "url": "docs/settings.html#appearance",
+   "text": "Appearance Two mutually exclusive choices — Dark Theme and Light Theme . Choosing one applies it immediately so you can preview it, and the choice is saved with the rest of your preferences."
+  },
+  {
+   "page": "docs/settings.html",
+   "pageTitle": "Settings & preferences",
+   "section": "Logging",
+   "id": "logging-settings",
+   "url": "docs/settings.html#logging-settings",
+   "text": "Logging Control What it does Log level How much detail is written: DEBUG , INFO , WARNING , ERROR or CRITICAL . Default: INFO . Log file The full path to the log file. Use Browse… to pick one; the platform default is shown as a hint. Changing the log level takes effect straight away."
+  },
+  {
+   "page": "docs/settings.html",
+   "pageTitle": "Settings & preferences",
+   "section": "Window",
+   "id": "window-settings",
+   "url": "docs/settings.html#window-settings",
+   "text": "Window Control What it does Use native menu bar (macOS/Linux) Draws the menus in the operating system's own menu bar where the platform supports it. On window close What happens when you close the main window: Ask me when I close the window , Quit MedICS completely , or Keep running in the system tray . The first time you close the window, MedICS asks you to choose; the answer is saved here. Quitting from the tray menu always exits completely."
+  },
+  {
+   "page": "docs/settings.html",
+   "pageTitle": "Settings & preferences",
+   "section": "Chat / Agent",
+   "id": "chat-agent-tab",
+   "url": "docs/settings.html#chat-agent-tab",
+   "text": "Chat / Agent Everything the AI assistant needs: which model provider to use, your key, and how the assistant is hosted. Your API keys are stored separately from the other settings and are never committed anywhere."
+  },
+  {
+   "page": "docs/settings.html",
+   "pageTitle": "Settings & preferences",
+   "section": "Agent UI",
+   "id": "agent-ui",
+   "url": "docs/settings.html#agent-ui",
+   "text": "Agent UI Control What it does Show agent window button and Chat panel Shows or hides the whole assistant chrome — the Agents Window menu item and shortcut, the menu-bar button, and the right-hand Chat panel. Applied immediately. Agent Harness Which assistant runtime to host: MedICS Harness (the built-in chat), DeepSeek Harness (a local WebUI), or OpenCode (a local WebUI). WebUI URL Read-only. Shows the address of the embedded harness, or that the MedICS harness has no embed URL. Restart / Reset status Recycle the harness host, or just clear the current run's status without remounting the chat "
+  },
+  {
+   "page": "docs/settings.html",
+   "pageTitle": "Settings & preferences",
+   "section": "Provider & model",
+   "id": "provider-model",
+   "url": "docs/settings.html#provider-model",
+   "text": "Provider & model Active provider selects which service the assistant uses. Pick one, then fill in its card: Provider You provide ChatGPT (OpenAI) API key, model. Gemini (Google) API key, model. Claude (Anthropic) API key, model. Grok (xAI) API key, model. GitHub Copilot Sign in with GitHub (no key to paste), model. Ollama (Local) Base URL and model; Discover lists the models your local server offers. DeepSeek API key, model. Custom (OpenAI-compatible) Base URL, optional key, model. In each card: API key — enter the key; use the eye button to show or hide it. If a key is already saved, its last"
+  },
+  {
+   "page": "docs/settings.html",
+   "pageTitle": "Settings & preferences",
+   "section": "Conversation Settings",
+   "id": "conversation-settings",
+   "url": "docs/settings.html#conversation-settings",
+   "text": "Conversation Settings Control What it does Temperature How creative the replies are, from 0.00 to 2.00 . Lower is more focused. Max tokens The longest reply the assistant may produce."
+  },
+  {
+   "page": "docs/settings.html",
+   "pageTitle": "Settings & preferences",
+   "section": "System Prompt",
+   "id": "system-prompt",
+   "url": "docs/settings.html#system-prompt",
+   "text": "System Prompt The instructions prepended to every assistant prompt. Edit them to change the assistant's behaviour, or use Reset to default to restore the built-in text. Keys are saved to your MedICS home folder in .secrets.ini , separate from the other settings. The Open .secrets.ini button opens that file in your text editor."
+  },
+  {
+   "page": "docs/settings.html",
+   "pageTitle": "Settings & preferences",
+   "section": "Extensions",
    "id": "extension-manager",
    "url": "docs/settings.html#extension-manager",
-   "text": "Extension manager Extensions you install are managed from Extensions → Extension Manager . Browse what is installed, turn each one on or off, and reload an extension after an update without restarting MedICS. New packages are installed with pip — see Extensions . The Extensions manager. Every installed extension with its status, so you can enable or disable one, reload it, or see what it contributes to MedICS. Changes are saved and applied the next time the relevant part of the application starts."
+   "text": "Extensions Extensions are installed and managed from this tab — the same place the Extensions → Open Extension Manager… menu item opens. The Extensions tab. Every installed extension with its status, plus the packages available to install. The list has two parts: Section What it shows Installed Each extension with its version, its package name and a status: Shown (loaded and visible in the menu and toolbar), Hidden (loaded but not shown), or Not loaded . Available on PyPI Packages you can add, with a short description and an Install button. For each installed extension: Button What it does Loa"
+  },
+  {
+   "page": "docs/settings.html",
+   "pageTitle": "Settings & preferences",
+   "section": "MedICS Token",
+   "id": "medics-token-tab",
+   "url": "docs/settings.html#medics-token-tab",
+   "text": "MedICS Token Where you check and enter your MedICS license token."
+  },
+  {
+   "page": "docs/settings.html",
+   "pageTitle": "Settings & preferences",
+   "section": "License Information",
+   "id": "license-information",
+   "url": "docs/settings.html#license-information",
+   "text": "License Information Read-only fields describing the current license — Token ID , Email , Plan Type , Start Date , Expire Date , Last Checked and Status . The status reads Free mode — no token configured before a token is entered, and ✓ Valid once one is validated."
+  },
+  {
+   "page": "docs/settings.html",
+   "pageTitle": "Settings & preferences",
+   "section": "Validate Token",
+   "id": "validate-token",
+   "url": "docs/settings.html#validate-token",
+   "text": "Validate Token Paste a token — the format is XXXX-XXXX-XXXX-XXXX — and click Validate to check it with the license server; a valid token is saved automatically and the License Information above is refreshed. The section also links to how to request a token."
+  },
+  {
+   "page": "docs/settings.html",
+   "pageTitle": "Settings & preferences",
+   "section": "Remove Token",
+   "id": "remove-token",
+   "url": "docs/settings.html#remove-token",
+   "text": "Remove Token Remove Token returns MedICS to Free mode: free-tier extensions stay available, while paid features are disabled until a valid token is entered again."
   },
   {
    "page": "docs/toolboxes.html",
@@ -303,7 +447,7 @@
    "section": "Toolboxes",
    "id": "toolboxes",
    "url": "docs/toolboxes.html#toolboxes",
-   "text": "Toolboxes Toolboxes are the built-in tools that ship with MedICS. Each opens as a tab in the central area — from the Toolboxes menu, from the activity bar, or by double-clicking a supported file in File Explorer."
+   "text": "Toolboxes Toolboxes are the built-in tools that ship with MedICS. Each opens as a tab in the central area — from the Toolboxes menu, from the activity bar, or by double-clicking a supported file in File Explorer. Toolbox What it is for FilePreview Read-only preview of images, volumes, tables, Markdown and code. ImportData Load raw stacks, image sequences, DICOM, NIfTI, MAT/NumPy and video into the workspace. PyEditor A Python editor and terminal that run against the live workspace. JupyterLab The full JupyterLab UI in a tab, running MedICS's own Python environment."
   },
   {
    "page": "docs/toolboxes.html",
@@ -311,7 +455,55 @@
    "section": "FilePreview",
    "id": "filepreview",
    "url": "docs/toolboxes.html#filepreview",
-   "text": "FilePreview Preview any file without changing it: 2-D images, DICOM and NIfTI volumes, TIFF stacks, tables (CSV, TSV, Excel, Parquet), Markdown, and source code. For image and volume views you can move through slices, adjust window/level , zoom and pan, and apply flips, rotations and transposes."
+   "text": "FilePreview Preview any file without changing it: 2-D images, DICOM and NIfTI volumes, TIFF stacks, tables (CSV, TSV, Excel, Parquet), Markdown, and source code. For image and volume views you can move through slices, adjust window/level , zoom and pan, and apply flips, rotations and transposes. FilePreview. A volume open in a tab, with the toolbar on top and the slice / window-level controls above the image."
+  },
+  {
+   "page": "docs/toolboxes.html",
+   "pageTitle": "Toolboxes",
+   "section": "Opening a file",
+   "id": "filepreview-open",
+   "url": "docs/toolboxes.html#filepreview-open",
+   "text": "Opening a file Double-click a file in the File Explorer — non-text files open here. Right-click a file and choose Open (or Open in FilePreview for a text file). Drag & drop one or more files onto the window from the operating system or the Explorer. Click Open… ( Ctrl + O ) on the toolbar and pick one or more files. Drop a variable from the Variables panel to preview data that is only in memory. Each file opens in its own inner tab. Re-opening a file just activates its tab; the Welcome tab comes back when every file tab is closed."
+  },
+  {
+   "page": "docs/toolboxes.html",
+   "pageTitle": "Toolboxes",
+   "section": "Toolbar",
+   "id": "filepreview-toolbar",
+   "url": "docs/toolboxes.html#filepreview-toolbar",
+   "text": "Toolbar Button Shortcut What it does Open… Ctrl + O Choose one or more files to preview; each opens in its own tab. Zoom In — Magnify the view. Zoom Out — Shrink the view. Reset View — Fit the image or volume back into the window and clear any pan and zoom. Flip Vertical — Checkable. Mirrors the image top-to-bottom. Flip Horizontal — Checkable. Mirrors the image left-to-right. Transpose — Checkable. Reflects the image across the main diagonal (swaps the axes). Rotate 90° clockwise — Cycles 0° → 90° → 180° → 270°; the current angle is shown on the button. Plane: — For volumes, which plane is di"
+  },
+  {
+   "page": "docs/toolboxes.html",
+   "pageTitle": "Toolboxes",
+   "section": "What you can preview",
+   "id": "filepreview-formats",
+   "url": "docs/toolboxes.html#filepreview-formats",
+   "text": "What you can preview Kind Formats Images .png , .jpg , .jpeg , .bmp , .gif , .webp , .ico , .ppm , .pgm , .pbm , .svg , and single-frame .tif / .tiff Raw OCT volumes .oct , .octa , .foct , .ssada Data containers .mat , .med , .h5 , .hdf5 , .npy , .npz Volumes .dcm / .dicom , .nii / .nii.gz , multi-page .tif / .tiff Video .mp4 , .avi , .mkv , .mov , .webm , .wmv , .m4v , .mpg , .mpeg , .ogv , .3gp Tables .csv , .tsv , .tab , .xlsx , .parquet Markdown .md , .markdown , .mdown , .mkd Text / code .txt , .log , .json , .xml , .yaml , .yml , .py , .c , .cpp , .java , .js , .ts , .m , .r , .sh , .jl "
+  },
+  {
+   "page": "docs/toolboxes.html",
+   "pageTitle": "Toolboxes",
+   "section": "The image & volume viewer",
+   "id": "filepreview-viewer",
+   "url": "docs/toolboxes.html#filepreview-viewer",
+   "text": "The image & volume viewer Control What it does ◀ / ▶ and the slice slider Page through the volume; the counter reads current / total . Play / Pause Run the frames as a cine loop (disabled when there is only one slice). fps spin box Playback speed, in frames per second. W: and L: Window and level — the brightness and contrast of the display. These are display-only and are not saved into the data. Histogram A grayscale bar on the right; drag its handles for the same effect as the W/L spin boxes. Auto Levels Reset the window and level to the automatic range. Properties Open the File Properties di"
+  },
+  {
+   "page": "docs/toolboxes.html",
+   "pageTitle": "Toolboxes",
+   "section": "Tables & Markdown",
+   "id": "filepreview-tables",
+   "url": "docs/toolboxes.html#filepreview-tables",
+   "text": "Tables & Markdown Tables show a row-count label ( N rows × M columns ), sort when you click a column header, and filter as you type in the Filter rows… box. Markdown opens rendered, with Rendered / Source buttons to switch between the formatted view and the raw text."
+  },
+  {
+   "page": "docs/toolboxes.html",
+   "pageTitle": "Toolboxes",
+   "section": "Mouse & keyboard",
+   "id": "filepreview-mouse",
+   "url": "docs/toolboxes.html#filepreview-mouse",
+   "text": "Mouse & keyboard Action Effect Mouse wheel over the image Previous / next slice. Ctrl + wheel Zoom. Left-drag Pan. Right-drag Zoom. Right-click the view The view's own menu (fit, reset). Hover Live pixel readout in the status bar. PageUp / PageDown Jump ten slices back / forward. Home / End First / last slice. ← → ↑ ↓ One slice back / forward. + / - Zoom in / out. 0 Fit to window. The status bar shows the preview kind and file name on the left, and the pointer readout (for example (col, row) = value ) on the right."
   },
   {
    "page": "docs/toolboxes.html",
@@ -319,7 +511,63 @@
    "section": "ImportData",
    "id": "importdata",
    "url": "docs/toolboxes.html#importdata",
-   "text": "ImportData Load images and volumes into the workspace. Choose Image Sequence , Single File or DICOM Folder , drag files or folders onto the window, and let the importer load them in the background with a progress bar. Video files load as frame stacks. Imported data appears in the Variables panel."
+   "text": "ImportData Load images and volumes into the workspace. Choose how the source is structured, let the importer read and preview it, then send the result to the workspace. Imported data appears in the Variables panel. ImportData. Choose the Data Type , set the parameters, preview the frames, then Send to ws ."
+  },
+  {
+   "page": "docs/toolboxes.html",
+   "pageTitle": "Toolboxes",
+   "section": "Data type",
+   "id": "importdata-modes",
+   "url": "docs/toolboxes.html#importdata-modes",
+   "text": "Data type Mode Use it for Volume Data A single volume read from a raw/binary stack file or a container ( .mat , .npy , .npz , NIfTI, DICOM, video). Image Sequence A folder or a set of image files stacked into one volume, in file-name order. The parameters below the selector change with the mode."
+  },
+  {
+   "page": "docs/toolboxes.html",
+   "pageTitle": "Toolboxes",
+   "section": "Volume Data parameters",
+   "id": "importdata-volume",
+   "url": "docs/toolboxes.html#importdata-volume",
+   "text": "Volume Data parameters Field What it sets Image type The pixel type of the raw file — 8-bit , 16-bit Signed , 16-bit Unsigned , 32-bit Signed/Unsigned , 16/32/64-bit Real , 24-bit RGB/BGR , 32-bit ARGB/ABGR or 1-bit Bitmap . Width / Height The size of one frame, in pixels. Frame The number of frames in the stack. Offset to first Image Bytes to skip at the start of the file before the first frame (for a header). Gap Between Images Bytes to skip between consecutive frames. permutation How the three axes are ordered in the file (for example 0,1,2 ). Read Order F (Fortran), C or A — how the file's"
+  },
+  {
+   "page": "docs/toolboxes.html",
+   "pageTitle": "Toolboxes",
+   "section": "Image Sequence parameters",
+   "id": "importdata-sequence",
+   "url": "docs/toolboxes.html#importdata-sequence",
+   "text": "Image Sequence parameters Control What it does Folder Shows the folder being read. Type a path or use the buttons below. Open Files Pick individual image files to stack. Open Folder Load every file in a folder (natural-sorted, so 2 comes before 10 ). Filter / Regex Choose how the pattern is matched, then type it in the box (for example *.* or *.tif ). Select All Tick every file in the list. Range — from : to Select a contiguous range of frames by index. File list The matched images, with check-boxes; only ticked files are stacked."
+  },
+  {
+   "page": "docs/toolboxes.html",
+   "pageTitle": "Toolboxes",
+   "section": "Preview & transfer",
+   "id": "importdata-preview",
+   "url": "docs/toolboxes.html#importdata-preview",
+   "text": "Preview & transfer Control What it does Frame slider + spin box Scrub through the frames of the loaded volume; the label reads current / total . Image area Shows the frame under the pointer; move the pointer to read the pixel value ( X:… Y:… ▶ value ). Send to ws Send the loaded volume to the MedICS workspace. Generate Function Write a Python loader for the current file — a ready-made function you can reuse. It opens a Generated Load Function dialog you can save."
+  },
+  {
+   "page": "docs/toolboxes.html",
+   "pageTitle": "Toolboxes",
+   "section": "What you can import",
+   "id": "importdata-formats",
+   "url": "docs/toolboxes.html#importdata-formats",
+   "text": "What you can import Image sequences — folders or sets of TIFF, PNG, JPEG and similar frames. Volume files — DICOM ( .dcm / .dicom ), NIfTI ( .nii / .nii.gz ). Containers — MATLAB .mat , NumPy .npy / .npz and MedICS .med files. Video — .mp4 , .avi and similar load as a stack of frames. Raw/binary stacks — any file read with the Volume Data parameters above."
+  },
+  {
+   "page": "docs/toolboxes.html",
+   "pageTitle": "Toolboxes",
+   "section": "Drag & drop",
+   "id": "importdata-drop",
+   "url": "docs/toolboxes.html#importdata-drop",
+   "text": "Drag & drop Drop files or a folder anywhere on the window. Several image files (or a folder) are treated as an image sequence; a single volume file is opened as Volume Data ."
+  },
+  {
+   "page": "docs/toolboxes.html",
+   "pageTitle": "Toolboxes",
+   "section": "Status bar",
+   "id": "importdata-status",
+   "url": "docs/toolboxes.html#importdata-status",
+   "text": "Status bar The green status bar along the bottom reports progress and messages ( \"File loaded successfully!\" , \"N files found in the folder\" ), the pointer pixel readout, and — for a raw stack — a byte-match badge that confirms the header/offset settings add up ( \"✔ All bytes matched\" )."
   },
   {
    "page": "docs/toolboxes.html",
@@ -327,7 +575,63 @@
    "section": "PyEditor",
    "id": "pyeditor",
    "url": "docs/toolboxes.html#pyeditor",
-   "text": "PyEditor A Python editor in a tab, with syntax highlighting, code completion, an outline and an integrated terminal. Run (F5) executes your script against the live console, so it can use the variables already in your workspace."
+   "text": "PyEditor A Python editor in a tab, with syntax highlighting, code completion, an integrated terminal and a set of code-navigation tools. Run (F5) executes your script against the live console, so it can use the variables already in your workspace. PyEditor. The editor with its toolbar, a breadcrumb bar, and the Ln / Col readout in the status bar."
+  },
+  {
+   "page": "docs/toolboxes.html",
+   "pageTitle": "Toolboxes",
+   "section": "Toolbar & tabs",
+   "id": "pyeditor-toolbar",
+   "url": "docs/toolboxes.html#pyeditor-toolbar",
+   "text": "Toolbar & tabs Button Shortcut What it does New Ctrl + N Open a new, untitled editor tab. Open — Open a file in a new tab ( .py is offered, but any file can be opened). Save Ctrl + S Save the active tab; an untitled tab asks for a path first. Run in Jupyter F5 Run the selection — or the whole file when nothing is selected — in the Jupyter console. Each file is a tab; a modified tab shows a * . Save As… ( Ctrl + Shift + S ) writes to a new path. Right-click a tab for Close Tab , Close Other Tabs , Close All Tabs and New Tab ; a breadcrumb bar above the editor shows the file's folder path, and C"
+  },
+  {
+   "page": "docs/toolboxes.html",
+   "pageTitle": "Toolboxes",
+   "section": "Editing features",
+   "id": "pyeditor-editing",
+   "url": "docs/toolboxes.html#pyeditor-editing",
+   "text": "Editing features Feature What it gives you Syntax highlighting Python and many other languages (C/C++, Java, JavaScript/TypeScript, JSON, YAML, XML, HTML, CSS, SQL, R, Shell and more). Code completion Python-aware suggestions as you type, with parameter hints for functions. Hover documentation Hover a name to see its documentation. AI ghost text Inline code suggestions; press Alt + \\ to ask for one and Tab to accept it. Find & replace Ctrl + F to find, Ctrl + H to replace. Brackets & folding Auto-closing brackets and quotes, matching-bracket highlighting, and collapsible code blocks. Minimap &"
+  },
+  {
+   "page": "docs/toolboxes.html",
+   "pageTitle": "Toolboxes",
+   "section": "Code navigation",
+   "id": "pyeditor-navigation",
+   "url": "docs/toolboxes.html#pyeditor-navigation",
+   "text": "Code navigation Action Shortcut What it does Go to Definition F12 / Ctrl +click Jump to where the symbol is defined. Peek Definition Alt + F12 Show the definition inline, without leaving the file. Find All References Shift + F12 List every use of the symbol in the References panel. Rename Symbol F2 Rename the symbol under the cursor. Go to Symbol Ctrl + Shift + O Jump to a class, function or variable by name. Go to Line Ctrl + G Jump to a line number. The References panel opens when you run Find All References . It lists the symbol, line and file; double-click a row to open that file at that l"
+  },
+  {
+   "page": "docs/toolboxes.html",
+   "pageTitle": "Toolboxes",
+   "section": "Running code",
+   "id": "pyeditor-run",
+   "url": "docs/toolboxes.html#pyeditor-run",
+   "text": "Running code Press F5 (or click Run in Jupyter ) to run the selected text, or the whole file when nothing is selected. The code runs in the Jupyter console at the bottom of the window, so it sees the same workspace variables you do; the output appears in that console. A per-selection run is also bound to F9 ."
+  },
+  {
+   "page": "docs/toolboxes.html",
+   "pageTitle": "Toolboxes",
+   "section": "Integrated terminal",
+   "id": "pyeditor-terminal",
+   "url": "docs/toolboxes.html#pyeditor-terminal",
+   "text": "Integrated terminal Ctrl + ` shows or hides the terminal — a real shell inside a tab. The + New Terminal button starts another one; a shell picker offers Command Prompt , PowerShell , Windows PowerShell and Git Bash . Each terminal row in the list has buttons to Clear or Kill it, and right-clicking the list gives Rename , Kill Terminal and Clear . The terminal is a shell for convenience — use the Jupyter console when you want your workspace variables."
+  },
+  {
+   "page": "docs/toolboxes.html",
+   "pageTitle": "Toolboxes",
+   "section": "Reviewing agent edits",
+   "id": "pyeditor-agent",
+   "url": "docs/toolboxes.html#pyeditor-agent",
+   "text": "Reviewing agent edits When the AI assistant changes a file you have open, PyEditor shows the changes inline with a small toolbar — ↑ / ↓ move between changes, and Accept , Reject , Accept All and Reject All keep or undo them."
+  },
+  {
+   "page": "docs/toolboxes.html",
+   "pageTitle": "Toolboxes",
+   "section": "Keyboard shortcuts",
+   "id": "pyeditor-keys",
+   "url": "docs/toolboxes.html#pyeditor-keys",
+   "text": "Keyboard shortcuts Shortcut Action Ctrl + N New tab Ctrl + S / Ctrl + Shift + S Save / Save As F5 / Shift + F5 / F9 Run in Jupyter (file or selection) Ctrl + ` Toggle the terminal Ctrl + F / Ctrl + H Find / Replace Ctrl + / Toggle line comment F12 · Alt + F12 · Shift + F12 · F2 Definition · Peek definition · References · Rename Ctrl + Shift + O · Ctrl + G Go to symbol · Go to line Alt + \\ · Tab Trigger / accept an AI inline suggestion"
   },
   {
    "page": "docs/toolboxes.html",
@@ -335,47 +639,15 @@
    "section": "JupyterLab",
    "id": "jupyterlab",
    "url": "docs/toolboxes.html#jupyterlab",
-   "text": "JupyterLab The full JupyterLab interface, embedded in a tab. It runs on MedICS's own Python environment, and your workspace is available inside notebooks."
+   "text": "JupyterLab The full JupyterLab interface, embedded in a tab. It runs on MedICS's own Python environment, your workspace is available inside notebooks as ws , and it needs no setup — notebooks, completions and the debugger work out of the box. Install it into MedICS's environment to enable the tab (see Get started ). JupyterLab. The JupyterLab interface in a MedICS tab; the Launcher shows the available notebook environments."
   },
   {
-   "page": "docs/python-workspace.html",
-   "pageTitle": "Python console & workspace",
-   "section": "Python console & workspace",
-   "id": "python-console-workspace",
-   "url": "docs/python-workspace.html#python-console-workspace",
-   "text": "Python console & workspace"
-  },
-  {
-   "page": "docs/python-workspace.html",
-   "pageTitle": "Python console & workspace",
-   "section": "The workspace",
-   "id": "the-workspace",
-   "url": "docs/python-workspace.html#the-workspace",
-   "text": "The workspace When you import an image, open a file or run code, the results are kept in a workspace . The Variables panel lists everything in it. The Python console and PyEditor share the same workspace, so a variable created in one is immediately available in the other."
-  },
-  {
-   "page": "docs/python-workspace.html",
-   "pageTitle": "Python console & workspace",
-   "section": "The Python console",
-   "id": "the-python-console",
-   "url": "docs/python-workspace.html#the-python-console",
-   "text": "The Python console Open the Jupyter tab at the bottom of the window. It is an interactive console with the scientific stack ready to use — NumPy and Matplotlib, plus a ws handle to your workspace: import numpy as np ws.keys() # list the variables in the workspace print(ws['brain_volume'].shape)"
-  },
-  {
-   "page": "docs/python-workspace.html",
-   "pageTitle": "Python console & workspace",
-   "section": "Running scripts",
-   "id": "running-scripts",
-   "url": "docs/python-workspace.html#running-scripts",
-   "text": "Running scripts Write a script in PyEditor and press F5 to run it. It executes in the live console, so it sees the same variables you do."
-  },
-  {
-   "page": "docs/python-workspace.html",
-   "pageTitle": "Python console & workspace",
-   "section": "Saving and loading",
-   "id": "saving-and-loading",
-   "url": "docs/python-workspace.html#saving-and-loading",
-   "text": "Saving and loading Action Where Save the workspace to a .med file File → Save Workspace Choose a location and name File → Save Workspace As… Load a saved workspace File → Open Workspace Protect a long session turn on auto-save in Preferences"
+   "page": "docs/toolboxes.html",
+   "pageTitle": "Toolboxes",
+   "section": "The two environments",
+   "id": "jupyterlab-environments",
+   "url": "docs/toolboxes.html#jupyterlab-environments",
+   "text": "The two environments When you start a new notebook or console from the Launcher , two environments are on offer: Environment What it runs MedICS (this environment) The default. The same Python interpreter as MedICS itself, so every package MedICS uses is already importable. It is wired into the live application: your workspace is available as ws , and the familiar scientific names (NumPy, Matplotlib and friends) are ready to use — the same starting point as the Jupyter console. Figures render inline. Variables you create here appear in the Variables panel. Python 3 (ipykernel) A plain Python k"
   },
   {
    "page": "docs/ai-assistant.html",
@@ -383,7 +655,7 @@
    "section": "AI assistant",
    "id": "ai-assistant",
    "url": "docs/ai-assistant.html#ai-assistant",
-   "text": "AI assistant The Agent chat panel is an assistant that can answer questions and carry out tasks in MedICS. You can ask it about the data you have open, or ask it to do something and it will use the tools it needs — reading files, running Python, working with the toolboxes — and report back."
+   "text": "AI assistant MedICS includes an AI assistant that can answer questions and carry out tasks. You can ask it about the data you have open, or ask it to do something and it will use the tools it needs — reading files, running Python, driving the toolboxes — and report back. Actions that create or change data ask for your approval first. The assistant appears in two places, and both share the same conversations: Surface What it is Chat panel Docked on the right of the main window. Toggle it from View → Show Chat . Agents Window A separate window ( Ctrl + Shift + A , or View → Agents Window ). Use "
   },
   {
    "page": "docs/ai-assistant.html",
@@ -391,7 +663,15 @@
    "section": "Using the chat",
    "id": "using-the-chat",
    "url": "docs/ai-assistant.html#using-the-chat",
-   "text": "Using the chat Open the Agent chat panel from the View menu, type a request and send it. While the assistant works you can watch each step it takes. Actions that create or change data ask for your approval before they run."
+   "text": "Using the chat Type your request in the composer at the bottom and send it with Enter . While the assistant works, each step it takes appears in the conversation. The composer: Control What it does @ Add context Attaches files or folders as context. Attachments appear as chips — click a chip to remove it. Mode How the assistant behaves this turn — see the table below. Model Which model answers. The menu also has Refresh model lists and Configure providers and API keys… . Send / Stop Sends the prompt; while the assistant is running, the same button stops it. Prompt box Where you type. Its borde"
+  },
+  {
+   "page": "docs/ai-assistant.html",
+   "pageTitle": "AI assistant",
+   "section": "Approvals & permissions",
+   "id": "approvals",
+   "url": "docs/ai-assistant.html#approvals",
+   "text": "Approvals & permissions When the assistant wants to run something that could change your data, it stops and shows an ACTION REQUIRED card with the tool, the reason and its arguments, and buttons to decide: Button What it allows Allow once Runs this one action only. Allow for run Allows this tool for the rest of the current run. Always allow Remembers the choice for this tool in future runs. Allow all this session Allows every tool until you restart MedICS. Deny Refuses the action. If you do not answer within a few minutes the request is denied automatically. A mode-switch request instead offer"
   },
   {
    "page": "docs/ai-assistant.html",
@@ -399,7 +679,15 @@
    "section": "The Agents Window",
    "id": "the-agents-window",
    "url": "docs/ai-assistant.html#the-agents-window",
-   "text": "The Agents Window The same assistant also opens in its own window ( Ctrl+Shift+A , or View → Agents Window ). Use it when you want a full-size conversation next to the main window instead of a docked panel, or when you are working across more than one screen. Each conversation is listed on the left, so you can keep several going and switch between them. The Agents Window. The assistant in a window of its own, with the conversation list on the left and the transcript beside it."
+   "text": "The Agents Window The assistant in a window of its own, with the conversation beside a session list and a workspace panel. The Agents Window. The assistant in a window of its own, with the conversation list on the left and the transcript beside it. Its header, left to right: Button What it does History Shows or hides the session list ( Ctrl + B ). Workspace folder Shows the folder the chat is attached to; click to change it. Tools Opens Tools & permissions . Calendar Opens Scheduled tasks . Graph Opens the Token usage dashboard. Add Starts a new session ( Ctrl + N ). Refresh Reloads the chat s"
+  },
+  {
+   "page": "docs/ai-assistant.html",
+   "pageTitle": "AI assistant",
+   "section": "Sessions & history",
+   "id": "sessions",
+   "url": "docs/ai-assistant.html#sessions",
+   "text": "Sessions & history Every chat belongs to a repository — a folder you opened in MedICS — so the list in the Agents Window is grouped by folder. Use the Search box to filter by title or content, and the right-click menu on any chat to Open , Rename… , Duplicate or Delete it. Several chats can be deleted at once. A folder's menu lets you start a chat there, pin it to the top, or remove it from the list. Two extras use the same assistant: Scheduled tasks (the calendar in the Agents Window) run a prompt in the background on a schedule — you give each task a name and a prompt, and choose how often i"
   },
   {
    "page": "docs/ai-assistant.html",
@@ -415,7 +703,7 @@
    "section": "Configuration",
    "id": "configuration",
    "url": "docs/ai-assistant.html#configuration",
-   "text": "Configuration Choose the provider and model and enter your API key in Edit → Preferences → Chat . The assistant is optional — MedICS works fully without it. Chat settings. Pick the provider and model, enter your API key, and set the temperature and maximum tokens the assistant may use."
+   "text": "Configuration Choose the provider and model and enter your API key in Settings → Chat / Agent . The assistant is optional — MedICS works fully without it. Chat settings. Pick the provider and model, enter your API key, and set the temperature and maximum tokens the assistant may use. The Chat / Agent tab holds the Active provider and its key and model, the Temperature and Max tokens , and the System Prompt — the instructions sent with every request. The same tab also chooses the Agent Harness and shows or hides the assistant chrome. See Settings & preferences for each control. The assistant's "
   },
   {
    "page": "docs/retinal-layer-segmentation.html",
@@ -423,7 +711,7 @@
    "section": "Overview",
    "id": "overview",
    "url": "docs/retinal-layer-segmentation.html#overview",
-   "text": "Overview Retinal Layer Segmentation turns an OCT/OCTA volume into a segmented retina. It runs a deep-learning model on every B-scan, detects the retinal layer boundaries, reconstructs them into smooth curves, detects intraretinal fluid, and builds a 3-D view of the layers across the volume. Everything runs locally — your images never leave the machine. The extension opens its own window, titled OCT Analyzer . Retinal Layer Segmentation. A data source and control panel on the left, and four linked views on the right."
+   "text": "Overview Retinal Layer Segmentation runs on OCT volume for segmenting retina. It runs a deep-learning model on every B-scan, detects the retinal layer boundaries, reconstructs them into smooth curves, and builds a 3-D view of the layers across the volume. Everything runs locally. Your data never leave the machine. The extension opens its own window, titled RetinalLayerSegmentation . Retinal Layer Segmentation. A data source and control panel on the left, and four linked views on the right."
   },
   {
    "page": "docs/retinal-layer-segmentation.html",
@@ -431,7 +719,7 @@
    "section": "What you can do",
    "id": "what-you-can-do",
    "url": "docs/retinal-layer-segmentation.html#what-you-can-do",
-   "text": "What you can do Load OCT and OCTA volumes, and any previously saved segmentation. Segment the retina with one click, on the GPU if available. Review the detected boundaries, show or hide individual layers, and correct any boundary by hand. Interpolate the segmentation across sparse B-scans to fill the whole volume. Inspect the result as B-scans, en-face projections and a 3-D surface. Send the curves and masks back to the MedICS workspace, or save them to files."
+   "text": "What you can do Load OCT and OCTA volumes, load any previously saved segmentation. Segment the retina with one click, on the GPU if available. Review the detected boundaries, show or hide individual layers, and correct any boundary by hand. Interpolate the segmentation across sparse B-scans to fill the whole volume. Inspect the result as B-scans, en-face projections and a 3-D surface. Send the curves and masks back to the MedICS workspace, or save them to files."
   },
   {
    "page": "docs/retinal-layer-segmentation.html",
@@ -439,7 +727,7 @@
    "section": "Requirements",
    "id": "requirements",
    "url": "docs/retinal-layer-segmentation.html#requirements",
-   "text": "Requirements MedICS, installed and running. A MedICS license that includes this extension — it is a paid, non-free extension. Opening it without an entitlement shows a warning dialog with a link to enter a token or request one. Enough memory for the volume you open. Large volumes can be processed in sparse mode ."
+   "text": "Requirements MedICS, installed and running. GPU is required for accelate AI retinal layer segmentation."
   },
   {
    "page": "docs/retinal-layer-segmentation.html",
@@ -447,7 +735,7 @@
    "section": "Install",
    "id": "install",
    "url": "docs/retinal-layer-segmentation.html#install",
-   "text": "Install Install the extension from inside MedICS with the Extension Manager — no command line needed."
+   "text": "Install Install the extension from inside MedICS, the Settings-> Extension ."
   },
   {
    "page": "docs/retinal-layer-segmentation.html",
@@ -463,7 +751,7 @@
    "section": "Find the extension",
    "id": "install-find",
    "url": "docs/retinal-layer-segmentation.html#install-find",
-   "text": "Find the extension Type Retinal in the search box, or scroll the list to Retinal Layer Segmentation ."
+   "text": "Find the extension Scroll the list to Retinal Layer Segmentation ."
   },
   {
    "page": "docs/retinal-layer-segmentation.html",
@@ -479,7 +767,7 @@
    "section": "Enable it",
    "id": "install-enable",
    "url": "docs/retinal-layer-segmentation.html#install-enable",
-   "text": "Enable it If it is not already enabled, click Enable . The extension then appears under the Extensions menu."
+   "text": "Enable it If it is not already enabled, click Load . The extension then appears under the Extensions menu, and show on the Activity Bar ."
   },
   {
    "page": "docs/retinal-layer-segmentation.html",
@@ -487,7 +775,7 @@
    "section": "First run",
    "id": "install-first-run",
    "url": "docs/retinal-layer-segmentation.html#install-first-run",
-   "text": "First run Open Retinal Layer Segmentation — the AI model is downloaded on first use."
+   "text": "First run Open Retinal Layer Segmentation . Click the icon shown on the Activity Bar ."
   },
   {
    "page": "docs/retinal-layer-segmentation.html",
@@ -503,7 +791,7 @@
    "section": "Open the extension",
    "id": "step-open-the-extension",
    "url": "docs/retinal-layer-segmentation.html#step-open-the-extension",
-   "text": "Open the extension From the Extensions menu, open Retinal Layer Segmentation . The OCT Analyzer window opens."
+   "text": "Open the extension From the Extensions menu or Activity Bar , open Retinal Layer Segmentation . The RetinalLayerSegmentation opens."
   },
   {
    "page": "docs/retinal-layer-segmentation.html",
@@ -511,7 +799,7 @@
    "section": "Load data",
    "id": "step-load-data",
    "url": "docs/retinal-layer-segmentation.html#step-load-data",
-   "text": "Load data On the File tab pick your OCT volume (and optionally OCTA), then click Load Data — or drag files onto the window."
+   "text": "Load data Option 1: On the File tab pick your OCT volume (and optionally OCTA), then click Load Data — or drag files onto the window. Option 2: Drag the file from System File Explorer to extension window. Option 3: Drag the loaded variable in Workspace (ws) to extension window"
   },
   {
    "page": "docs/retinal-layer-segmentation.html",
@@ -519,15 +807,15 @@
    "section": "Segment",
    "id": "step-segment",
    "url": "docs/retinal-layer-segmentation.html#step-segment",
-   "text": "Segment Click Run AI Segmentation and, if asked, choose the compute device."
+   "text": "Segment Click Run AI Segmentation . Adjust ROI to make sure retinal tissue is included inside the ROI . Choose the compute device if you want to run on a different device."
   },
   {
    "page": "docs/retinal-layer-segmentation.html",
    "pageTitle": "Retinal Layer Segmentation",
-   "section": "Review & refine",
+   "section": "Review & correction",
    "id": "step-review-and-refine",
    "url": "docs/retinal-layer-segmentation.html#step-review-and-refine",
-   "text": "Review & refine Hide or show layers, and use the corrector to fix any boundary. Interpolate if your scan is sparse."
+   "text": "Review & correction Hide or show layers, and use the corrector to fix any boundary."
   },
   {
    "page": "docs/retinal-layer-segmentation.html",
@@ -559,7 +847,15 @@
    "section": "File tab",
    "id": "file-tab",
    "url": "docs/retinal-layer-segmentation.html#file-tab",
-   "text": "File tab Choose a file for each input with its folder button, or type the path, then click Load Data to read them together. Field What it loads Formats OCT The OCT volume (B-scans) .foct , .oct , .dcm , .mat , .tif / .tiff OCTA An optional OCTA (angiography) volume, co-registered with the OCT .ssada , .octa , .dcm , .mat , .tif / .tiff Segment A previous segmentation (layer curves) .json , .dcm , .mat , .med OCTA checkbox — uncheck it to load an OCT-only dataset. setting… — opens Load Data Settings , where you can review, assign and manage the loader functions used for each data type. Load Dat"
+   "text": "File tab Choose a file for each input with its folder button, or type the path, then click Load Data to read them together. Field What it loads Formats OCT The OCT volume (B-scans) .foct , .oct , .dcm , .mat , .tif / .tiff OCTA An optional OCTA (angiography) volume, co-registered with the OCT .ssada , .octa , .dcm , .mat , .tif / .tiff Segment A previous segmentation (layer curves) .json , .dcm , .mat , .med Array orientation matters. When a .mat file is loaded, its volume must be stored as nframe × nrow × ncol — B-frames along the first axis, rows (depth) second, and A-scans (columns) last. T"
+  },
+  {
+   "page": "docs/retinal-layer-segmentation.html",
+   "pageTitle": "Retinal Layer Segmentation",
+   "section": "Load Data Settings",
+   "id": "load-data-settings",
+   "url": "docs/retinal-layer-segmentation.html#load-data-settings",
+   "text": "Load Data Settings The setting… button on the File tab opens Load Data Settings . This is where you choose which loader function reads each kind of file. Open it when a file is not recognised, or to teach the extension a custom format. Load Data Settings. Pick a loader function on the left, assign it to OCT, OCTA or Seg, and set the file patterns it should handle. How to use it: Select a loader function in the list on the left — its source appears in the preview below. Click OCT >> , OCTA >> or Seg >> to assign the selected function to that input. Type the file patterns the loader should handl"
   },
   {
    "page": "docs/retinal-layer-segmentation.html",
@@ -567,7 +863,7 @@
    "section": "Save to WS tab",
    "id": "save-to-ws-tab",
    "url": "docs/retinal-layer-segmentation.html#save-to-ws-tab",
-   "text": "Save to WS tab Transfer what is currently loaded back into the MedICS workspace under the names shown. Edit a name if you want a different one, then click the >> button in that row. Row Transfers Default name OCT The loaded OCT volume oct_data OCTA The loaded OCTA volume octa_data Segment The segmentation (curves and fluid mask) seg_data"
+   "text": "Save to WS tab Transfer what is currently loaded back into the MedICS workspace under the names shown. Edit a name if you want a different one, then click the >> button in that row. Row Transfers Default name OCT The loaded OCT volume oct_data OCTA The loaded OCTA volume octa_data Segment The segmentation (curves/retinal layer boundries) seg_data"
   },
   {
    "page": "docs/retinal-layer-segmentation.html",
@@ -575,7 +871,7 @@
    "section": "Drag and drop",
    "id": "dragdrop",
    "url": "docs/retinal-layer-segmentation.html#dragdrop",
-   "text": "Drag and drop Drop OCT, OCTA or segmentation files anywhere on the window. Files are matched by their name and routed to the right input automatically; you can also drag a variable out of the MedICS Variables panel and drop it on the window to load it."
+   "text": "Drag and drop Drop supported OCT, OCTA or segmentation files anywhere on the window. Files are matched by their name and routed to the right input automatically; you can also drag a variable out of the MedICS Workspace Variables panel and drop it on the window to load it. This extension also support drop a image sequence (same image type) as OCT / OCTA volume data."
   },
   {
    "page": "docs/retinal-layer-segmentation.html",
@@ -583,7 +879,15 @@
    "section": "Frame & resolution",
    "id": "frame",
    "url": "docs/retinal-layer-segmentation.html#frame",
-   "text": "Frame & resolution Control What it does Frame The B-scan currently shown. Type a number or use the arrows to move through the volume; every view follows. / total Read-only total number of frames in the loaded volume. Upate data resolution Opens a helper to set or correct the physical resolution (pixel size, scan width/height/depth) so measurements and the 3-D view are to scale. Useful when combining volumes acquired at different scales."
+   "text": "Frame & resolution Control What it does Frame The B-scan currently shown. Use mouse wheel or use the arrows to move through the volume; every view follows. total Read-only total number of frames in the loaded volume. Upate data resolution Opens a helper to set or correct the physical resolution (pixel size, scan width/height/depth) so measurements and the 3-D view are to scale. Useful when combining volumes acquired at different scales."
+  },
+  {
+   "page": "docs/retinal-layer-segmentation.html",
+   "pageTitle": "Retinal Layer Segmentation",
+   "section": "Scan Resolution",
+   "id": "scan-resolution",
+   "url": "docs/retinal-layer-segmentation.html#scan-resolution",
+   "text": "Scan Resolution Upate data resolution opens the Scan Resolution dialog. It converts the physical size of the scan into a per-pixel resolution so that measurements and the 3-D view are to scale. Scan Resolution. Enter the physical scan size and the axial resolution; the lateral resolution is calculated as you type. Enter the two required values and the lateral resolution updates live. Click OK to write the new resolution to the loaded data. Element What it does Scan size in mm (width, height) The physical width and height of the scan in millimetres. Required. Axel resolution The axial (depth) r"
   },
   {
    "page": "docs/retinal-layer-segmentation.html",
@@ -612,14 +916,6 @@
   {
    "page": "docs/retinal-layer-segmentation.html",
    "pageTitle": "Retinal Layer Segmentation",
-   "section": "Sparse data mode",
-   "id": "sparse",
-   "url": "docs/retinal-layer-segmentation.html#sparse",
-   "text": "Sparse data mode Turn this on for sparse OCT data — scans where only some B-scans were acquired. The model segments only the acquired frames, and you fill the gaps with interpolation . It also keeps memory use down on large volumes."
-  },
-  {
-   "page": "docs/retinal-layer-segmentation.html",
-   "pageTitle": "Retinal Layer Segmentation",
    "section": "Device",
    "id": "device",
    "url": "docs/retinal-layer-segmentation.html#device",
@@ -631,7 +927,31 @@
    "section": "Corrector",
    "id": "corrector",
    "url": "docs/retinal-layer-segmentation.html#corrector",
-   "text": "Corrector Selects the manual editing tool for a boundary. Pick the boundary by clicking it in the B-Frame B view, then edit it with the chosen tool. Mode How you edit None No manual editing — review only. Liner Draw straight segments by clicking along the boundary. Livewire Click once and the tool snaps to the strongest edge between clicks. Anchors Place anchor points; the boundary is fitted smoothly through them. Choosing a corrector tool: None, Liner, Livewire, Anchors."
+   "text": "Corrector Selects the manual editing tool. All correcting happens in the Right B-Frame (the OCT panel). Choose a tool from the Corrector dropdown — None for review only, or one of the three editing tools below. First decide how the target boundary is chosen: Selection mode How the boundary you edit is chosen correction: auto The boundary nearest the pointer is edited. correction: select The layer chosen in the en-face dropdown is always edited, wherever the pointer is. The selection mode is set from the Right B-Frame context menu (see B-Frame context menus ). The correctors are available in th"
+  },
+  {
+   "page": "docs/retinal-layer-segmentation.html",
+   "pageTitle": "Retinal Layer Segmentation",
+   "section": "Liner",
+   "id": "corrector-liner",
+   "url": "docs/retinal-layer-segmentation.html#corrector-liner",
+   "text": "Liner Draws a straight segment over the boundary — the quickest way to correct a short span. Hover over the boundary to focus it; it thickens while the other boundaries dim. Click the left mouse button at the start of the segment, then drag to the end point. A straight line follows the pointer and replaces the curve between the two points. During correction, click left mouse button to reset the start point of the segment. Double click left mouse botton to stop and apply correction. Only the dragged span changes; the rest of the boundary stays as it was."
+  },
+  {
+   "page": "docs/retinal-layer-segmentation.html",
+   "pageTitle": "Retinal Layer Segmentation",
+   "section": "LiveWire",
+   "id": "corrector-livewire",
+   "url": "docs/retinal-layer-segmentation.html#corrector-livewire",
+   "text": "LiveWire Traces the strongest image edge between two points — best when the boundary is clearly visible in the image but awkward to draw by hand. Hover over the boundary to focus it. Click the left mouse button at the start point, then move the pointer along the boundary. The tool keeps computing the lowest-cost path along the image edges and redraws the curve as you move. During correction, click left mouse button to reset the start point. Double click left mouse botton to stop and apply correction. Because it follows image edges, LiveWire can be pulled off-course by speckle or fluid; re-trac"
+  },
+  {
+   "page": "docs/retinal-layer-segmentation.html",
+   "pageTitle": "Retinal Layer Segmentation",
+   "section": "Anchors",
+   "id": "corrector-anchors",
+   "url": "docs/retinal-layer-segmentation.html#corrector-anchors",
+   "text": "Anchors Edits the boundary point by point, by dragging its control points (the small square markers). Use it for precise, local adjustments. Hover over the boundary to focus it — its control points appear. Move mouse to a control point to select it; the cursor marker snaps to it. Hold the left button and drag to move the point. The curve refits through the anchors as you drag. While dragging, scroll the mouse wheel up to add the neighbouring points on each side to the selection (they move together), and scroll down to drop them again. Right-click the panel while Anchors is active for these ent"
   },
   {
    "page": "docs/retinal-layer-segmentation.html",
@@ -639,15 +959,7 @@
    "section": "Interpolation",
    "id": "interp",
    "url": "docs/retinal-layer-segmentation.html#interp",
-   "text": "Interpolation Control What it does Interpolation Step How far apart the segmented key frames are (minimum 2). Used when filling a sparse volume. Interpolation Turns interpolation on or off. Restart Interplation Clears the interpolation and recomputes it from the current boundaries."
-  },
-  {
-   "page": "docs/retinal-layer-segmentation.html",
-   "pageTitle": "Retinal Layer Segmentation",
-   "section": "Keep Fluid volume",
-   "id": "keep-fluid",
-   "url": "docs/retinal-layer-segmentation.html#keep-fluid",
-   "text": "Keep Fluid volume Keeps the detected intraretinal fluid mask when recomputing, instead of discarding it."
+   "text": "Interpolation Control What it does Interpolation Step How far apart the segmented key frames are (minimum 2). Used when filling a sparse volume. Interpolation Turns interpolation on or off. Restart Interplation Clears the interpolation and recomputes it from the current boundaries. mask when recomputing, instead of discarding it."
   },
   {
    "page": "docs/retinal-layer-segmentation.html",
@@ -663,7 +975,7 @@
    "section": "Layer boundaries",
    "id": "layers",
    "url": "docs/retinal-layer-segmentation.html#layers",
-   "text": "Layer boundaries The Layer boundaries group lists every boundary the model can detect. Tick a box to show and export that boundary; use the small dropdown next to it to choose how it is drawn (dashed or solid line). Select All toggles every boundary at once. Layer boundaries. Each boundary has a visibility checkbox and a line-style dropdown; Select All is at the bottom. Showing and hiding individual boundaries, and Select All . # Boundary Default Notes 0 PVD Off Listed for completeness; not produced by the current model. 1 ILM On Inner limiting membrane. 2 NFL/GCL On Nerve fibre layer / gangli"
+   "text": "Layer boundaries The Layer boundaries group lists every boundary the model can detect. Tick a box to show and export that boundary; use the small dropdown next to it to choose how it is drawn (dashed or solid line). Select All toggles every boundary at once. Layer boundaries. Each boundary has a visibility checkbox and a line-style dropdown; Select All is at the bottom. Only the boundaries that default to On are produced by the AI model. The entries that default to Off — PVD, GCL/IPL, ELM, IZ/RPE and SAT/HAL — are listed for completeness but are not implemented in the auto-segmentation model ."
   },
   {
    "page": "docs/retinal-layer-segmentation.html",
@@ -680,6 +992,14 @@
    "id": "view-toolbar",
    "url": "docs/retinal-layer-segmentation.html#view-toolbar",
    "text": "View toolbar Each view has a small toolbar. Hover a button to see what it does. Button Action Hide Curves / Show Curves Toggle the layer curves over the B-Frame image. Fast / Slow Scan View Switch the interpretation of the second Left B-Framexis between fast-scan and slow-scan, which changes how the two B-frames and the en-face view relate. Transpose ON / OFF Swap the horizontal and vertical axes of the image views. Layout Stack the B-frames or place them side by side. Reset Reset the camera / zoom of the view. Collapse Hide the left or right side so a view can fill the window."
+  },
+  {
+   "page": "docs/retinal-layer-segmentation.html",
+   "pageTitle": "Retinal Layer Segmentation",
+   "section": "B-Frame context menus",
+   "id": "panel-context-menus",
+   "url": "docs/retinal-layer-segmentation.html#panel-context-menus",
+   "text": "B-Frame context menus Right-click inside a B-Frame panel to open its context menu. The two panels differ: the Left B-Frame (OCT / OCTA overlay) focuses on display and export, while the Right B-Frame (the editable OCT panel) also offers the corrector tools. Left B-Frame (OCT / OCTA overlay). Display, export and workspace actions. Right B-Frame (OCT). Adds the corrector tools and correction modes. Left B-Frame (OCT / OCTA overlay) Item Action View All Fits the image back into the panel — resets any pan and zoom. Line weight ▸ Curve thickness submenu — pick 1 px to 8 px . Save image... Saves the "
   },
   {
    "page": "docs/retinal-layer-segmentation.html",
@@ -711,7 +1031,7 @@
    "section": "Menus & context menus",
    "id": "menus",
    "url": "docs/retinal-layer-segmentation.html#menus",
-   "text": "Menus & context menus Menu Where Contains Extensions menu In the MedICS main window Opens the Retinal Layer Segmentation window. View context menu Right-click over a B-frame or en-face view The plot's own menu. MedICS disables its default entries, so it exposes no actions — use the view toolbar instead. Corrector editor menu Right B-Frame, when a corrector tool is active Editing options for the boundary under the pointer. Loader context menu Right-click an entry in Load Data Settings Delete — marks the loader function as deleted so it is no longer offered. The window itself has no menu bar; ev"
+   "text": "Menus & context menus Menu Where Contains Extensions menu In the MedICS main window Opens the Retinal Layer Segmentation window. B-Frame context menu Right-click inside a B-Frame panel Display, export, corrector and workspace actions — see B-Frame context menus . En-face context menu Right-click over the en-face view The plot's own menu; MedICS hides its default entries, so it exposes no actions — use the view toolbar instead. Loader context menu Right-click an entry in Load Data Settings Delete — marks the loader function as deleted so it is no longer offered. The window itself has no menu ba"
   },
   {
    "page": "docs/retinal-layer-segmentation.html",
