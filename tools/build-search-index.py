@@ -36,6 +36,7 @@ PAGES = [
     ("docs/toolboxes.html", "Toolboxes"),
     ("docs/ai-assistant.html", "AI assistant"),
     ("docs/retinal-layer-segmentation.html", "Retinal Layer Segmentation"),
+    ("docs/volume-labeler.html", "Volume Labeler"),
 ]
 
 # Elements whose text is navigation or chrome, not documentation.

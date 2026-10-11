@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Volume Labeler — MedICS Documentation</title>
+  <meta name="description" content="User guide for the MedICS Volume Labeler extension: paint labels on B-frames and en face projections, constrain work to a slab with boundary curves, measure, inspect in 3D and export label maps." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/docs.css" />
+  <link rel="icon" href="../icon/icon.ico" sizes="any" />
+  <link rel="icon" type="image/png" href="../icon/icon.png" />
+  <link rel="apple-touch-icon" href="../icon/icon.png" />
+  <meta property="og:image" content="https://medical-image-computing-suite.github.io/icon/logo.png" />
+  <script>
+    // Apply the saved theme before first paint, so a light-theme visitor never
+    // sees a flash of the dark theme while js/site.js is still loading.
+    (function () {
+      try {
+        var t = localStorage.getItem("medics-theme");
+        if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t);
+      } catch (e) { /* private mode: keep the dark default */ }
+    })();
+  </script>
+  <script src="../js/site.js" defer></script>
+</head>
+<body class="docs-body">
+  <header class="nav" id="site-nav">
+    <noscript>
+      <div class="container nav__inner">
+        <a class="nav__logo" href="../index.html"><img src="../icon/icon.png" alt="" width="32" height="32" /><em>MedICS</em>Medical Image Computing Suite</a>
+        <ul class="nav__fallback">
+          <li><a href="../index.html">Introduction</a></li>
+          <li><a href="../get-started.html">Get started</a></li>
+          <li><a href="../extensions.html">Extensions</a></li>
+          <li><a href="../document.html">Documents</a></li>
+          <li><a class="btn btn--ghost btn--sm" href="https://github.com/Medical-Image-Computing-Suite/MedICS-Community/wiki" target="_blank" rel="noopener">MedICS Wiki</a></li>
+          <li><a class="btn btn--ghost btn--sm" href="https://github.com/medical-image-computing-suite" target="_blank" rel="noopener">GitHub</a></li>
+        </ul>
+      </div>
+    </noscript>
+  </header>
+  <div class="docs-shell container">
+    <aside class="docs-side">
+      <div class="docs-side__title">Documentation</div>
+      <nav><div class="docs-side__group">Getting started</div><ul><li><a href="../document.html">Overview</a></li></ul><div class="docs-side__group">Basics</div><ul><li><a href="interface.html">Interface &amp; components</a></li><li><a href="settings.html">Settings &amp; preferences</a></li></ul><div class="docs-side__group">Features</div><ul><li><a href="toolboxes.html">Toolboxes</a></li><li><a href="ai-assistant.html">AI assistant</a></li></ul><div class="docs-side__group">Official Extensions</div><ul><li><a href="retinal-layer-segmentation.html">Retinal Layer Segmentation</a></li><li><a class="is-current" href="volume-labeler.html">Volume Labeler</a></li></ul></nav>
+    </aside>
+    <main class="docs-main">
+      <header class="docs-hero">
+        <div class="tag">Documents · Official Extensions</div>
+        <h1>Volume Labeler</h1>
+        <p>Delinating labels on the 3D volume, constrain your work to a slab with boundary curves, measure each label, inspect it in 3D, and export label maps.</p>
+      </header>
+      <article class="docs-content">
+<h2 id="overview">Overview</h2>
+<p><strong>Volume Labeler</strong> annotates 3D volume data. Paint labels directly on the cross-sections or
+on the top-down projection, keep the work inside a layer slab so you never mark the wrong tissue,
+measure how much of each label you have drawn, and save the result as a label map for later use.
+Everything runs locally, your data never leave the machine.</p>
+<div class="doc-screens"><figure class="doc-figure"><a href="../assets/img/extensions/volume-labeler/main-window.png" target="_blank" rel="noopener"><img loading="lazy" src="../assets/img/extensions/volume-labeler/main-window.png" alt="Volume Labeler. A load and label panel on the left, the painting toolbox along the top, and the B-frame, en face and 3D views on the right."></a><figcaption><strong>Volume Labeler.</strong> The load and label panel on the left, the painting toolbox along the top, and the B-frame, en face and 3D views filling the rest of the window.</figcaption></figure></div>
+
+<h3 id="what-you-can-do">What you can do</h3>
+<ul class="plain">
+<li>Load a volume, an optional second volume, boundary curves, and a previously saved label map.</li>
+<li>Paint labels freely with a brush, or let a threshold tool pick the voxels for you.</li>
+<li>Limit painting to a slab defined by an upper and a lower boundary curve.</li>
+<li>Paint on the en face projection to label whole columns through the volume at once.</li>
+<li>Keep several named label maps and a palette of label classes, each with its own color.</li>
+<li>Read the volume and area of every label as you work, and keep free-text notes.</li>
+<li>Inspect the labels as a 3D rendering, then save the maps to a file or the workspace.</li>
+</ul>
+
+<h2 id="requirements">Requirements</h2>
+<ul class="plain">
+<li>MedICS, installed and running.</li>
+
+</ul>
+
+<h2 id="install">Install</h2>
+<p>Install the extension from inside MedICS — no command line needed.</p>
+<div class="steps">
+  <div class="step"><h4 id="install-open-manager">Open the Extension Manager</h4><p>In MedICS, open
+  <strong>Extensions → Open Extension Manager…</strong> from the menu bar.</p></div>
+  <div class="step"><h4 id="install-find">Find the extension</h4><p>Scroll the list to <strong>Volume Labeler</strong>.</p></div>
+  <div class="step"><h4 id="install-click">Install it</h4><p>Select the extension and click
+  <strong>Install</strong>, then wait for the download to finish.</p></div>
+  <div class="step"><h4 id="install-enable">Enable it</h4><p>If it is not already enabled, click
+  <strong>Load</strong>. The extension then appears under the <strong>Extensions</strong> menu and on the
+  <strong>Activity Bar</strong>.</p></div>
+  <div class="step"><h4 id="install-first-run">First run</h4><p>Click the <strong>Volume Labeler</strong> icon on
+  the Activity Bar to open it.</p></div>
+</div>
+
+<h2 id="quick-start">Quick start</h2>
+<div class="steps">
+  <div class="step"><h4 id="qs-load">Load a volume</h4><p>Click <strong>Load Data…</strong> and choose a volume, or
+  drag a file onto the window. If a volume is already open you are asked whether to
+  <strong>Replace</strong> it or <strong>Overlay</strong> the new one.</p></div>
+  <div class="step"><h4 id="qs-boundaries">Add boundaries (optional)</h4><p>Click <strong>Load Boundaries…</strong> to
+  load layer curves, then pick the <strong>Upper</strong> and <strong>Lower</strong> layers. This limits painting to a slab.</p></div>
+  <div class="step"><h4 id="qs-maps">Choose a map and a label</h4><p>In the left panel select a
+  <strong>label map</strong> and a <strong>label</strong> class (its colour).</p></div>
+  <div class="step"><h4 id="qs-paint">Paint</h4><p>Pick <strong>Brush</strong> (or another tool) in the toolbox and
+  paint on <strong>Left B-frame</strong>, <strong>Right B-frame</strong>, or the <strong>en face</strong> view.</p></div>
+  <div class="step"><h4 id="qs-review">Review</h4><p>Step through frames and check the <strong>Value</strong> tab and
+  the <strong>3D viewer</strong> as you go.</p></div>
+  <div class="step"><h4 id="qs-save">Save</h4><p>Click <strong>Save…</strong> to write the maps to a file, or
+  <strong>Save to WS</strong> to send them to the MedICS workspace.</p></div>
+</div>
+
+<h2 id="window">The Volume Labeler window</h2>
+<p>The window is a set of panels around the volume. The <strong>left panel</strong> loads data and manages maps
+and labels; the <strong>toolbox</strong> across the top holds the painting tools; the rest shows the volume.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Area</th><th>What it is for</th></tr></thead>
+<tbody>
+<tr><td><strong>Left panel</strong></td><td>Load the volume, boundaries and label maps; manage the label maps and label classes.</td></tr>
+<tr><td><strong>Toolbox</strong></td><td>The painting tools, their size and shape, the cleanup steps, and the measurement / note tabs.</td></tr>
+<tr><td><strong>Left B-frame</strong></td><td>The left cross-section — the volume as an underlay, with an optional second volume and the labels on top.</td></tr>
+<tr><td><strong>Right B-frame</strong></td><td>The centre cross-section — the primary volume and the labels; the main place to paint.</td></tr>
+<tr><td><strong>Boundaries</strong></td><td>The upper / lower layer selection, their offsets, and the current frame.</td></tr>
+<tr><td><strong>en face</strong></td><td>A top-down projection through the slab; paint here to label whole columns.</td></tr>
+<tr><td><strong>3D viewer</strong></td><td>A 3D rendering of the active label map.</td></tr>
+<tr><td><strong>Status bar</strong></td><td>Volume information, the pointer readout, and short messages.</td></tr>
+</tbody></table></div>
+
+<h2 id="data-source">Loading data</h2>
+<div class="doc-screens doc-screens--narrow"><figure class="doc-figure"><a href="../assets/img/extensions/volume-labeler/left-panel.png" target="_blank" rel="noopener"><img loading="lazy" src="../assets/img/extensions/volume-labeler/left-panel.png" alt="The left panel: load buttons, the label-map tree and the label-class tree."></a><figcaption><strong>The left panel.</strong> Loading controls at the top, the label maps below, and the label classes at the bottom.</figcaption></figure></div>
+
+<h3 id="load-volume">Loading a volume</h3>
+<p>Click <strong>Load Data…</strong> to choose a file, or drag files and folders onto the window. If a volume is
+already open, MedICS asks what to do with the new one.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Choice</th><th>Effect</th></tr></thead>
+<tbody>
+<tr><td><strong>Replace</strong></td><td>Clears the current labels and loads the new volume in their place.</td></tr>
+<tr><td><strong>Overlay</strong></td><td>Keeps the current volume and layers the new data on top of it as a second (overlay) volume.</td></tr>
+<tr><td><strong>Cancel</strong></td><td>Does nothing.</td></tr>
+</tbody></table></div>
+<p>Supported volume formats include <code>.med</code>, <code>.tif</code>/<code>.tiff</code>, <code>.mat</code>,
+<code>.oct</code>, <code>.foct</code>, <code>.dcm</code> and <code>.img</code>. A file whose type is not
+obvious opens the <strong>Select Data Type</strong> dialog, where you say whether it is <strong>Volume Data</strong>,
+an <strong>Overlay</strong>, <strong>Label Data</strong> or <strong>Boundary Data</strong>.</p>
+
+<h3 id="companions">Companions loaded automatically</h3>
+<p>When a volume loads, the extension looks next to it for related files and loads them too:</p>
+<div class="table-wrap"><table>
+<thead><tr><th>File</th><th>What it is</th></tr></thead>
+<tbody>
+<tr><td><code>&lt;name&gt;_lmp.tiff</code> or <code>&lt;name&gt;_lmp.med</code></td><td>A saved label map (the newest is preferred when both exist).</td></tr>
+<tr><td>Boundary files — <code>seg.mat</code>, <code>_seg.mat</code>, <code>segmentation.mat</code> and their <code>.med</code> forms</td><td>Layer curves for the upper and lower boundaries.</td></tr>
+<tr><td><code>&lt;name&gt;.ssada</code> and other second-volume siblings</td><td>A second volume drawn as an overlay on Left B-frame.</td></tr>
+</tbody></table></div>
+
+<h3 id="boundaries">Boundaries</h3>
+<p>Click <strong>Load Boundaries…</strong> to load layer curves (<code>.json</code>, <code>.mat</code>, <code>.med</code>,
+<code>.dcm</code>). Then choose the <strong>Upper</strong> and <strong>Lower</strong> layers and, if needed, nudge each
+one with its offset. The slab between them drives the en face projection and shades the B-frames, so
+painting stays inside the tissue you care about. See <a href="#frame">Frames &amp; the slab</a>.</p>
+
+<h3 id="label-maps-load">Label maps</h3>
+<p>Click <strong>Load Label Map…</strong> to bring back a saved map (<code>.tiff</code>, <code>.med</code>, <code>.mat</code>,
+<code>.png</code>). Maps written by this extension store their data under a <code>label</code> tag, so they
+reload without any extra questions. You can also drop a label file onto the window, or load a
+labelled array from the workspace.</p>
+
+<h3 id="load-data-settings">Load Data Settings</h3>
+<p>The <strong>Settings…</strong> button opens <strong>Load Data Settings</strong>. Use it when a file is not recognised, or
+to teach the extension a custom format. It works the same way as in the Retinal Layer Segmentation
+extension.</p>
+<div class="doc-screens doc-screens--wide"><figure class="doc-figure"><a href="../assets/img/extensions/volume-labeler/dialog-load-data-settings.png" target="_blank" rel="noopener"><img loading="lazy" src="../assets/img/extensions/volume-labeler/dialog-load-data-settings.png" alt="Load Data Settings dialog: a list of loader functions on the left, assignment rows for Data, Label Map and Boundary, and a code preview."></a><figcaption><strong>Load Data Settings.</strong> Pick a loader function, assign it to Data, Label Map or Boundary, and set the file patterns it should handle.</figcaption></figure></div>
+<div class="table-wrap"><table>
+<thead><tr><th>Element</th><th>What it does</th></tr></thead>
+<tbody>
+<tr><td>Loader list</td><td>Every loader function found in the custom-loader folder, shown as <code>module.function</code>. Select one to assign it or preview its code.</td></tr>
+<tr><td>Remove / Delete</td><td>Marks the selected function as deleted so it is no longer offered.</td></tr>
+<tr><td>Add from file</td><td>Copies a loader <code>.py</code> file into the custom-loader folder and rescans the list.</td></tr>
+<tr><td>Add from code</td><td>Opens a small editor to write or edit a loader function.</td></tr>
+<tr><td>Data &gt;&gt; / Label Map &gt;&gt; / Boundary &gt;&gt;</td><td>Assigns the selected function as the loader for that input.</td></tr>
+<tr><td>Filters</td><td>The file patterns the assigned loader handles, for example <code>*.mat *.tif</code>. A filter is required for every assigned loader.</td></tr>
+<tr><td>Clear (×)</td><td>Returns that row to the built-in loader.</td></tr>
+<tr><td>Code preview</td><td>Read-only source of the selected function.</td></tr>
+</tbody></table></div>
+
+<h2 id="maps-and-labels">Label maps &amp; label classes</h2>
+
+<h3 id="maps">Label maps</h3>
+<p>A <strong>label map</strong> is one full 3D labelling of the volume. You start with a single map called
+<strong>Default</strong>, and you can keep several — for example one per structure, or one per annotator.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Column / button</th><th>What it does</th></tr></thead>
+<tbody>
+<tr><td><strong>Name</strong></td><td>The map's name. The selected map is the one you paint into and the one the 3D viewer shows.</td></tr>
+<tr><td><strong>Edit</strong> (pencil)</td><td>Opens <strong>Edit Label Map</strong> to change the name and description.</td></tr>
+<tr><td><strong>Delete</strong> (trash)</td><td>Removes the map after a confirmation. At least one map must always remain.</td></tr>
+<tr><td><strong>Add…</strong></td><td>Opens <strong>Add Label Map</strong> to create a new, empty map — or a copy of an existing one.</td></tr>
+<tr><td><strong>Load Label Map…</strong></td><td>Loads maps from a file.</td></tr>
+<tr><td><strong>Save…</strong> / <strong>Save to WS</strong></td><td>Save the maps to a file, or send them to the workspace.</td></tr>
+</tbody></table></div>
+<div class="doc-screens doc-screens--medium"><figure class="doc-figure"><a href="../assets/img/extensions/volume-labeler/dialog-add-map.png" target="_blank" rel="noopener"><img loading="lazy" src="../assets/img/extensions/volume-labeler/dialog-add-map.png" alt="Add Label Map dialog: a Name field, a Description box, and a Copy from map choice."></a><figcaption><strong>Add Label Map.</strong> Name the new map, describe it, and optionally copy the contents of an existing map.</figcaption></figure></div>
+<div class="table-wrap"><table>
+<thead><tr><th>Field</th><th>What it does</th></tr></thead>
+<tbody>
+<tr><td><strong>Name</strong></td><td>The new map's name; it must be unique.</td></tr>
+<tr><td><strong>Description</strong></td><td>An optional description shown as a tooltip in the map list.</td></tr>
+<tr><td><strong>Copy from map</strong></td><td>Choose <em>None</em> for an empty map, or pick an existing map to start from a copy of it.</td></tr>
+</tbody></table></div>
+
+<h3 id="labels">Label classes</h3>
+<p>The <strong>Label</strong> list holds your paint classes. The extension starts with <strong>32</strong> ready-made
+labels, each with its own colour; the first six are the classic primaries (cyan, yellow, green, red,
+blue, magenta). The active label — marked with a dot — is the value every tool writes.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Column / button</th><th>What it does</th></tr></thead>
+<tbody>
+<tr><td><strong>Label</strong></td><td>The class name. Click a row to make it the active paint label.</td></tr>
+<tr><td><strong>Color</strong></td><td>The class colour swatch; click it to change the colour.</td></tr>
+<tr><td><strong>Edit</strong> (pencil)</td><td>Opens <strong>Modify Label</strong> to change the name, colour and description.</td></tr>
+<tr><td><strong>Add Label…</strong></td><td>Adds a new class.</td></tr>
+</tbody></table></div>
+<div class="doc-screens doc-screens--pair"><figure class="doc-figure"><a href="../assets/img/extensions/volume-labeler/dialog-add-label.png" target="_blank" rel="noopener"><img loading="lazy" src="../assets/img/extensions/volume-labeler/dialog-add-label.png" alt="Add Label dialog: Name, Color and Discription fields."></a><figcaption><strong>Add Label.</strong> Name the class, choose its colour, and describe it. <strong>Modify Label</strong> offers the same fields for an existing class.</figcaption></figure></div>
+<p class="anchor-note">Label names must be unique and cannot be empty. Colour changes take effect
+straight away in every view. Value 0 is always the untouched background, and paints as transparent.</p>
+
+<h2 id="toolbox">The toolbox</h2>
+<p>The toolbox runs along the top of the window. It holds the tool size and shape, the cleanup steps
+that tidy a stroke, the painting tools themselves, and two tabs — <strong>Value</strong> and <strong>Note</strong>.</p>
+<div class="doc-screens"><figure class="doc-figure"><a href="../assets/img/extensions/volume-labeler/toolbox.png" target="_blank" rel="noopener"><img loading="lazy" src="../assets/img/extensions/volume-labeler/toolbox.png" alt="The toolbox: size and shape parameters, cleanup steps, the painting tools, and the Value and Note tabs."></a><figcaption><strong>The toolbox.</strong> Size and shape, the cleanup steps, the painting tools, and the <em>Value</em> / <em>Note</em> tabs.</figcaption></figure></div>
+
+<h3 id="tool-settings">Size &amp; shape</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>Control</th><th>What it does</th></tr></thead>
+<tbody>
+<tr><td><strong>Tool size</strong></td><td>The brush diameter, in pixels (1–500; default 25).</td></tr>
+<tr><td><strong>Shape</strong></td><td>The brush outline — <em>disk</em>, <em>square</em>, <em>rod</em> or <em>ellipse</em>.</td></tr>
+<tr><td><strong>Angle</strong></td><td>The orientation of the <em>rod</em> and <em>ellipse</em> shapes, in degrees (0–359).</td></tr>
+</tbody></table></div>
+<p>You can change the size and angle without leaving the image: scroll the wheel to resize, and hold
+<kbd>Alt</kbd> while scrolling to rotate.</p>
+
+<h3 id="cleanup">Cleanup</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>Control</th><th>What it does</th></tr></thead>
+<tbody>
+<tr><td><strong>Fill holes</strong></td><td>Fills holes smaller than this many pixels inside a stroke. Set it to 0 to leave holes alone.</td></tr>
+<tr><td><strong>Region filter</strong></td><td>Removes connected regions smaller than this many pixels, cleaning up stray specks (default 25).</td></tr>
+<tr><td><strong>Propagation</strong></td><td>How many frames the <kbd>←</kbd> / <kbd>→</kbd> keys jump (default 5).</td></tr>
+</tbody></table></div>
+
+<h3 id="tools">Painting tools</h3>
+<p>Exactly one tool is active at a time. Click a tool to turn it on; click it again (or press its key)
+to turn it off.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Tool</th><th>Key</th><th>What it does</th></tr></thead>
+<tbody>
+<tr><td><strong>Brush</strong></td><td><kbd>Q</kbd></td><td>Paints the active label under the pointer as you drag.</td></tr>
+<tr><td><strong>ChangeLabel</strong></td><td><kbd>W</kbd></td><td>Repaints pixels that already carry a label to the active label — handy for fixing a wrong class.</td></tr>
+<tr><td><strong>T-Min</strong></td><td><kbd>E</kbd></td><td>Labels pixels darker than the value you click, plus the &ldquo;v +&rdquo; offset.</td></tr>
+<tr><td><strong>T-Max</strong></td><td><kbd>R</kbd></td><td>Labels pixels brighter than the value you click, plus the &ldquo;v +&rdquo; offset.</td></tr>
+<tr><td><strong>T-Range</strong></td><td><kbd>T</kbd></td><td>Labels pixels within a value window around the value you click (a low and a high offset).</td></tr>
+</tbody></table></div>
+<p class="anchor-note">The three threshold tools select by the pixel value under the pointer, so they
+give you a quick, intensity-aware fill instead of painting every voxel by hand.</p>
+
+<h2 id="painting">Painting</h2>
+<p>Choose a tool in the toolbox, make sure the right <strong>label</strong> and <strong>map</strong> are selected, then
+paint on <strong>Left B-frame</strong>, <strong>Right B-frame</strong> or the <strong>en face</strong> view.</p>
+<div class="doc-screens doc-screens--medium"><figure class="doc-figure"><a href="../assets/img/extensions/volume-labeler/gif/paint-brush.gif" target="_blank" rel="noopener"><img loading="lazy" src="../assets/img/extensions/volume-labeler/gif/paint-brush.gif" alt="Painting a stroke with the brush on Right B-frame; the label appears under the pointer."></a><figcaption><strong>Painting with the brush.</strong> Drag the left mouse button to draw the active label; the stroke is committed when you release.</figcaption></figure></div>
+<div class="table-wrap"><table>
+<thead><tr><th>Mouse action</th><th>Result</th></tr></thead>
+<tbody>
+<tr><td><strong>Left-drag</strong></td><td>Applies the active tool — paints the current label (or runs the threshold / change-label tool).</td></tr>
+<tr><td><strong>Right-drag</strong></td><td>Erases the label under the pointer.</td></tr>
+<tr><td><strong>Middle-click</strong></td><td>Undoes the last stroke.</td></tr>
+<tr><td>Wheel</td><td>Changes the tool size.</td></tr>
+<tr><td><kbd>Alt</kbd> + wheel</td><td>Rotates the tool angle.</td></tr>
+<tr><td><kbd>Ctrl</kbd> + wheel</td><td>Zooms the view.</td></tr>
+<tr><td><kbd>Ctrl</kbd> + drag</td><td>Moves the frame indicator: scrubs the B-frame stack and the matching en face column.</td></tr>
+</tbody></table></div>
+<p>Hold <kbd>Space</kbd> to hide the label overlays for a moment so you can see the image underneath,
+and hold <kbd>Ctrl</kbd> to switch to navigation mode, where the pointer scrubs frames instead of painting.</p>
+
+<h3 id="enface-painting">Painting on the en face view</h3>
+<p>The en face view is a top-down projection through the current slab. Painting there marks a whole
+column of the volume at once — the fastest way to label a vertical structure across many frames. The
+yellow line marks the frame currently shown in the B-frames; drag it to change frames.</p>
+<div class="doc-screens doc-screens--medium"><figure class="doc-figure"><a href="../assets/img/extensions/volume-labeler/enface.png" target="_blank" rel="noopener"><img loading="lazy" src="../assets/img/extensions/volume-labeler/enface.png" alt="The en face projection, with its projection mode, contrast controls and label overlay."></a><figcaption><strong>The en face view.</strong> A projection through the slab; paint here to label whole columns, and drag the indicator to change the frame.</figcaption></figure></div>
+
+<h2 id="frame">Frames &amp; the slab</h2>
+<p>The <strong>Boundaries</strong> bar sets the slab and the current frame.</p>
+<div class="doc-screens doc-screens--medium"><figure class="doc-figure"><a href="../assets/img/extensions/volume-labeler/boundaries.png" target="_blank" rel="noopener"><img loading="lazy" src="../assets/img/extensions/volume-labeler/boundaries.png" alt="The boundaries bar: Upper and Lower layer selection with offsets, and the frame index."></a><figcaption><strong>The boundaries bar.</strong> Choose the <em>Upper</em> and <em>Lower</em> layers, offset each one, and step through frames.</figcaption></figure></div>
+<div class="table-wrap"><table>
+<thead><tr><th>Control</th><th>What it does</th></tr></thead>
+<tbody>
+<tr><td><strong>Upper</strong></td><td>The layer that bounds the slab from above, plus an offset in pixels.</td></tr>
+<tr><td><strong>Lower</strong></td><td>The layer that bounds the slab from below, plus an offset in pixels.</td></tr>
+<tr><td><strong>Frame</strong></td><td>The B-scan currently shown (1-based) and the total number of frames.</td></tr>
+</tbody></table></div>
+<div class="table-wrap"><table>
+<thead><tr><th>Keys</th><th>Action</th></tr></thead>
+<tbody>
+<tr><td><kbd>↑</kbd> / <kbd>↓</kbd></td><td>Previous / next frame.</td></tr>
+<tr><td><kbd>←</kbd> / <kbd>→</kbd></td><td>Jump back / forward by the current <strong>Propagation</strong> step.</td></tr>
+</tbody></table></div>
+<div class="doc-screens doc-screens--medium"><figure class="doc-figure"><a href="../assets/img/extensions/volume-labeler/gif/frame-navigation.gif" target="_blank" rel="noopener"><img loading="lazy" src="../assets/img/extensions/volume-labeler/gif/frame-navigation.gif" alt="Stepping through frames; the B-frame images change together."></a><figcaption><strong>Stepping through frames.</strong> Moving the frame updates the B-frames and the en face indicator together.</figcaption></figure></div>
+<p class="anchor-note">Shortcuts apply while the Volume Labeler tab has focus, and are ignored while you
+are typing in a text field or spin box.</p>
+
+<h2 id="views">The views</h2>
+<p>Two cross-sections, one en face projection and one 3D rendering. They stay in sync as you move
+through the volume.</p>
+<div class="doc-screens doc-screens--pair"><figure class="doc-figure"><a href="../assets/img/extensions/volume-labeler/bframe-b-oct.png" target="_blank" rel="noopener"><img loading="lazy" src="../assets/img/extensions/volume-labeler/bframe-b-oct.png" alt="Right B-frame: the primary volume with the label overlay."></a><figcaption><strong>Right B-frame (OCT).</strong> The primary cross-section with the labels on top — the main place to paint.</figcaption></figure><figure class="doc-figure"><a href="../assets/img/extensions/volume-labeler/bframe-a-octa.png" target="_blank" rel="noopener"><img loading="lazy" src="../assets/img/extensions/volume-labeler/bframe-a-octa.png" alt="Left B-frame: the volume with an optional second volume overlay and the labels."></a><figcaption><strong>Left B-frame (OCTA).</strong> The same cross-section, with an optional second volume drawn as a colour overlay.</figcaption></figure></div>
+<div class="table-wrap"><table>
+<thead><tr><th>View</th><th>Shows</th></tr></thead>
+<tbody>
+<tr><td><strong>Right B-frame</strong></td><td>The primary volume and the label overlay.</td></tr>
+<tr><td><strong>Left B-frame</strong></td><td>The volume with an optional second volume drawn on top, and the label overlay.</td></tr>
+<tr><td><strong>en face</strong></td><td>A top-down projection through the slab, with the labels and the current-frame indicator.</td></tr>
+<tr><td><strong>3D</strong></td><td>An interactive 3D rendering of the active label map.</td></tr>
+</tbody></table></div>
+
+<h3 id="view-toolbar">Per-view controls</h3>
+<p>Each image view has a small toolbar above it.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Control</th><th>What it does</th></tr></thead>
+<tbody>
+<tr><td><strong>Low</strong> / <strong>High</strong></td><td>The contrast window: the low and high values mapped to black and white.</td></tr>
+<tr><td>Colorbar</td><td>The greyscale (or overlay) ramp; click it to choose a different colour map.</td></tr>
+<tr><td><strong>Show/Hide label</strong></td><td>Turns the label overlay on or off.</td></tr>
+<tr><td><strong>Transparency</strong></td><td>How strongly the labels show through the image (0 = invisible, 1 = fully opaque).</td></tr>
+<tr><td><strong>Projection</strong></td><td>On the en face view: <em>Mean</em>, <em>Maximum</em>, <em>Minimun</em> or <em>Thickness</em>. The mode replots the projection.</td></tr>
+</tbody></table></div>
+<div class="doc-screens doc-screens--medium"><figure class="doc-figure"><a href="../assets/img/extensions/volume-labeler/gif/label-transparency.gif" target="_blank" rel="noopener"><img loading="lazy" src="../assets/img/extensions/volume-labeler/gif/label-transparency.gif" alt="Changing the label transparency so the image shows through the overlay."></a><figcaption><strong>Label transparency.</strong> Lower the value to see the image underneath the labels.</figcaption></figure></div>
+<div class="doc-screens doc-screens--medium"><figure class="doc-figure"><a href="../assets/img/extensions/volume-labeler/gif/enface-projection.gif" target="_blank" rel="noopener"><img loading="lazy" src="../assets/img/extensions/volume-labeler/gif/enface-projection.gif" alt="Cycling the en face projection between Mean, Maximum, Minimum and Thickness."></a><figcaption><strong>en face projection modes.</strong> Cycle <em>Mean</em>, <em>Maximum</em>, <em>Minimun</em> and <em>Thickness</em> to change how the slab is projected.</figcaption></figure></div>
+
+<h3 id="context-menu">B-frame context menu</h3>
+<p>Right-click inside a B-frame for display and export actions.</p>
+<div class="doc-screens doc-screens--medium"><figure class="doc-figure"><a href="../assets/img/extensions/volume-labeler/context-menu-bframe.png" target="_blank" rel="noopener"><img loading="lazy" src="../assets/img/extensions/volume-labeler/context-menu-bframe.png" alt="The B-frame context menu with boundary, save and workspace entries."></a><figcaption><strong>The B-frame context menu.</strong> Boundary visibility, image and label exports, and <em>Save to ws</em>.</figcaption></figure></div>
+<div class="table-wrap"><table>
+<thead><tr><th>Item</th><th>Action</th></tr></thead>
+<tbody>
+<tr><td><strong>Show/Hide upper boundary</strong></td><td>Toggle the upper curve over the image.</td></tr>
+<tr><td><strong>Show/Hide lower boundary</strong></td><td>Toggle the lower curve over the image.</td></tr>
+<tr><td><strong>Save image…</strong></td><td>Save the current frame as an image.</td></tr>
+<tr><td><strong>Save stack image…</strong></td><td>Save the whole stack as an image.</td></tr>
+<tr><td><strong>Save label…</strong></td><td>Save the current frame's label overlay.</td></tr>
+<tr><td><strong>Save stack label…</strong></td><td>Save the whole stack's label overlay.</td></tr>
+<tr><td><strong>Save image with label…</strong></td><td>Save the current frame with the labels drawn on it.</td></tr>
+<tr><td><strong>Save stack image with label…</strong></td><td>Save the whole stack with the labels drawn on every frame.</td></tr>
+<tr><td><strong>Save image with label and curve…</strong></td><td>Save the current frame with both the labels and the layer curves.</td></tr>
+<tr><td><strong>Save stack image with label and curve…</strong></td><td>The same, for every frame.</td></tr>
+<tr><td><strong>Save to ws…</strong></td><td>Send one of the panel's layers (image or label) to the MedICS workspace.</td></tr>
+</tbody></table></div>
+<p class="anchor-note">The en face view has its own menu with <strong>View All</strong>, the centre-point and
+ETDRS-grid toggles, the image and label saves, and <strong>Save to ws</strong>.</p>
+
+<h3 id="viewer-3d">The 3D viewer</h3>
+<p>The 3D dock renders the <strong>active label map</strong> (not the raw volume), so you can orbit a shape and
+confirm a label is where you expect it. Its toolbar has a mode selector, a lighting preset and a
+camera reset.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Control</th><th>What it does</th></tr></thead>
+<tbody>
+<tr><td><strong>3D / Enface</strong></td><td>Switches the dock between the 3D rendering and the overlay-volume en face (enabled once a second volume is loaded).</td></tr>
+<tr><td><strong>Lighting</strong></td><td>One of <em>Headlight</em>, <em>Three Lights</em>, <em>Ambient</em> or <em>Studio</em>.</td></tr>
+<tr><td><strong>Reset Camera</strong></td><td>Returns the camera to its default view.</td></tr>
+</tbody></table></div>
+<p>Drag to orbit, scroll to zoom, and use the on-screen axis gizmo to re-orient the camera. If 3D
+rendering is unavailable, the dock shows a short note instead.</p>
+
+<h2 id="measurements">Measurements &amp; notes</h2>
+<p>The toolbox has two tabs next to the tools.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Tab</th><th>What it shows</th></tr></thead>
+<tbody>
+<tr><td><strong>Value</strong></td><td>A table of measurements for the active map. Each label gets a column, with rows for <strong>Volume (voxels)</strong> and <strong>Area (pixels)</strong>, and each cell also shows the percentage of the total.</td></tr>
+<tr><td><strong>Note</strong></td><td>A free-text box. What you type here is saved together with the label maps.</td></tr>
+</tbody></table></div>
+<p>The measurements update as you edit labels, in the background, so the window stays responsive while
+you paint.</p>
+
+<h2 id="save">Saving &amp; exporting</h2>
+<p><strong>Save…</strong> opens <strong>Save Label Map As</strong> with a default name of <code>&lt;volume&gt;_lmp</code>. Pick a
+format:</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Format</th><th>What it stores</th></tr></thead>
+<tbody>
+<tr><td><strong>TIFF</strong> (<code>.tiff</code> / <code>.tif</code>)</td><td>All maps stacked along the frame axis, with the colour map and a description in the metadata.</td></tr>
+<tr><td><strong>MAT</strong> (<code>.mat</code>)</td><td>The maps, label definitions, notes and descriptions under a <code>label</code> tag.</td></tr>
+<tr><td><strong>MED</strong> (<code>.med</code>)</td><td>The same <code>label</code> payload in MedICS's own format.</td></tr>
+<tr><td><strong>MedImage</strong> (<code>.medimage</code> / <code>.medimg</code> / <code>.mi</code>)</td><td>A full image bundle of the session.</td></tr>
+</tbody></table></div>
+<p><strong>Save to WS</strong> instead asks for a workspace variable name (defaulting to the current map's name)
+and stores the maps there, ready for other MedICS tools.</p>
+<p class="anchor-note">Every file the extension writes is tagged, so when you load it back the maps,
+labels, colours and notes are recognised and restored without any extra prompts.</p>
+
+<h2 id="status-bar">Status bar</h2>
+<p>The green bar along the bottom reports what is happening.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Readout</th><th>Meaning</th></tr></thead>
+<tbody>
+<tr><td>Background tasks</td><td>Short notes such as <em>Syncing enface to volume</em> or <em>Updating measurements</em> while work runs in the background.</td></tr>
+<tr><td>Mouse position</td><td>Where the pointer is over the image.</td></tr>
+<tr><td>Pixel value</td><td>The value under the pointer.</td></tr>
+<tr><td>Data summary</td><td>The volume number, its shape, data type and value range, plus the second volume's shape when one is loaded.</td></tr>
+</tbody></table></div>
+<p>One-off messages — loading, saving, warnings — also appear here.</p>
+
+<h2 id="keyboard">Keyboard shortcuts</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>Keys</th><th>Action</th></tr></thead>
+<tbody>
+<tr><td><kbd>↑</kbd> / <kbd>↓</kbd></td><td>Previous / next frame.</td></tr>
+<tr><td><kbd>←</kbd> / <kbd>→</kbd></td><td>Jump by the current <strong>Propagation</strong> step.</td></tr>
+<tr><td><kbd>Q</kbd></td><td>Toggle the <strong>Brush</strong> tool.</td></tr>
+<tr><td><kbd>W</kbd></td><td>Toggle the <strong>ChangeLabel</strong> tool.</td></tr>
+<tr><td><kbd>E</kbd></td><td>Toggle the <strong>T-Min</strong> tool.</td></tr>
+<tr><td><kbd>R</kbd></td><td>Toggle the <strong>T-Max</strong> tool.</td></tr>
+<tr><td><kbd>T</kbd></td><td>Toggle the <strong>T-Range</strong> tool.</td></tr>
+<tr><td><kbd>Space</kbd> (hold)</td><td>Temporarily hide the label overlays.</td></tr>
+<tr><td><kbd>Ctrl</kbd> (hold)</td><td>Navigation mode — the pointer scrubs frames instead of painting.</td></tr>
+</tbody></table></div>
+
+<h2 id="mouse">Mouse &amp; interaction</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>Action</th><th>Result</th></tr></thead>
+<tbody>
+<tr><td>Left-drag in a view</td><td>Applies the active tool (paints, or erases with the right button).</td></tr>
+<tr><td>Right-drag</td><td>Erases labels under the pointer.</td></tr>
+<tr><td>Middle-click</td><td>Undoes the last stroke.</td></tr>
+<tr><td>Wheel</td><td>Changes the tool size.</td></tr>
+<tr><td><kbd>Alt</kbd> + wheel</td><td>Rotates the tool angle.</td></tr>
+<tr><td><kbd>Ctrl</kbd> + wheel</td><td>Zooms the view.</td></tr>
+<tr><td><kbd>Ctrl</kbd> + drag</td><td>Scrubs frames via the indicator.</td></tr>
+<tr><td>Drag in the 3D view</td><td>Orbits the rendering; scroll to zoom.</td></tr>
+<tr><td>Right-click a B-frame or en face</td><td>Opens that view's context menu.</td></tr>
+</tbody></table></div>
+
+<h2 id="limits">Notes &amp; limitations</h2>
+<ul class="plain">
+<li>A label map is a full 3D volume, so large volumes use a lot of memory; the 3D view is refreshed in the background to keep painting smooth.</li>
+<li>Painting on the en face view updates the 3D label volume in the background; the sync follows shortly after you release the mouse.</li>
+<li>Non-square volumes are shown square in the en face view; painting maps back to the true size automatically.</li>
+<li>The 3D viewer renders labels, not intensities — it is a way to check labels, not to review the image.</li>
+<li>Everything is computed locally; no image data is uploaded.</li>
+</ul>
+      </article>
+      <nav class="docs-pager"><a class="prev" href="retinal-layer-segmentation.html"><span>&#8592; Previous</span>Retinal Layer Segmentation</a></nav>
+    </main>
+    <aside class="docs-toc">
+      <div class="docs-toc__title">On this page</div>
+      <nav><ul><li><a class="lvl-2" href="#overview">Overview</a></li><li><a class="lvl-2" href="#requirements">Requirements</a></li><li><a class="lvl-2" href="#install">Install</a></li><li><a class="lvl-2" href="#quick-start">Quick start</a></li><li><a class="lvl-2" href="#window">The Volume Labeler window</a></li><li><a class="lvl-2" href="#data-source">Loading data</a></li><li><a class="lvl-3" href="#load-data-settings">Load Data Settings</a></li><li><a class="lvl-2" href="#maps-and-labels">Label maps &amp; label classes</a></li><li><a class="lvl-2" href="#toolbox">The toolbox</a></li><li><a class="lvl-2" href="#painting">Painting</a></li><li><a class="lvl-2" href="#frame">Frames &amp; the slab</a></li><li><a class="lvl-2" href="#views">The views</a></li><li><a class="lvl-3" href="#view-toolbar">Per-view controls</a></li><li><a class="lvl-3" href="#context-menu">B-frame context menu</a></li><li><a class="lvl-3" href="#viewer-3d">The 3D viewer</a></li><li><a class="lvl-2" href="#measurements">Measurements &amp; notes</a></li><li><a class="lvl-2" href="#save">Saving &amp; exporting</a></li><li><a class="lvl-2" href="#status-bar">Status bar</a></li><li><a class="lvl-2" href="#keyboard">Keyboard shortcuts</a></li><li><a class="lvl-2" href="#mouse">Mouse &amp; interaction</a></li><li><a class="lvl-2" href="#limits">Notes &amp; limitations</a></li></ul></nav>
+    </aside>
+  </div>
+  <footer class="footer">
+    <div class="container footer__inner">
+      <span class="footer__brand"><img src="../icon/icon.png" alt="" width="22" height="22" />© 2024–2026 MedICS. All rights reserved.</span>
+      <a href="../document.html">Documentation</a>
+    </div>
+  </footer>
+</body>
+</html>
