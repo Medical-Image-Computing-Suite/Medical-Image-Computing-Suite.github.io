@@ -246,6 +246,64 @@
 .docs-pager a span { color: var(--muted); font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.06em; }
 .docs-pager .next { text-align: right; margin-left: auto; }
 
+/* ---------- page feedback (bottom of every docs page) ---------- */
+/* Three columns, like the VS Code docs: a helpful vote, support links and an
+   "Edit this page" link. Rendered by js/site.js on every page that has a
+   .docs-main column, so the markup is defined once and cannot drift. */
+.docs-feedback {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 2rem;
+  margin-top: 3rem;
+  padding-top: 1.6rem;
+  border-top: 1px solid var(--border);
+}
+.docs-feedback__title {
+  margin: 0 0 0.85rem;
+  font-size: 0.98rem;
+  color: var(--text);
+}
+.docs-feedback__actions { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+.docs-feedback__btn { min-width: 88px; justify-content: center; }
+.docs-feedback__after { margin-top: 0.2rem; }
+.docs-feedback__thanks { margin: 0; font-size: 0.86rem; color: var(--muted); }
+.docs-feedback__comment { display: grid; gap: 0.5rem; margin-top: 0.65rem; }
+.docs-feedback__comment-label { font-size: 0.82rem; color: var(--muted); }
+.docs-feedback__note {
+  width: 100%;
+  min-height: 64px;
+  resize: vertical;
+  font: inherit;
+  font-size: 0.86rem;
+  color: var(--text);
+  background: var(--code-bg);
+  border: 1px solid var(--border-2);
+  border-radius: 8px;
+  padding: 0.55rem 0.7rem;
+}
+.docs-feedback__note:focus { outline: none; border-color: var(--accent); }
+.docs-feedback__comment-actions { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.docs-feedback__links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.7rem;
+}
+.docs-feedback__links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.9rem;
+  text-decoration: none;
+}
+.docs-feedback__links a:hover { color: var(--accent-3); }
+.docs-feedback__links svg { width: 17px; height: 17px; flex: none; }
+.docs-feedback__edit { display: inline-flex; }
+@media (max-width: 980px) {
+  .docs-feedback { grid-template-columns: 1fr; gap: 1.5rem; }
+}
+
 /* ---------- tight panel strip (hub) ---------- */
 .tight-lead { margin: 0 0 0.7rem; }
 

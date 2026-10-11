@@ -114,6 +114,13 @@ a:hover { color: var(--accent-3); }
   border: 1.5px solid var(--border-2);
 }
 .btn--ghost:hover { color: var(--text); background: var(--ghost-bg-hover); }
+/* A flat, solid accent button — paired with .btn--primary in the docs footer. */
+.btn--secondary {
+  background: var(--accent);
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(59, 130, 246, 0.25);
+}
+.btn--secondary:hover { color: #fff; transform: translateY(-2px); }
 .btn--sm { padding: 0.4rem 0.95rem; font-size: 0.8rem; }
 
 .nav {

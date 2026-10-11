@@ -522,4 +522,212 @@
       }
     });
   }
+
+  // ---- Documentation feedback footer --------------------------------------
+  // A VS Code-style footer on every documentation page: a "was this page
+  // helpful?" vote, links to where to ask for help, and an "Edit this page"
+  // link back to the page's source. Only the documentation articles carry a
+  // .docs-main column, so that is the gate: the top-level pages are skipped.
+  var DOCS_REPO =
+    "https://github.com/Medical-Image-Computing-Suite/Medical-Image-Computing-Suite.github.io";
+  var COMMUNITY_WIKI =
+    "https://github.com/Medical-Image-Computing-Suite/MedICS-Community/wiki";
+  var COMMUNITY_ISSUES =
+    "https://github.com/Medical-Image-Computing-Suite/MedICS-Community/issues/new";
+  var DOCS_ISSUES = DOCS_REPO + "/issues/new";
+  var FEEDBACK_KEY = "medics-doc-feedback";
+
+  // ---- Where a vote is sent ------------------------------------------------
+  // The MedICS Documents Feedback Google Form. Votes POST to its formResponse
+  // endpoint; the entry.* ids below map each payload key to a form question.
+  // (See FEEDBACK_GOOGLE_ENTRIES for how they were obtained.)
+  var FEEDBACK_ENDPOINT =
+    "https://docs.google.com/forms/d/e/1FAIpQLSecPdE_EmoSBXWCcPOOk73at1pxb4c7j4IyzmyJdu3jUpOifQ/formResponse";
+
+  // Google Forms field map: payload key -> the form's "entry.<id>". Read from
+  // the form's FB_PUBLIC_LOAD_DATA_ (or via ⋮ → "Get pre-filled link"):
+  //   Page -> entry.211603439 · Helpful -> entry.1982313513 · Comment -> entry.681201604
+  // A key with no entry (here "kind") is dropped, so it is never sent.
+  var FEEDBACK_GOOGLE_ENTRIES = {
+    page: "entry.211603439",
+    helpful: "entry.1982313513",
+    comment: "entry.681201604"
+  };
+
+  // Fire-and-forget POST. Never throws and never blocks the page: a blocked or
+  // offline request simply leaves the local vote as the only record. The
+  // endpoint may also be set at runtime with `window.MEDICS_FEEDBACK_ENDPOINT`,
+  // which is handy for testing without editing this file.
+  function postFeedback(payload) {
+    var endpoint = FEEDBACK_ENDPOINT || window.MEDICS_FEEDBACK_ENDPOINT || "";
+    if (!endpoint) return;
+
+    var isGoogle = /docs\.google\.com\/forms/.test(endpoint);
+    var body;
+    var headers;
+
+    if (isGoogle) {
+      var params = new URLSearchParams();
+      Object.keys(payload).forEach(function (key) {
+        var entry = FEEDBACK_GOOGLE_ENTRIES[key];
+        if (entry && String(payload[key]).length) params.append(entry, payload[key]);
+      });
+      body = params.toString();
+      headers = { "Content-Type": "application/x-www-form-urlencoded" };
+    } else {
+      body = JSON.stringify(payload);
+      headers = { "Content-Type": "application/json", "Accept": "application/json" };
+    }
+
+    try {
+      // sendBeacon keeps the request alive if the click is the last thing the
+      // visitor does. It cannot set a JSON content-type, so only use it for the
+      // non-Google endpoints, where the Blob type is honoured.
+      if (!isGoogle && navigator.sendBeacon) {
+        if (navigator.sendBeacon(endpoint, new Blob([body], { type: "application/json" }))) {
+          return;
+        }
+      }
+      fetch(endpoint, {
+        method: "POST",
+        headers: headers,
+        body: body,
+        keepalive: true,
+        // A Google Form reply carries no CORS headers, so the response is opaque.
+        mode: isGoogle ? "no-cors" : "cors"
+      }).catch(function () { /* offline / blocked — the vote stays local */ });
+    } catch (e) { /* never let feedback break the page */ }
+  }
+
+  // Small line icons, matching the stroke style of the nav search icon.
+  var ICON = function (paths) {
+    return (
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"' +
+      ' stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">' +
+      paths + "</svg>"
+    );
+  };
+  var FEEDBACK_ICONS = {
+    community: ICON(
+      '<path d="M21 11.5a8.4 8.4 0 0 1-8.4 8.4 8.6 8.6 0 0 1-3.8-.9L3.5 21l1.9-5.2a8.4 8.4 0 0 1-.8-3.6A8.4 8.4 0 0 1 12.6 3.1 8.4 8.4 0 0 1 21 11.5z"></path>'
+    ),
+    feature: ICON(
+      '<path d="M9 18h6"></path><path d="M10 21h4"></path>' +
+        '<path d="M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.3 1 2.1h5c0-.8.4-1.6 1-2.1A6 6 0 0 0 12 3z"></path>'
+    ),
+    issue: ICON(
+      '<rect x="8" y="6" width="8" height="14" rx="4"></rect>' +
+        '<path d="M12 6V3M8 11H4M8 16H4M16 11h4M16 16h4M9 8 7 5M15 8l2-3M9 18l-2 3M15 18l2 3"></path>'
+    )
+  };
+
+  function renderDocsFeedback() {
+    var main = document.querySelector(".docs-main");
+    if (!main || main.querySelector(".docs-feedback")) return;
+
+    // Repo-relative source path, e.g. "docs/settings.html". The site is served
+    // from the domain root (a user/org GitHub Pages site), so the pathname is
+    // already the file's path in the repository.
+    var sourcePath = (window.location.pathname || "").replace(/^\/+/, "");
+    var editUrl = sourcePath ? DOCS_REPO + "/edit/main/" + sourcePath : DOCS_REPO;
+
+    var section = document.createElement("section");
+    section.className = "docs-feedback";
+    section.setAttribute("aria-label", "Page feedback");
+    section.innerHTML =
+      '<div class="docs-feedback__col">' +
+        '<h2 class="docs-feedback__title">Was this page helpful?</h2>' +
+        '<div class="docs-feedback__actions">' +
+          '<button class="btn btn--primary btn--sm docs-feedback__btn" type="button" data-feedback="yes">Yes</button>' +
+          '<button class="btn btn--secondary btn--sm docs-feedback__btn" type="button" data-feedback="no">No</button>' +
+        "</div>" +
+        '<div class="docs-feedback__after" id="docs-feedback-after" hidden>' +
+          '<p class="docs-feedback__thanks" id="docs-feedback-thanks">Thanks for your feedback.</p>' +
+          '<div class="docs-feedback__comment" id="docs-feedback-comment" hidden>' +
+            '<label class="docs-feedback__comment-label" for="docs-feedback-note">' +
+              "What could be better? (optional)</label>" +
+            '<textarea class="docs-feedback__note" id="docs-feedback-note" rows="3"' +
+              ' placeholder="Tell us what is missing or unclear…"></textarea>' +
+            '<div class="docs-feedback__comment-actions">' +
+              '<button class="btn btn--primary btn--sm" type="button" data-feedback-send>Send</button>' +
+              '<button class="btn btn--ghost btn--sm" type="button" data-feedback-skip>Skip</button>' +
+            "</div>" +
+          "</div>" +
+        "</div>" +
+      "</div>" +
+      '<div class="docs-feedback__col">' +
+        '<h2 class="docs-feedback__title">Still need help?</h2>' +
+        '<ul class="docs-feedback__links">' +
+          '<li><a href="' + COMMUNITY_WIKI + '" target="_blank" rel="noopener">' +
+            FEEDBACK_ICONS.community + "<span>Ask the community</span></a></li>" +
+          '<li><a href="' + COMMUNITY_ISSUES + '" target="_blank" rel="noopener">' +
+            FEEDBACK_ICONS.feature + "<span>Request features</span></a></li>" +
+          '<li><a href="' + DOCS_ISSUES + '" target="_blank" rel="noopener">' +
+            FEEDBACK_ICONS.issue + "<span>Report issues</span></a></li>" +
+        "</ul>" +
+      "</div>" +
+      '<div class="docs-feedback__col">' +
+        '<h2 class="docs-feedback__title">Help us improve</h2>' +
+        '<a class="btn btn--primary docs-feedback__edit" href="' + editUrl + '"' +
+          ' target="_blank" rel="noopener">Edit this page</a>' +
+      "</div>";
+
+    main.appendChild(section);
+
+    var actions = section.querySelector(".docs-feedback__actions");
+    var after = section.querySelector(".docs-feedback__after");
+    var thanks = section.querySelector(".docs-feedback__thanks");
+    var commentWrap = section.querySelector(".docs-feedback__comment");
+    var note = section.querySelector(".docs-feedback__note");
+    var pageId = sourcePath || "index.html";
+
+    var post = function (kind, helpful, comment) {
+      postFeedback({
+        kind: kind,
+        page: pageId,
+        pageTitle: document.title,
+        helpful: helpful,
+        comment: comment || "",
+        url: window.location.href
+      });
+    };
+
+    // `send` is false when a returning visitor's stored vote is being restored:
+    // the vote is remembered, not re-sent.
+    var vote = function (value, send) {
+      try { localStorage.setItem(FEEDBACK_KEY + ":" + pageId, value); } catch (e) { /* ignore */ }
+      actions.hidden = true;
+      after.hidden = false;
+      if (!send) return;
+      post("vote", value, "");
+      // A "No" is the one worth explaining, so ask for an optional note. The
+      // vote above is already recorded, so a skipped note loses nothing.
+      if (value === "no") commentWrap.hidden = false;
+    };
+
+    // Reflect a vote cast on an earlier visit, so the buttons do not reappear.
+    var stored = null;
+    try { stored = localStorage.getItem(FEEDBACK_KEY + ":" + pageId); } catch (e) { /* ignore */ }
+    if (stored === "yes" || stored === "no") vote(stored, false);
+
+    actions.addEventListener("click", function (event) {
+      var btn = event.target.closest ? event.target.closest("button[data-feedback]") : null;
+      if (btn) vote(btn.getAttribute("data-feedback"), true);
+    });
+
+    after.addEventListener("click", function (event) {
+      var target = event.target;
+      if (!target.closest) return;
+      if (target.closest("button[data-feedback-send]")) {
+        var text = (note.value || "").trim();
+        if (text) post("comment", "no", text);
+        commentWrap.hidden = true;
+        thanks.textContent = "Thanks — your note has been sent.";
+      } else if (target.closest("button[data-feedback-skip]")) {
+        commentWrap.hidden = true;
+      }
+    });
+  }
+
+  renderDocsFeedback();
 })();
