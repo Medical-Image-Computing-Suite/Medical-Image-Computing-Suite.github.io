@@ -66,6 +66,7 @@ curl -fsSL https://medical-image-computing-suite.github.io/installer/install.sh 
 --python VERSION   Python version for the runtime (default: 3.11)
 --no-desktop       Skip Desktop shortcut
 --no-menu          Skip Start Menu / Applications / ~/.local/bin
+--no-shell-menu    Skip the Windows Explorer context menus
 --no-launch        Do not launch MedICS when finished
 --help             Show help
 ```

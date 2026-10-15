@@ -63,6 +63,7 @@ Options:
   --python VERSION   Python version for the runtime (default: 3.11)
   --no-desktop       Skip Desktop shortcut
   --no-menu          Skip Start Menu shortcut
+  --no-shell-menu    Skip the Explorer context menus (Open folder / Open with preview)
   --no-launch        Do not launch MedICS when finished
   --help             Show this help
 
@@ -246,6 +247,27 @@ function Repair-Pythonw([string]$Runtime) {
     Write-Host "Warning: pythonw.exe is a console trampoline; the MedICS shortcut may show a terminal."
 }
 
+function Register-ShellMenus([string]$Python) {
+    # The two Explorer entries — "Open folder in MedICS" and "Open with MedICS preview".
+    # Registered per user under HKCU, so no elevation is involved.  The application also
+    # writes (and repairs) them on every start, but doing it here means the entries exist
+    # before MedICS is ever launched, which is what an install is expected to leave behind.
+    # Windows only, by construction: this file is the Windows installer.
+    if (-not (Test-InstallFlag "MEDICS_INSTALL_SHELL_MENU")) {
+        Write-Host "Skipping Explorer context menus (--no-shell-menu)."
+        return
+    }
+    if ($env:MEDICS_REGISTER_SHELL_ON_INSTALL -match '^(?i)(0|false|no|off)$') {
+        Write-Host "Skipping Explorer context menus (MEDICS_REGISTER_SHELL_ON_INSTALL is set)."
+        return
+    }
+    Write-Host "Registering Explorer context menus..."
+    & $Python -m medics --register-shell
+    if ($LASTEXITCODE) {
+        Write-Host "Warning: the Explorer context menus could not be registered; run 'medics --register-shell' to retry."
+    }
+}
+
 function Get-ProcessesUnder([string]$Root) {
     # Windows keeps a running program's files locked, so a MedICS left open from
     # a previous install blocks replacing the runtime.  Anything whose executable
@@ -419,6 +441,7 @@ $extSpec = $null
 Set-InstallFlag "MEDICS_INSTALL_DESKTOP" $true
 Set-InstallFlag "MEDICS_INSTALL_MENU" $true
 Set-InstallFlag "MEDICS_INSTALL_LAUNCH" $true
+Set-InstallFlag "MEDICS_INSTALL_SHELL_MENU" $true
 
 for ($i = 0; $i -lt $tokens.Count; $i++) {
     switch -Regex ($tokens[$i]) {
@@ -426,6 +449,7 @@ for ($i = 0; $i -lt $tokens.Count; $i++) {
         '^(--yes|/Y)$' { $accept = $true }
         '^(--no-desktop)$' { Set-InstallFlag "MEDICS_INSTALL_DESKTOP" $false }
         '^(--no-menu)$' { Set-InstallFlag "MEDICS_INSTALL_MENU" $false }
+        '^(--no-shell-menu)$' { Set-InstallFlag "MEDICS_INSTALL_SHELL_MENU" $false }
         '^(--no-launch)$' { Set-InstallFlag "MEDICS_INSTALL_LAUNCH" $false }
         '^(--dir|/D)$' {
             $i++
@@ -618,10 +642,14 @@ if ($createMenu) {
     Write-Host "Created Start Menu shortcut: MedICS."
 }
 
+Register-ShellMenus $pythonConsole
+
 $uninstall = Join-Path $installDir "Uninstall-MedICS.bat"
 $uninstallLines = @(
     "@echo off",
-    "echo Removing MedICS..."
+    "echo Removing MedICS...",
+    "rem Remove the Explorer context menus while the runtime is still present.",
+    "if exist `"$pythonConsole`" `"$pythonConsole`" -m medics --unregister-shell >nul 2>nul"
 )
 foreach ($item in $shortcuts) {
     $uninstallLines += "if exist `"$item`" rmdir /s /q `"$item`" 2>nul"
@@ -638,6 +666,7 @@ $manifest = @{
     executable  = $exe
     launcher    = $launcher
     shortcuts   = @($shortcuts)
+    shell_menu  = @("Open folder in MedICS", "Open with MedICS preview")
 } | ConvertTo-Json -Depth 4
 Set-Content -LiteralPath (Join-Path $installDir "install-manifest.json") -Value $manifest -Encoding UTF8
 
@@ -645,6 +674,7 @@ Write-Host ""
 Write-Host "Installation complete."
 Write-Host "Launcher: MedICS"
 Write-Host "Console launcher (install folder): MedICS_console"
+Write-Host "Explorer: right-click a file or folder for 'Open with MedICS preview' / 'Open folder in MedICS'"
 Write-Host "Uninstall: $uninstall"
 
 if (Test-InstallFlag "MEDICS_INSTALL_LAUNCH") {
