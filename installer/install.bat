@@ -4,7 +4,10 @@ rem MedICS CLI installer. This .bat bypasses PowerShell execution policy.
 set "MEDICS_INSTALLER_SELF=%~f0"
 set "MEDICS_INSTALLER_ARGS=%*"
 powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "iex ([string]::Join([Environment]::NewLine, (Get-Content -LiteralPath $env:MEDICS_INSTALLER_SELF | Select-Object -Skip 7)))"
-exit /b %ERRORLEVEL%
+set "MEDICS_INSTALL_RC=%ERRORLEVEL%"
+rem Exit code 42 = MedICS was started; close this installer console window.
+if "%MEDICS_INSTALL_RC%"=="42" exit 0
+exit /b %MEDICS_INSTALL_RC%
 
 # --- PowerShell (do not change the Skip count above without updating this header) ---
 $ErrorActionPreference = "Stop"
@@ -64,13 +67,14 @@ Options:
   --no-desktop       Skip Desktop shortcut
   --no-menu          Skip Start Menu shortcut
   --no-shell-menu    Skip the Explorer context menus (Open folder / Open with preview)
-  --no-launch        Do not launch MedICS when finished
+  --no-launch        Skip the post-install "Start MedICS?" prompt (do not launch)
   --help             Show this help
 
-Only two things are ever asked: the license and the install folder. Press Enter
-at either prompt to take the default (accept license, default folder). At the
-folder prompt, type B to choose the folder in File Explorer. Shortcuts and
-launching are on by default; pass the flags above to change them.
+You are asked for the license, the install folder, and whether to start MedICS
+when finished (default Yes). Press Enter at a prompt to take the default. At the
+folder prompt, type B to choose the folder in File Explorer. Shortcuts are on by
+default; pass the flags above to change them. With --yes, MedICS starts
+automatically unless --no-launch is set; choosing Yes closes this installer window.
 
 No extensions are installed; add them later or pass --ext explicitly.
 "@
@@ -754,7 +758,25 @@ Write-Host "Console launcher (install folder): MedICS_console"
 Write-Host "Explorer: right-click a file or folder for 'Open with MedICS preview' / 'Open folder in MedICS'"
 Write-Host "Uninstall: $uninstall"
 
+$shouldLaunch = $false
 if (Test-InstallFlag "MEDICS_INSTALL_LAUNCH") {
+    if ($accept) {
+        # Non-interactive (--yes): start without prompting.
+        $shouldLaunch = $true
+    } else {
+        $shouldLaunch = Read-YesNo "Start MedICS now?" $true
+        if (-not $shouldLaunch) {
+            Write-Host "MedICS installed successfully."
+        }
+    }
+}
+
+if ($shouldLaunch) {
     Write-Host "Launching MedICS..."
     Start-Process -FilePath $pythonw -ArgumentList @("-m", "medics") -WorkingDirectory $installDir
+    # Interactive install: signal the .bat wrapper (exit code 42) to close this
+    # console. Skip when --yes so CI / scripted shells stay open.
+    if (-not $accept) {
+        exit 42
+    }
 }

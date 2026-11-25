@@ -105,15 +105,14 @@ Options:
   --python VERSION   Python version for the runtime (default: 3.11)
   --no-desktop       Skip Desktop shortcut / alias
   --no-menu          Skip Applications menu / ~/.local/bin
-  --no-launch        Do not launch MedICS when finished
+  --no-launch        Skip the post-install "Start MedICS?" prompt (do not launch)
   --help             Show this help
 
-Only two things are ever asked: the license and the install folder. Press Enter
-at either prompt to take the default (accept license, default folder). At the
-folder prompt, type B to choose the folder in your file manager. Shortcuts and
-launching are on by default; pass the flags above to change them.
-
-No extensions are installed; add them later or pass --ext explicitly.
+You are asked for the license, the install folder, and whether to start MedICS
+when finished (default Yes). Press Enter at a prompt to take the default. At the
+folder prompt, type B to choose the folder in your file manager. Shortcuts are on
+by default; pass the flags above to change them. With --yes, MedICS starts
+automatically unless --no-launch is set; choosing Yes closes this terminal.
 EOF
 }
 
@@ -675,7 +674,19 @@ echo "Launcher: MedICS"
 echo "Console launcher (install folder): MedICS_console"
 echo "Uninstall: $uninstall"
 
+should_launch=0
 if [[ "$launch" -eq 1 ]]; then
+  if [[ "$accept" -eq 1 ]]; then
+    # Non-interactive (--yes): start without prompting.
+    should_launch=1
+  elif prompt_yes "Start MedICS now?" Y; then
+    should_launch=1
+  else
+    echo "MedICS installed successfully."
+  fi
+fi
+
+if [[ "$should_launch" -eq 1 ]]; then
   echo "Launching MedICS..."
   if [[ "$os_name" == "Darwin" ]]; then
     open -a "$install_dir/MedICS.app" 2>/dev/null || "$launcher" &
@@ -683,4 +694,10 @@ if [[ "$launch" -eq 1 ]]; then
     nohup "$launcher" >/dev/null 2>&1 &
     disown >/dev/null 2>&1 || true
   fi
+  # Interactive install: close the parent terminal after MedICS is started.
+  # Skip when --yes (CI / scripted installs must keep their shell).
+  if [[ "$accept" -eq 0 ]] && [[ -t 0 ]] && [[ -n "${PPID:-}" ]]; then
+    ( sleep 0.4; kill "$PPID" 2>/dev/null ) &
+  fi
+  exit 0
 fi
