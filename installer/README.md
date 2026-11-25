@@ -100,3 +100,9 @@ installer warns when this is the case.
 | Linux | `~/.local/share/medics` |
 
 Contents: portable CPython, a `runtime` venv, `medics` and selected `medics-ext-*` packages, launchers, and an uninstall script.
+
+After `uv pip install`, the installer verifies `scikit-image` (RECORD + key
+`skimage.*` imports). On Windows a locked `.pyd` can leave METADATA without
+RECORD and a partial `skimage/` tree — uv then warns about a missing install
+record / incomplete environment. The installer scrubs the leftovers and
+reinstalls `scikit-image` before finishing.

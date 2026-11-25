@@ -409,6 +409,82 @@ function Save-Url([string]$Url, [string]$Dest) {
     $response.Close()
 }
 
+function Repair-ScikitImage([string]$Uv, [string]$Python, [string]$Runtime) {
+    # Windows + uv can leave scikit-image with METADATA but no RECORD (and a
+    # partial skimage/ tree) when a .pyd was locked mid-install.  uv then prints
+    # "missing RECORD" / "incomplete environment".  Verify and scrub+reinstall.
+    Write-Host "Verifying scikit-image..."
+    $probe = Join-Path $env:TEMP ("medics-skimage-probe-" + [guid]::NewGuid().ToString("N") + ".py")
+    @'
+import importlib
+import importlib.metadata as md
+import sys
+from pathlib import Path
+
+reasons = []
+dist = None
+try:
+    dist = md.distribution("scikit-image")
+except md.PackageNotFoundError:
+    reasons.append("not installed")
+
+if dist is not None:
+    dist_path = Path(getattr(dist, "_path", "") or "")
+    if not dist_path.is_dir():
+        reasons.append("dist-info path missing")
+    else:
+        if not (dist_path / "METADATA").is_file():
+            reasons.append("METADATA missing")
+        if not (dist_path / "RECORD").is_file():
+            reasons.append("RECORD missing")
+
+for mod in (
+    "skimage",
+    "skimage.filters",
+    "skimage.measure",
+    "skimage.morphology",
+    "skimage.transform",
+):
+    try:
+        importlib.import_module(mod)
+    except Exception as exc:  # noqa: BLE001 - any import failure means repair
+        reasons.append("%s: %s: %s" % (mod, type(exc).__name__, exc))
+
+if not reasons:
+    print("OK")
+    sys.exit(0)
+print("BROKEN: " + "; ".join(reasons))
+sys.exit(1)
+'@ | Set-Content -LiteralPath $probe -Encoding UTF8
+    try {
+        $output = & $Python $probe 2>&1 | Out-String
+        if ($LASTEXITCODE -eq 0) {
+            Write-Host "scikit-image OK."
+            return
+        }
+        Write-Host ("scikit-image incomplete ({0}); repairing..." -f $output.Trim()) -ForegroundColor Yellow
+        $site = Join-Path $Runtime "Lib\site-packages"
+        Get-ChildItem -LiteralPath $site -Directory -ErrorAction SilentlyContinue |
+            Where-Object {
+                $_.Name -eq "skimage" -or
+                $_.Name -like "scikit_image-*.dist-info" -or
+                $_.Name -like "scikit-image-*.egg-info"
+            } |
+            ForEach-Object {
+                Remove-Item -LiteralPath $_.FullName -Recurse -Force -ErrorAction SilentlyContinue
+            }
+        & $Uv pip install --python $Python --reinstall-package scikit-image "scikit-image>=0.24.0"
+        if ($LASTEXITCODE) { throw "Failed to repair scikit-image." }
+        $output = & $Python $probe 2>&1 | Out-String
+        if ($LASTEXITCODE) {
+            throw ("scikit-image still broken after repair: " + $output.Trim())
+        }
+        Write-Host "scikit-image repaired."
+    } finally {
+        Remove-Item -LiteralPath $probe -Force -ErrorAction SilentlyContinue
+    }
+}
+
 function Install-Branding([string]$InstallDir, [string]$SelfDir) {
     $res = Join-Path $InstallDir "resources"
     New-Item -ItemType Directory -Force -Path $res | Out-Null
@@ -596,6 +672,7 @@ $python = Join-Path $runtime "Scripts\python.exe"
 Write-Host "Installing $($unique -join ', ')..."
 & $uv pip install --python $python @unique
 if ($LASTEXITCODE) { throw "uv pip install failed." }
+Repair-ScikitImage $uv $python $runtime
 
 $exe = Join-Path $runtime "Scripts\medics.exe"
 $pythonw = Join-Path $runtime "Scripts\pythonw.exe"

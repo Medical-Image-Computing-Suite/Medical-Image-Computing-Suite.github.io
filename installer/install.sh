@@ -390,6 +390,75 @@ export UV_PYTHON_INSTALL_DIR="$install_dir/python"
 export UV_LINK_MODE="copy"
 unset VIRTUAL_ENV || true
 
+repair_scikit_image() {
+  # Same Windows/uv incomplete-install path as install.bat: METADATA without
+  # RECORD (and a partial skimage/ tree).  Verify; scrub and reinstall if needed.
+  local py="$1" runtime="$2"
+  local probe site
+  echo "Verifying scikit-image..."
+  probe="$(mktemp "${TMPDIR:-/tmp}/medics-skimage-probe.XXXXXX.py")"
+  cat >"$probe" <<'PY'
+import importlib
+import importlib.metadata as md
+import sys
+from pathlib import Path
+
+reasons = []
+dist = None
+try:
+    dist = md.distribution("scikit-image")
+except md.PackageNotFoundError:
+    reasons.append("not installed")
+
+if dist is not None:
+    dist_path = Path(getattr(dist, "_path", "") or "")
+    if not dist_path.is_dir():
+        reasons.append("dist-info path missing")
+    else:
+        if not (dist_path / "METADATA").is_file():
+            reasons.append("METADATA missing")
+        if not (dist_path / "RECORD").is_file():
+            reasons.append("RECORD missing")
+
+for mod in (
+    "skimage",
+    "skimage.filters",
+    "skimage.measure",
+    "skimage.morphology",
+    "skimage.transform",
+):
+    try:
+        importlib.import_module(mod)
+    except Exception as exc:  # noqa: BLE001
+        reasons.append("%s: %s: %s" % (mod, type(exc).__name__, exc))
+
+if not reasons:
+    print("OK")
+    sys.exit(0)
+print("BROKEN: " + "; ".join(reasons))
+sys.exit(1)
+PY
+  if "$py" "$probe"; then
+    echo "scikit-image OK."
+    rm -f "$probe"
+    return 0
+  fi
+  echo "scikit-image incomplete; repairing..." >&2
+  site="$("$py" -c 'import site; print(site.getsitepackages()[0])')"
+  if [[ -d "$site" ]]; then
+    rm -rf "$site/skimage"
+    rm -rf "$site"/scikit_image-*.dist-info "$site"/scikit-image-*.egg-info
+  fi
+  "$uv" pip install --python "$py" --reinstall-package scikit-image "scikit-image>=0.24.0"
+  if ! "$py" "$probe"; then
+    rm -f "$probe"
+    echo "scikit-image still broken after repair." >&2
+    exit 1
+  fi
+  rm -f "$probe"
+  echo "scikit-image repaired."
+}
+
 echo "Installing Python ${PYTHON_VERSION}..."
 # --no-bin: the runtime venv is used directly, so uv's shim in ~/.local/bin is
 # never needed.  Skipping it also avoids uv failing to install that shim when a
@@ -407,6 +476,7 @@ echo "Creating virtual environment..."
 python="$runtime/bin/python"
 echo "Installing ${unique[*]}..."
 "$uv" pip install --python "$python" "${unique[@]}"
+repair_scikit_image "$python" "$runtime"
 
 exe="$runtime/bin/medics"
 if [[ ! -x "$exe" ]]; then
