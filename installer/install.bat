@@ -3,7 +3,7 @@ setlocal EnableExtensions EnableDelayedExpansion
 rem MedICS CLI installer. This .bat bypasses PowerShell execution policy.
 set "MEDICS_INSTALLER_SELF=%~f0"
 set "MEDICS_INSTALLER_ARGS=%*"
-powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "iex ([string]::Join([Environment]::NewLine, (Get-Content -LiteralPath $env:MEDICS_INSTALLER_SELF | Select-Object -Skip 7)))"
+powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "iex ([string]::Join([Environment]::NewLine, (Get-Content -LiteralPath $env:MEDICS_INSTALLER_SELF | Select-Object -Skip 11)))"
 set "MEDICS_INSTALL_RC=%ERRORLEVEL%"
 rem Exit code 42 = MedICS was started; close this installer console window.
 if "%MEDICS_INSTALL_RC%"=="42" exit 0
